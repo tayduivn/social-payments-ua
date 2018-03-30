@@ -1,0 +1,15 @@
+<form class="sp-form">
+  <h2 class="sp-header">Авторизація</h2>
+
+  <div class="ui-inputgroup">
+    <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+    <input name="login" type="text" pInputText placeholder="Логін" [(ngModel)]="login">
+  </div>
+
+  <div class="ui-inputgroup">
+    <span class="ui-inputgroup-addon"><i class="fa fa-key"></i></span>
+    <input name="password" type="password" pInputText placeholder="Пароль" [(ngModel)]="password">
+  </div>
+
+  <button pButton type="button" label="Вхід" (click)="loginRequest()"></button>
+</form>

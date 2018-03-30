@@ -1,0 +1,11 @@
+schema {
+  query: Query
+}
+
+type Query {
+  authorize(login: String, password: String): LoginStatus
+}
+
+type LoginStatus {
+  authorized: Boolean
+}
