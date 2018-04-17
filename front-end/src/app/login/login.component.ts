@@ -3,7 +3,7 @@ import {
   ChangeDetectorRef,
   Component
 } from '@angular/core';
-import { LoginResponse } from '../../../../api-contracts/auth/login-response';
+import { WINDOW } from '../core/window';
 import { LoginService } from './login.service';
 
 @Component({
@@ -16,12 +16,18 @@ export class LoginComponent {
   public login: string;
   public password: string;
 
-  constructor(private cdRef: ChangeDetectorRef, private loginService: LoginService) { }
+  constructor(
+    private cdRef: ChangeDetectorRef,
+    private loginService: LoginService,
+    private window: WINDOW
+  ) {}
 
   public loginRequest() {
     this.loginService.requestLogin(this.login, this.password).subscribe(
-      (res: LoginResponse) => {console.log('Login:', res);},
-      () => alert('Not authorized')
+      (res: any) => {
+        console.log('Login:', res);
+      },
+      () => this.window.alert('Not authorized')
     );
   }
 }

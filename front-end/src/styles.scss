@@ -6,5 +6,25 @@ html, body {
 }
 
 body {
-  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+  font-family: "Roboto", "Open Sans", Helvetica, Arial, sans-serif;
+}
+
+@mixin mat-icon-size($size) {
+  font-size: $size;
+  height: $size;
+  width: $size;
+}
+.material-icons {
+  &.md-18 {
+    @include mat-icon-size(18px);
+  }
+  &.md-24 {
+    @include mat-icon-size(24px);
+  }
+  &.md-36 {
+    @include mat-icon-size(36px);
+  }
+  &.md-48 {
+    @include mat-icon-size(48px);
+  }
 }

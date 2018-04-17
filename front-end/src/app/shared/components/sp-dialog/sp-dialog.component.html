@@ -1,0 +1,21 @@
+<h2 matDialogTitle>{{config.title || (config.type === SpDialogType.Confirm ? 'Увага!' : '')}}</h2>
+
+<mat-dialog-content>
+  <mat-icon [color]="config.type === SpDialogType.Confirm ? 'warn' : 'primary'"
+    class="md-36">{{config.type === SpDialogType.Confirm ? 'warning' : 'info'}}</mat-icon>
+  <p>{{config.text}}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions [class]="config.type | spCssClassNamePipe:SpDialogType">
+  <button mat-raised-button
+    [matDialogClose]="true"
+    [color]="config.type === SpDialogType.Confirm ? 'warn' : 'primary'">Ок
+  </button>
+
+  <button *ngIf="config.type === SpDialogType.Confirm"
+    cdkFocusInitial
+    mat-raised-button
+    matDialogClose
+    color="basic">Відміна
+  </button>
+</mat-dialog-actions>

@@ -10,7 +10,7 @@ import morgan from 'morgan';
 import passport from 'passport';
 import {Strategy as BearerStrategy } from 'passport-http-bearer';
 import { connectDb } from './core/db/db-connection';
-import { UserModel } from './core/user/user.model';
+import { UserModel } from './models/user/user.model';
 import { graphqlRouter } from './routes/graphql';
 import { loginRouter } from './routes/login';
 import { rootRouter } from './routes/root';
@@ -29,16 +29,17 @@ connectDb();
 appConfig.use('/', rootRouter);
 appConfig.use('/', loginRouter);
 
+appConfig.use('/', passport.authenticate('bearer', { session: false }), graphqlRouter);
+
 // Bearer token authentication
 passport.use(new BearerStrategy((token: string, done) => {
-    UserModel.findOne({token}, (err, user: UserModel) => {
-      if (err) { return done(err); }
-      if (!user) { return done(null, false); }
+  UserModel.findOne({token}, (err, user: UserModel) => {
+    if (err) { return done(err); }
+    if (!user) { return done(null, false); }
 
-      return done(null, user);
-    });
-  })
-);
+    return done(null, user);
+  });
+}));
 
 // secured routes
 appConfig.use('/', passport.authenticate('bearer', { session: false }), graphqlRouter);
@@ -58,7 +59,8 @@ appConfig.use((err: any, req: Request, res: Response, next: NextFunction) => {
 
   // render the error page
   res.status(err.status || 500);
-  res.send('error');
+
+  res.send(Object.assign({error: true, message: err.message}, err));
 });
 
 export const app = appConfig;

@@ -1,0 +1,28 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  users: [User]
+}
+
+type Mutation {
+  submitUser(user: UserInput): User
+  removeUser(id: String): String
+}
+
+type User {
+  id: ID
+  login: String
+  fullName: String
+  isAdmin: Boolean
+}
+
+input UserInput {
+  password: String
+  login: String
+  fullName: String
+  isAdmin: Boolean
+  id: ID
+}

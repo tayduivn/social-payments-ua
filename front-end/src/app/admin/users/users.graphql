@@ -1,0 +1,8 @@
+query usersList {
+  users {
+    login
+    fullName,
+    id,
+    isAdmin
+  }
+}

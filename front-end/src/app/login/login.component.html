@@ -1,15 +1,36 @@
 <form class="sp-form">
-  <h2 class="sp-header">Авторизація</h2>
+  <h2 class="sp-header">
+    <span>Авторизація</span>
+  </h2>
 
-  <div class="ui-inputgroup">
-    <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
-    <input name="login" type="text" pInputText placeholder="Логін" [(ngModel)]="login">
-  </div>
+  <mat-form-field>
+    <input matInput
+      name="login"
+      type="text"
+      placeholder="Логін"
+      [(ngModel)]="login"
+      required
+      #loginInput="ngModel">
+    <mat-icon matSuffix color="primary">person</mat-icon>
+    <mat-error *ngIf="loginInput.invalid">Введіть логін</mat-error>
+  </mat-form-field>
 
-  <div class="ui-inputgroup">
-    <span class="ui-inputgroup-addon"><i class="fa fa-key"></i></span>
-    <input name="password" type="password" pInputText placeholder="Пароль" [(ngModel)]="password">
-  </div>
+  <mat-form-field>
+    <input matInput
+      name="password"
+      type="password"
+      placeholder="Пароль"
+      [(ngModel)]="password"
+      required
+      #passwordInput="ngModel">
+    <mat-icon matSuffix color="primary">lock</mat-icon>
+    <mat-error *ngIf="passwordInput.invalid">Введіть пароль</mat-error>
+  </mat-form-field>
 
-  <button pButton type="button" label="Вхід" (click)="loginRequest()"></button>
+  <button mat-raised-button
+    color="primary"
+    type="button"
+    [disabled]="loginInput.errors || passwordInput.errors"
+    (click)="loginRequest()">Вхід
+  </button>
 </form>

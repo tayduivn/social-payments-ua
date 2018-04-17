@@ -1,6 +1,6 @@
 import { mergeSchemas } from 'graphql-tools';
-import { schema as loginSchema } from './auth/login.schema';
+import { schema as userSchema } from './user/user.schema';
 
 export const rootSchema = mergeSchemas({
-  schemas: [loginSchema]
+  schemas: [userSchema]
 });

@@ -1,0 +1,29 @@
+:host {
+  display: block;
+  width: 250px;
+}
+
+.mat-form-field {
+  display: block;
+  margin-bottom: 10px;
+}
+
+mat-dialog-content {
+  margin-bottom: 30px;
+}
+
+mat-dialog-actions {
+  justify-content: space-between;
+}
+
+.sp-is-admin {
+  height: 3em;
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  user-select: none;
+}
+
+.sp-reset-password {
+  margin:3em 0 2em;
+}

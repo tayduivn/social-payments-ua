@@ -1,0 +1,73 @@
+<h2 matDialogTitle>Користувач</h2>
+
+<mat-dialog-content>
+  <mat-form-field>
+    <input [formControl]="login"
+      matInput
+      name="login"
+      type="text"
+      placeholder="Логін"
+      required
+      spInputFilter="[a-z0-9]">
+    <mat-hint>Латинські літери та цифри</mat-hint>
+    <mat-error *ngIf="login.invalid">{{getErrorMessage(login)}}</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input [formControl]="fullName"
+      matInput
+      name="fullName"
+      type="text"
+      placeholder="Повне ім'я"
+      required
+      [spInputFilter]="fullNameFilter">
+    <mat-error *ngIf="fullName.invalid">{{getErrorMessage(login)}}</mat-error>
+    <mat-hint>Кирилиця</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="!showResetPasswordButton">
+    <input
+      [formControl]="password"
+      matInput
+      name="password"
+      type="password"
+      placeholder="Пароль"
+      required>
+    <mat-error *ngIf="password.invalid">{{getErrorMessage(password)}}</mat-error>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="!showResetPasswordButton">
+    <input [formControl]="repeatPassword"
+      matInput
+      name="repeatPassword"
+      type="password"
+      placeholder="Повторіть пароль"
+      required
+      [errorStateMatcher]="repeatPasswordMatcher">
+    <mat-error *ngIf="repeatPassword.invalid">{{getErrorMessage(repeatPassword)}}</mat-error>
+  </mat-form-field>
+
+  <div class="sp-reset-password">
+    <button *ngIf="showResetPasswordButton"
+      mat-raised-button
+      (click)="onResetButton()"
+      color="primary">Встановити пароль
+    </button>
+  </div>
+
+  <div class="sp-is-admin">
+    <mat-checkbox [formControl]="isAdmin">Адміністратор</mat-checkbox>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button
+    [disabled]="isSaveDisabled()"
+    [matDialogClose]="saveUserChanges()"
+    color="primary">Зберегти
+  </button>
+
+  <button mat-raised-button
+    matDialogClose
+    color="basic">Відміна
+  </button>
+</mat-dialog-actions>

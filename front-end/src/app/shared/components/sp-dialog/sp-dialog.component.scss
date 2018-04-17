@@ -1,0 +1,27 @@
+:host {
+  display: block;
+}
+
+mat-dialog-content {
+  padding-top: 1em;
+  padding-bottom: 3em;
+  display: flex;
+  align-items: center;
+
+  > p {
+    margin: 0;
+    margin-left: 1em;
+  }
+}
+
+mat-dialog-actions {
+  display: flex;
+
+  &.sp-alert {
+    justify-content: center;
+  }
+
+  &.sp-confirm {
+    justify-content: space-between;
+  }
+}
