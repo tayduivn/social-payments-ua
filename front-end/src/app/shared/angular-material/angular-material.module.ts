@@ -1,8 +1,12 @@
 import { NgModule } from '@angular/core';
 import {
   MatDialogModule,
+  MatDividerModule,
   MatIconModule,
-  MatTableModule
+  MatListModule,
+  MatSidenavModule,
+  MatTableModule,
+  MatToolbarModule
 } from '@angular/material';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -12,9 +16,13 @@ const importedExports = [
   MatButtonModule,
   MatCheckboxModule,
   MatDialogModule,
+  MatDividerModule,
+  MatSidenavModule,
   MatInputModule,
   MatIconModule,
-  MatTableModule
+  MatListModule,
+  MatTableModule,
+  MatToolbarModule
 ];
 
 @NgModule({

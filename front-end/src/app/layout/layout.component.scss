@@ -24,4 +24,12 @@
 .sp-body {
   flex: 1;
   display: flex;
+
+  router-outlet {
+    display: none;
+  }
+
+  ::ng-deep > * {
+    flex: 1;
+  }
 }

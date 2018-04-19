@@ -1,4 +1,21 @@
-<p>
-  payments works!
-</p>
-<router-outlet></router-outlet>
+<mat-sidenav-container class="payments-actions-menu">
+  <mat-sidenav mode="side" opened="true">
+    <mat-nav-list>
+      <mat-list-item>
+        <mat-icon matListIcon>note_add</mat-icon>
+        <h3 matLine>Новий платіж</h3>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+
+      <mat-list-item>
+        <mat-icon matListIcon>history</mat-icon>
+        <h3 matLine>Історія платежів</h3>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
