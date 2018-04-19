@@ -23,3 +23,12 @@
     margin-top: 0;
   }
 }
+
+::ng-deep .sp-login-error-alert {
+  height: 290px;
+  width: 350px;
+
+  mat-dialog-container {
+    padding: 50px;
+  }
+}

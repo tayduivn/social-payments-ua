@@ -1,25 +1,23 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { UsersModule } from './admin/users/users.module';
+import { Router } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
-import { LoginModule } from './login/login.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AppRoutingModule,
     CoreModule,
-    LoginModule,
-    UsersModule
+    AppRoutingModule
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private router: Router) {
+    console.log('Routes: ', JSON.stringify(router.config, undefined, 2));
+  }
+}

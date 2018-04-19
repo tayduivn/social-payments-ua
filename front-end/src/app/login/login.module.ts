@@ -15,7 +15,6 @@ import { LoginService } from './login.service';
     AngularMaterialModule
   ],
   declarations: [LoginComponent],
-  exports: [LoginComponent],
   providers: [LoginService]
 })
 export class LoginModule {

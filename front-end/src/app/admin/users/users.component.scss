@@ -1,6 +1,9 @@
 @import '~@angular/material/theming';
 
 :host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .sp-action-panel {
@@ -10,6 +13,13 @@
 
   button:first-child {
     margin-right: 1em;
+  }
+}
+
+.mat-cell,
+.mat-header-cell {
+  &:not(.mat-column-admin) {
+    flex-grow: 2;
   }
 }
 

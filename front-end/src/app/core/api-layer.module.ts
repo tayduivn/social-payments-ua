@@ -9,9 +9,10 @@ import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { setContext } from 'apollo-link-context';
 import { onError } from 'apollo-link-error';
-import { SpDialogType } from '../../shared/components/sp-dialog/sp-dialog-type.enum';
-import { SpDialogModule } from '../../shared/components/sp-dialog/sp-dialog.module';
-import { SpDialogService } from '../../shared/components/sp-dialog/sp-dialog.service';
+import { SpDialogType } from '../shared/components/sp-dialog/sp-dialog-type.enum';
+import { SpDialogModule } from '../shared/components/sp-dialog/sp-dialog.module';
+import { SpDialogService } from '../shared/components/sp-dialog/sp-dialog.service';
+import { AuthService } from './auth.service';
 
 @NgModule({
   imports: [
@@ -23,13 +24,30 @@ import { SpDialogService } from '../../shared/components/sp-dialog/sp-dialog.ser
   declarations: []
 })
 export class ApiLayerModule {
-  constructor(private apollo: Apollo, private httpLink: HttpLink, private spDialogService: SpDialogService) {
-    this.init();
+  constructor(
+    private apollo: Apollo,
+    private httpLink: HttpLink,
+    private spDialogService: SpDialogService,
+    private authService: AuthService) {
+      this.init();
   }
 
-  private static getAuthLink() {
+  private init() {
+    const httpLink = this.getHttpLink();
+    const authLink = this.getAuthLink();
+    const errorLink = this.getErrorLink();
+
+    this.apollo.create({
+      link: authLink
+        .concat(errorLink)
+        .concat(httpLink),
+      cache: new InMemoryCache()
+    });
+  }
+
+  private getAuthLink() {
     return setContext((_, {headers}) => {
-      const token = localStorage.getItem('token');
+      const token = this.authService.getToken();
 
       if (!token) {
         return {};
@@ -38,19 +56,6 @@ export class ApiLayerModule {
           headers: (headers || new HttpHeaders()).append('Authorization', `Bearer ${token}`)
         };
       }
-    });
-  }
-
-  private init() {
-    const httpLink = this.getHttpLink();
-    const authLink = ApiLayerModule.getAuthLink();
-    const errorLink = this.getErrorLink();
-
-    this.apollo.create({
-      link: authLink
-        .concat(errorLink)
-        .concat(httpLink),
-      cache: new InMemoryCache()
     });
   }
 
