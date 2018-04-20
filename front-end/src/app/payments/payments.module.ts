@@ -1,14 +1,12 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AngularMaterialModule } from '../shared/angular-material/angular-material.module';
-import { PaymentsRoutingModule } from './payments-routing.module';
+import { NgModule } from '@angular/core';
+import { TabbedItemsModule } from '../layout/tabbed-items/tabbed-items.module';
 import { PaymentsComponent } from './payments.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    AngularMaterialModule,
-    PaymentsRoutingModule
+    TabbedItemsModule
   ],
   declarations: [PaymentsComponent]
 })

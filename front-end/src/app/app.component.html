@@ -1,1 +1,7 @@
-<router-outlet></router-outlet>
+<sp-main-nav *ngIf="renderMenu; else routerRef">
+  <router-outlet></router-outlet>
+</sp-main-nav>
+
+<ng-template #routerRef>
+  <router-outlet></router-outlet>
+</ng-template>

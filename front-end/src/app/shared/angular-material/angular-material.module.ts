@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import {
+  MatCardModule,
   MatDialogModule,
   MatDividerModule,
   MatIconModule,
   MatListModule,
   MatSidenavModule,
   MatTableModule,
+  MatTabsModule,
   MatToolbarModule
 } from '@angular/material';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 
 const importedExports = [
   MatButtonModule,
+  MatCardModule,
   MatCheckboxModule,
   MatDialogModule,
   MatDividerModule,
@@ -22,6 +25,7 @@ const importedExports = [
   MatIconModule,
   MatListModule,
   MatTableModule,
+  MatTabsModule,
   MatToolbarModule
 ];
 

@@ -11,7 +11,7 @@ export class SpDialogService {
   constructor(private dialog: MatDialog) { }
 
   public open(options: SpDialogConfigModel, dialogProps?: MatDialogConfig): Observable<boolean> {
-    return this.dialog.open(SpDialogComponent, Object.assign(dialogProps, {
+    return this.dialog.open(SpDialogComponent, Object.assign(dialogProps || {}, {
       data: options,
       role: 'alertdialog'
     })).afterClosed();

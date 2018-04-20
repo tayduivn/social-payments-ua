@@ -50,7 +50,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy() {
-    this.querySubscription.unsubscribe();
+    this.querySubscription && this.querySubscription.unsubscribe();
   }
 
   public usersTrackFn(index: number, user: UserResponseModel): string {

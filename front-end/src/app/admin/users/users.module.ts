@@ -19,6 +19,7 @@ import {SpDialogModule} from '../../shared/components/sp-dialog/sp-dialog.module
   ],
   declarations: [UsersComponent, UserDialogComponent, InputFilterDirective],
   entryComponents: [UserDialogComponent],
-  providers: [UsersService]
+  providers: [UsersService],
+  exports: [UsersComponent]
 })
 export class UsersModule { }

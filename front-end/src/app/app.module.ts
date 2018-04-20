@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
+import { MainNavModule } from './layout/main-nav/main-nav.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -12,6 +13,7 @@ import { CoreModule } from './core/core.module';
     BrowserModule,
     BrowserAnimationsModule,
     CoreModule,
+    MainNavModule,
     AppRoutingModule
   ],
   bootstrap: [AppComponent]
