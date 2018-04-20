@@ -1,8 +1,13 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  ComponentFactoryResolver,
   Input,
-  OnInit
+  OnInit,
+  ViewChild,
+  ViewChildren,
+  ViewContainerRef
 } from '@angular/core';
 import {
   TabbedItemConfig,
@@ -15,16 +20,27 @@ import {
   styleUrls: ['./tabbed-items.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TabbedItemsComponent implements OnInit {
+export class TabbedItemsComponent implements AfterViewInit {
   @Input() public items: TabbedItemsConfig;
 
-  constructor() { }
+  @ViewChildren('tabContent', {
+    read: ViewContainerRef
+  }) private tabContentRef: ViewContainerRef;
+
+  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
 
   public listItemTrackFn = (item: TabbedItemConfig) => {
     return item.title;
   };
 
-  ngOnInit() {
+  public ngAfterViewInit() {
+    console.log('ngAfterViewInit');
+    // debugger;
   }
 
+  private loadComponent(component: any) {
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
+    this.tabContentRef.clear();
+    this.tabContentRef.createComponent(componentFactory);
+  }
 }

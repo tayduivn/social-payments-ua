@@ -1,9 +1,7 @@
-import { Component } from '@angular/core';
-
 export interface TabbedItemConfig {
   title: string;
   icon: string;
-  component: Component;
+  component: Object;
 }
 
 export interface TabbedItemsConfig {
