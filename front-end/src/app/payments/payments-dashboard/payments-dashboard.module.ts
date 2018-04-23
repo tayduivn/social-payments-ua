@@ -6,6 +6,7 @@ import { PaymentsDashboardComponent } from './payments-dashboard.component';
   imports: [
     CommonModule
   ],
+  entryComponents: [PaymentsDashboardComponent],
   declarations: [PaymentsDashboardComponent]
 })
 export class PaymentsDashboardModule { }

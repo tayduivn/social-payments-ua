@@ -1,10 +1,14 @@
 import {
+  AfterViewChecked,
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ComponentFactoryResolver,
+  ComponentRef,
   Input,
   OnInit,
+  QueryList,
+  Renderer2,
   ViewChild,
   ViewChildren,
   ViewContainerRef
@@ -21,26 +25,58 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TabbedItemsComponent implements AfterViewInit {
-  @Input() public items: TabbedItemsConfig;
+  @Input() public set items(val: TabbedItemsConfig) {
+    this._items = val;
+    this.openedTabs = val.pinnedTabs.concat();
+  }
+  public get items(): TabbedItemsConfig {
+    return this._items;
+  }
+
+  public openedTabs: TabbedItemConfig[] = [];
 
   @ViewChildren('tabContent', {
     read: ViewContainerRef
-  }) private tabContentRef: ViewContainerRef;
+  }) private tabContentRef: QueryList<ViewContainerRef>;
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+  private _items: TabbedItemsConfig;
+
+  constructor(
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private renderer: Renderer2
+  ) { }
 
   public listItemTrackFn = (item: TabbedItemConfig) => {
     return item.title;
   };
 
   public ngAfterViewInit() {
-    console.log('ngAfterViewInit');
-    // debugger;
+    // first round only pinned tabs have a container created by ngFor
+    const views = this.tabContentRef.toArray();
+
+    views.forEach((view: any, index: number) => {
+      this.loadComponent(this.openedTabs[index].component, view);
+    });
   }
 
-  private loadComponent(component: any) {
+  public onItemClick(item: TabbedItemConfig) {
+    this.openedTabs.push(item);
+
+    setTimeout(() => {
+      this.loadComponent(this.openedTabs[this.openedTabs.length - 1].component, this.tabContentRef.last)
+    })
+  }
+
+  private loadComponent(component: any, container: ViewContainerRef) {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
-    this.tabContentRef.clear();
-    this.tabContentRef.createComponent(componentFactory);
+    container.clear();
+    const compRef = container.createComponent(componentFactory);
+
+    this.addClass(compRef);
+    // compRef.instance.data = {};
+  }
+
+  private addClass(cmp: ComponentRef<any>) {
+    this.renderer.addClass(cmp.location.nativeElement, 'sp-tabbed-item-inserted');
   }
 }

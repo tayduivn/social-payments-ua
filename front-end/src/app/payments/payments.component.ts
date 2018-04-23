@@ -11,9 +11,7 @@ import { PaymentsConfig } from './payments.config';
 export class PaymentsComponent implements OnInit {
   public paymentComponentItems = PaymentsConfig;
 
-  constructor() {
-    console.log('PaymentsComponent');
-  }
+  constructor() {}
 
   ngOnInit() {
   }

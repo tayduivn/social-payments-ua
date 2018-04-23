@@ -1,7 +1,10 @@
 @import '~@angular/material/theming';
 
 :host {
-
+  ::ng-deep .sp-tabbed-item-inserted {
+    width: calc(100% - 3px);
+    height: calc(100% - 3px);
+  }
 }
 
 .sp-actions-menu {

@@ -2,7 +2,7 @@
   <mat-sidenav mode="side" opened="true" class="sp-mat-sidenav">
     <mat-nav-list>
       <ng-template ngFor let-item [ngForOf]="items?.list" [ngForTrackBy]="listItemTrackFn">
-        <mat-list-item>
+        <mat-list-item (click)="onItemClick(item)">
           <mat-icon matListIcon>{{item.icon}}</mat-icon>
           <h3 matLine>{{item.title}}</h3>
         </mat-list-item>
@@ -15,7 +15,7 @@
   <mat-sidenav-content class="sp-content">
     <mat-card class="sp-container">
       <mat-tab-group class="sp-tab-group">
-        <mat-tab *ngFor="let item of items?.pinnedTabs; listItemTrackFn">
+        <mat-tab *ngFor="let item of openedTabs; listItemTrackFn">
           <ng-template mat-tab-label>
             <div class="sp-tab-label">
               <mat-icon>{{item.icon}}</mat-icon>

@@ -20,11 +20,6 @@ export const PaymentsConfig: TabbedItemsConfig = {
       title: 'Головна',
       icon: 'bookmark',
       component: PaymentsDashboardComponent
-    },
-    {
-      title: 'Головна2',
-      icon: 'bookmark',
-      component: PaymentsDashboardComponent
     }
   ]
 };
