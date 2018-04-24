@@ -1,11 +1,13 @@
 <mat-card class="sp-payment-card">
-  <mat-card-title>
-    Новий платіж
-  </mat-card-title>
-  <div>
+  <div class="sp-payment-header">
+    <mat-card-title>
+      Новий платіж
+    </mat-card-title>
     <mat-divider></mat-divider>
+  </div>
 
-    <mat-card-content>
+  <perfect-scrollbar class="sp-payment-body">
+    <mat-card-content class="sp-payment-content">
       <mat-form-field>
         <input matInput
           placeholder="Дата виплати"
@@ -35,12 +37,14 @@
           placeholder="Призначення платежу"></textarea>
       </mat-form-field>
     </mat-card-content>
-  </div>
-  <div>
+  </perfect-scrollbar>
+
+  <div class="sp-payment-footer">
     <mat-divider></mat-divider>
 
-    <mat-card-actions>
-      <button mat-raised-button
+    <mat-card-actions class="sp-payment-actions">
+      <button class="sp-payment-save"
+        mat-raised-button
         color="primary">Зберегти
       </button>
       <button mat-raised-button>Відміна</button>

@@ -1,9 +1,28 @@
+@import "../../shared/styles/general.variables";
+
 :host {
   display: flex;
 }
 
 .sp-payment-card {
-  flex: 1 0 auto;
+  flex: 1 0 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sp-payment-header,
+.sp-payment-footer {
+  flex: 0 0;
+}
+
+.sp-payment-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+.sp-payment-content {
+  margin-bottom: 0;
+  padding-top: 15px;
 }
 
 .sp-payment-description {
@@ -11,9 +30,17 @@
 }
 
 .sp-payment-section {
-  margin: 2em 0;
+  margin: 1.5em 0;
 
   .sp-caption {
     margin: 0;
+  }
+}
+
+.sp-payment-actions {
+  margin: 1em 0 0;
+
+  .sp-payment-save {
+    margin-right: $input-inline-indent;
   }
 }
