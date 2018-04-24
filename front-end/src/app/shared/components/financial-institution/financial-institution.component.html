@@ -1,14 +1,20 @@
-<mat-form-field class="sp-financial-name">
-  <input matInput
-    placeholder="Назва">
-</mat-form-field>
+<form class="sp-financial-institution-container"
+  [formGroup]="form">
+  <mat-form-field class="sp-financial-mfo">
+    <input matInput
+      formControlName="mfo"
+      placeholder="Код МФО">
+  </mat-form-field>
 
-<mat-form-field class="sp-financial-mfo">
-  <input matInput
-    placeholder="Код МФО">
-</mat-form-field>
+  <mat-form-field class="sp-financial-edrpou">
+    <input matInput
+      formControlName="edrpou"
+      placeholder="Код ЄДРПОУ">
+  </mat-form-field>
 
-<mat-form-field class="sp-financial-edrpo">
-  <input matInput
-    placeholder="Код ЄДРПО">
-</mat-form-field>
+  <mat-form-field class="sp-financial-name">
+    <input matInput
+      formControlName="name"
+      placeholder="Назва">
+  </mat-form-field>
+</form>

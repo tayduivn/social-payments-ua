@@ -1,0 +1,8 @@
+#import PersonAddress from './person-address.type.graphql'
+
+type Person {
+  fullName: String!
+  passportNumber: String!
+  identityCode: String
+  address: PersonAddress
+}

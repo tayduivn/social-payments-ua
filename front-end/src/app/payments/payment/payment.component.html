@@ -1,4 +1,5 @@
-<mat-card class="sp-payment-card">
+<mat-card class="sp-payment-card"
+  [formGroup]="form">
   <div class="sp-payment-header">
     <mat-card-title>
       Новий платіж
@@ -10,6 +11,8 @@
     <mat-card-content class="sp-payment-content">
       <mat-form-field>
         <input matInput
+          name="date"
+          formControlName="date"
           placeholder="Дата виплати"
           [matDatepicker]="paymentDatepicker">
         <mat-datepicker-toggle matSuffix
@@ -27,15 +30,30 @@
         <sp-financial-institution></sp-financial-institution>
       </div>
 
-      <mat-form-field>
-        <input matInput
-          placeholder="Сума платежу">
-      </mat-form-field>
+      <div class="sp-payment-details">
+        <div class="sp-payment-num-sum-block">
+          <mat-form-field>
+            <input matInput
+              formControlName="accountNumber"
+              placeholder="Номер особового рахунку">
+          </mat-form-field>
 
-      <mat-form-field class="sp-payment-description">
-        <textarea matInput
-          placeholder="Призначення платежу"></textarea>
-      </mat-form-field>
+          <mat-form-field>
+            <input matInput
+              type="number"
+              formControlName="sum"
+              placeholder="Сума платежу">
+          </mat-form-field>
+        </div>
+
+        <div class="sp-payment-description-block">
+          <mat-form-field class="sp-payment-description">
+          <textarea matInput
+            formControlName="description"
+            placeholder="Призначення платежу"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
     </mat-card-content>
   </perfect-scrollbar>
 
@@ -45,7 +63,8 @@
     <mat-card-actions class="sp-payment-actions">
       <button class="sp-payment-save"
         mat-raised-button
-        color="primary">Зберегти
+        color="primary"
+        (click)="onSaveClick()">Зберегти
       </button>
       <button mat-raised-button>Відміна</button>
     </mat-card-actions>

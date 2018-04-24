@@ -41,6 +41,7 @@ export class UserDialogComponent implements OnInit {
 
     this.userId = this.user ? this.user.id : null;
     this.showResetPasswordButton = !!this.user;
+
   }
 
   public saveUserChanges(): UserDialogModel {

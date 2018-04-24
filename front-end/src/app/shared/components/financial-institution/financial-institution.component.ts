@@ -1,4 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup
+} from '@angular/forms';
 
 @Component({
   selector: 'sp-financial-institution',
@@ -6,10 +13,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./financial-institution.component.scss']
 })
 export class FinancialInstitutionComponent implements OnInit {
+  public form: FormGroup;
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor(private fb: FormBuilder) {
+    this.createForm();
   }
 
+  public ngOnInit() {
+  }
+
+  private createForm() {
+    this.form = this.fb.group({
+      name: '',
+      mfo: '',
+      edrpou: ''
+    });
+  }
 }

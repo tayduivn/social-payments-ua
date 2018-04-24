@@ -76,7 +76,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   public removeUser() {
-    // at the moment when usersService.removeUser will ask for id it not exists (clicked outside action already removed it)
+    // remember currently selected user's id since
+    // at the moment when usersService.removeUser (after user confirms dialog prompt) will ask for id
+    // it not exists (clicked outside action already removed it)
     const userId = this.selectedUser.id;
 
     this.spDialogService.open({

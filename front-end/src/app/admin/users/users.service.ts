@@ -9,6 +9,7 @@ import 'rxjs/add/observable/of';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import { UserResponseModel } from '../../../../../api-contracts/user/user-response.model';
+import { FetchResult } from '../../../../../back-end/node_modules/apollo-link/lib';
 import { UserDialogModel } from './user-dialog/user-dialog.model';
 
 interface UserList {
@@ -44,7 +45,7 @@ export class UsersService {
   public submitUser(userInfo: UserDialogModel): Observable<UserResponseModel> {
     const userFields = Object.assign({password: userInfo.password}, userInfo.user);
 
-    return this.apollo.mutate({
+    return this.apollo.mutate<UserResponseModel>({
       mutation: gql(require('webpack-graphql-loader!./submit-user.graphql')),
       variables: {user: userFields},
       optimisticResponse: {
@@ -61,7 +62,10 @@ export class UsersService {
 
         UsersService.writeUsersStoreData(store, data);
       }
-    });
+    })
+    .pipe(
+      map((res: FetchResult<UserResponseModel>) => res.data.submitUser)
+    );
   }
 
   public removeUser(id: string): Observable<any> {

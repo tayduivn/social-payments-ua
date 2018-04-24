@@ -1,0 +1,12 @@
+#import FinancialInstitution from '../financial-institution/financial-institution.type.graphql'
+#import Person from '../person/person.type.graphql'
+
+type Payment {
+  id: ID!
+  date: DateTime!
+  sum: Float!
+  accountNumber: String!
+  description: String!
+  financialInstitution: FinancialInstitution!
+  person: Person!
+}

@@ -1,7 +1,27 @@
 @import "../../shared/styles/general.variables";
 
+$payment-section-indent: 1.2em;
+
 :host {
   display: flex;
+
+  ::ng-deep {
+    .sp-financial-institution-container {
+      display: flex;
+    }
+
+    .sp-financial-edrpou {
+      margin-right: $input-inline-indent;
+    }
+
+    .sp-financial-mfo, .sp-financial-edrpou {
+      flex: 0 0 auto;
+    }
+
+    .sp-financial-name {
+      flex: 1 0 0;
+    }
+  }
 }
 
 .sp-payment-card {
@@ -17,20 +37,39 @@
 
 .sp-payment-body {
   flex: 1 1 auto;
-  overflow-y: auto;
+  margin: 2px 0;
+  padding-right: 10px;
 }
 
 .sp-payment-content {
   margin-bottom: 0;
-  padding-top: 15px;
+  padding-top: $payment-section-indent;
+}
+
+.sp-payment-details {
+  display: flex;
+  padding-top: $payment-section-indent;
+}
+
+.sp-payment-num-sum-block {
+  display: flex;
+  flex-direction: column;
+  margin-right: $input-inline-indent;
+  flex: 0 0 auto;
+}
+
+.sp-payment-description-block {
+  flex: 1 1 0;
+  display: flex;
+  align-items: flex-end;
 }
 
 .sp-payment-description {
-  display: block;
+  width: 100%;
 }
 
 .sp-payment-section {
-  margin: 1.5em 0;
+  padding: $payment-section-indent 0;
 
   .sp-caption {
     margin: 0;

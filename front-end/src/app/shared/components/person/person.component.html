@@ -1,38 +1,49 @@
-<mat-form-field class="sp-person-name">
-  <input matInput
-    placeholder="Прізвище, ім'я, по батькові">
-</mat-form-field>
-
-<div class="sp-person-documents-info">
-  <mat-form-field class="sp-passport-info">
+<form class="sp-person-container"
+  [formGroup]="form">
+  <mat-form-field class="sp-person-full-name">
     <input matInput
-      placeholder="Серія та номер паспорта">
+      formControlName="fullName"
+      placeholder="Прізвище, ім'я, по батькові">
   </mat-form-field>
 
-  <mat-form-field class="sp-ident-kod">
-    <input matInput
-      placeholder="Ідентифікаційний код">
-  </mat-form-field>
-</div>
+  <div class="sp-person-documents-info">
+    <mat-form-field class="sp-passport-number">
+      <input matInput
+        formControlName="passportNumber"
+        placeholder="Серія та номер паспорта">
+    </mat-form-field>
 
-<div class="sp-address">
-  <mat-form-field class="sp-street">
-    <input matInput
-      placeholder="Вулиця">
-  </mat-form-field>
+    <mat-form-field class="sp-identity-code">
+      <input matInput
+        formControlName="identityCode"
+        placeholder="Ідентифікаційний код">
+    </mat-form-field>
+  </div>
 
-  <mat-form-field class="sp-house">
-    <input matInput
-      placeholder="Будинок">
-  </mat-form-field>
+  <div class="sp-address"
+    formGroupName="address">
+    <mat-form-field class="sp-street">
+      <input matInput
+        formControlName="street"
+        placeholder="Вулиця">
+    </mat-form-field>
 
-  <mat-form-field class="sp-house-section">
-    <input matInput
-      placeholder="Корпус">
-  </mat-form-field>
+    <mat-form-field class="sp-house">
+      <input matInput
+        formControlName="house"
+        placeholder="Будинок">
+    </mat-form-field>
 
-  <mat-form-field class="sp-apartment">
-    <input matInput
-      placeholder="Квартира">
-  </mat-form-field>
-</div>
+    <mat-form-field class="sp-house-section">
+      <input matInput
+        formControlName="houseSection"
+        placeholder="Корпус">
+    </mat-form-field>
+
+    <mat-form-field class="sp-apartment">
+      <input matInput
+        formControlName="apartment"
+        placeholder="Квартира">
+    </mat-form-field>
+  </div>
+</form>

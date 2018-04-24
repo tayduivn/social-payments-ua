@@ -1,0 +1,23 @@
+fragment PaymentFields on Payment {
+  id
+  date
+  sum
+  accountNumber
+  description
+  financialInstitution {
+    name
+    mfo
+    edrpou
+  }
+  person {
+    fullName
+    passportNumber
+    identityCode
+    address {
+      street
+      house
+      houseSection
+      apartment
+    }
+  }
+}
