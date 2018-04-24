@@ -5,3 +5,15 @@
 .sp-payment-card {
   flex: 1 0 auto;
 }
+
+.sp-payment-description {
+  display: block;
+}
+
+.sp-payment-section {
+  margin: 2em 0;
+
+  .sp-caption {
+    margin: 0;
+  }
+}

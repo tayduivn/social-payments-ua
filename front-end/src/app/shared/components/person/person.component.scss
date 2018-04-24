@@ -1,0 +1,21 @@
+@import "../../styles/general.variables";
+
+:host {
+  display: block;
+}
+
+.sp-person-name {
+  display: block;
+}
+
+.sp-passport-info {
+  margin-right: $input-inline-indent;
+}
+
+.sp-street {
+  display: block;
+}
+
+.sp-house, .sp-house-section {
+  margin-right: $input-inline-indent;
+}

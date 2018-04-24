@@ -1,3 +1,49 @@
 <mat-card class="sp-payment-card">
-  <mat-card-title>Новий платіж курва</mat-card-title>
+  <mat-card-title>
+    Новий платіж
+  </mat-card-title>
+  <div>
+    <mat-divider></mat-divider>
+
+    <mat-card-content>
+      <mat-form-field>
+        <input matInput
+          placeholder="Дата виплати"
+          [matDatepicker]="paymentDatepicker">
+        <mat-datepicker-toggle matSuffix
+          [for]="paymentDatepicker"></mat-datepicker-toggle>
+        <mat-datepicker #paymentDatepicker></mat-datepicker>
+      </mat-form-field>
+
+      <div class="sp-payment-section">
+        <h4 class="sp-caption">Одержувач</h4>
+        <sp-person></sp-person>
+      </div>
+
+      <div class="sp-payment-section">
+        <h4 class="sp-caption">Фінансова установа</h4>
+        <sp-financial-institution></sp-financial-institution>
+      </div>
+
+      <mat-form-field>
+        <input matInput
+          placeholder="Сума платежу">
+      </mat-form-field>
+
+      <mat-form-field class="sp-payment-description">
+        <textarea matInput
+          placeholder="Призначення платежу"></textarea>
+      </mat-form-field>
+    </mat-card-content>
+  </div>
+  <div>
+    <mat-divider></mat-divider>
+
+    <mat-card-actions>
+      <button mat-raised-button
+        color="primary">Зберегти
+      </button>
+      <button mat-raised-button>Відміна</button>
+    </mat-card-actions>
+  </div>
 </mat-card>

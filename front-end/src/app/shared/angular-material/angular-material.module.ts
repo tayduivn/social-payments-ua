@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import {
   MatCardModule,
+  MatDatepickerModule,
   MatDialogModule,
   MatDividerModule,
   MatIconModule,
@@ -10,6 +11,7 @@ import {
   MatTabsModule,
   MatToolbarModule
 } from '@angular/material';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
@@ -18,12 +20,14 @@ const importedExports = [
   MatButtonModule,
   MatCardModule,
   MatCheckboxModule,
+  MatDatepickerModule,
   MatDialogModule,
   MatDividerModule,
-  MatSidenavModule,
+  MatMomentDateModule,
   MatInputModule,
   MatIconModule,
   MatListModule,
+  MatSidenavModule,
   MatTableModule,
   MatTabsModule,
   MatToolbarModule

@@ -1,0 +1,13 @@
+@import "../../styles/general.variables";
+
+:host {
+  display: block;
+}
+
+.sp-financial-name {
+  display: block;
+}
+
+.sp-financial-mfo {
+  margin-right: $input-inline-indent;
+}

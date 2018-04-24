@@ -2,8 +2,9 @@
 
 :host {
   ::ng-deep .sp-tabbed-item-inserted {
-    width: calc(100% - 3px);
-    height: calc(100% - 3px);
+    width: calc(100% - 4px);
+    margin-left: 2px;
+    height: calc(100% - 2px);
   }
 }
 
