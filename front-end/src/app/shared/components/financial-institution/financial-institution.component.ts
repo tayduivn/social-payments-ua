@@ -15,6 +15,9 @@ import {
 export class FinancialInstitutionComponent implements OnInit {
   public form: FormGroup;
 
+  public readonly mfoMask = [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
+  public readonly edrpouMask = [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
+
   constructor(private fb: FormBuilder) {
     this.createForm();
   }

@@ -3,13 +3,15 @@
   <mat-form-field class="sp-financial-mfo">
     <input matInput
       formControlName="mfo"
-      placeholder="Код МФО">
+      placeholder="Код МФО"
+      [textMask]="{mask: mfoMask}">
   </mat-form-field>
 
   <mat-form-field class="sp-financial-edrpou">
     <input matInput
       formControlName="edrpou"
-      placeholder="Код ЄДРПОУ">
+      placeholder="Код ЄДРПОУ"
+      [textMask]="{mask: edrpouMask}">
   </mat-form-field>
 
   <mat-form-field class="sp-financial-name">

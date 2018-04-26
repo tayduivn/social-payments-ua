@@ -5,6 +5,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { AngularMaterialModule } from '../../shared/angular-material/angular-material.module';
 import { FinancialInstitutionModule } from '../../shared/components/financial-institution/financial-institution.module';
 import { PersonModule } from '../../shared/components/person/person.module';
+import { SharedModule } from '../../shared/shared.module';
 import { PaymentComponent } from './payment.component';
 
 @NgModule({
@@ -14,7 +15,8 @@ import { PaymentComponent } from './payment.component';
     FinancialInstitutionModule,
     PerfectScrollbarModule,
     PersonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   entryComponents: [PaymentComponent],
   declarations: [PaymentComponent]

@@ -10,13 +10,15 @@
     <mat-form-field class="sp-passport-number">
       <input matInput
         formControlName="passportNumber"
-        placeholder="Серія та номер паспорта">
+        placeholder="Серія та номер паспорта"
+        [textMask]="{mask: passportMask}">
     </mat-form-field>
 
     <mat-form-field class="sp-identity-code">
       <input matInput
         formControlName="identityCode"
-        placeholder="Ідентифікаційний код">
+        placeholder="Ідентифікаційний код"
+        [textMask]="{mask: identityCodeMask}">
     </mat-form-field>
   </div>
 

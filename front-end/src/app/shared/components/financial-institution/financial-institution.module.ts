@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TextMaskModule } from 'angular2-text-mask';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { FinancialInstitutionComponent } from './financial-institution.component';
 
@@ -8,7 +9,8 @@ import { FinancialInstitutionComponent } from './financial-institution.component
   imports: [
     AngularMaterialModule,
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TextMaskModule
   ],
   declarations: [FinancialInstitutionComponent],
   exports: [FinancialInstitutionComponent]
