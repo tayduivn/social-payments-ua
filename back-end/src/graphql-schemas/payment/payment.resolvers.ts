@@ -2,11 +2,9 @@ import { Types } from 'mongoose';
 import { PaymentModel } from '../../models/payment/payment.model';
 
 export const resolvers = {
-  // Query: {
-  //   users(): {then: () => Promise<UserResponseModel[]>} {
-  //     return UserModel.find();
-  //   }
-  // },
+  Query: {
+    payments: () => PaymentModel.find()
+  },
   Mutation: {
     submitPayment(obj: any, {payment}: any) {
       if (Types.ObjectId.isValid(payment.id)) {

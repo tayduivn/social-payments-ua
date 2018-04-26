@@ -1,10 +1,9 @@
 import {
-  Document,
   model,
   Schema
 } from 'mongoose';
 
-const paymentModel = new Schema({
+const paymentSchema = new Schema({
   date: {
     type: Date,
     required: [true, 'Дата платежу обов\'язкове поле']
@@ -58,11 +57,6 @@ const paymentModel = new Schema({
   }
 });
 
-export interface PaymentModel extends Document {
-  description: string;
-  sum: number;
-}
-
-export const PaymentModel = model<PaymentModel>('Payment', paymentModel);
+export const PaymentModel = model('Payment', paymentSchema);
 
 
