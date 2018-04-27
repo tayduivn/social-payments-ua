@@ -10,16 +10,17 @@ $payment-section-indent: 1.2em;
       display: flex;
     }
 
-    .sp-financial-edrpou {
-      margin-right: $input-inline-indent;
-    }
-
     .sp-financial-mfo, .sp-financial-edrpou {
+      margin-right: $input-inline-indent;
       flex: 0 0 auto;
     }
 
     .sp-financial-name {
       flex: 1 0 0;
+    }
+
+    .sp-financial-institution .sp-autocomplete-trigger {
+      bottom: 18px;
     }
   }
 }

@@ -12,7 +12,7 @@ import { UserResponseModel } from '../../../../../api-contracts/user/user-respon
 import { FetchResult } from '../../../../../back-end/node_modules/apollo-link/lib';
 import { UserDialogModel } from './user-dialog/user-dialog.model';
 
-interface UserList {
+interface Users {
   users: UserResponseModel[]
 }
 
@@ -23,7 +23,7 @@ export class UsersService {
   constructor(private apollo: Apollo) {}
 
   private static getUsersInStore(store: DataProxy) {
-    return store.readQuery<UserList>({query: UsersService.readAllUsersQuery});
+    return store.readQuery<Users>({query: UsersService.readAllUsersQuery});
   }
 
   private static writeUsersStoreData(store, data) {
@@ -31,14 +31,12 @@ export class UsersService {
   }
 
   public getUsers(): Observable<UserResponseModel[]> {
-    return this.apollo.watchQuery<UserList>({
+    return this.apollo.watchQuery<Users>({
       query: UsersService.readAllUsersQuery
     })
       .valueChanges
       .pipe(
-        map((r: ApolloQueryResult<UserList>) => {
-          return r.data.users;
-        })
+        map((r: ApolloQueryResult<Users>) => r.data.users)
       );
   }
 

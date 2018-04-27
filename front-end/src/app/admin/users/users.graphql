@@ -1,6 +1,6 @@
 #import './user-fields.fragment.graphql'
 
-query usersList {
+query users {
   users {
     ...UserFields
   }

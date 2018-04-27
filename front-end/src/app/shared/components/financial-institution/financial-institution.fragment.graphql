@@ -1,0 +1,5 @@
+fragment FinancialInstitutionFields on FinancialInstitution {
+  name
+  mfo
+  edrpou
+}

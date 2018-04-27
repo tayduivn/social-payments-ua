@@ -1,3 +1,5 @@
+#import '../../shared/components/financial-institution/financial-institution.fragment.graphql'
+
 fragment PaymentFields on Payment {
   id
   date
@@ -5,9 +7,7 @@ fragment PaymentFields on Payment {
   accountNumber
   description
   financialInstitution {
-    name
-    mfo
-    edrpou
+    ...FinancialInstitutionFields
   }
   person {
     fullName
