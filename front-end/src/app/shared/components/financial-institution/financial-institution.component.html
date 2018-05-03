@@ -3,16 +3,16 @@
   [formGroup]="form">
   <mat-form-field class="sp-financial-field sp-financial-mfo">
     <input matInput
+      type="text"
       formControlName="mfo"
       placeholder="Код МФО"
-      [textMask]="{mask: mfoMask}">
+      mask="000000">
   </mat-form-field>
 
   <mat-form-field class="sp-financial-field sp-financial-edrpou">
     <input matInput
       formControlName="edrpou"
-      placeholder="Код ЄДРПОУ"
-      [textMask]="{mask: edrpouMask}">
+      placeholder="Код ЄДРПОУ">
   </mat-form-field>
 
   <mat-form-field class="sp-financial-field sp-financial-name">
@@ -25,7 +25,7 @@
     [matAutocomplete]>
   <mat-autocomplete>
     <perfect-scrollbar [config]="{minScrollbarLength: 60}" >
-      <mat-option *ngFor="let item of financialInstitutions">
+      <mat-option *ngFor="let item of financialInstitutionsFiltered | async">
         {{item.mfo}} | {{item.edrpou}} | {{item.name}}
       </mat-option>
     </perfect-scrollbar>

@@ -7,7 +7,6 @@ import {
   FormGroup
 } from '@angular/forms';
 import { lettersUA_CharsDiapason } from '../../constants/char-diapason-ua';
-import { conformToMask } from 'angular2-text-mask';
 
 const passportNumberLetter = new RegExp(`[a-zA-Z${lettersUA_CharsDiapason}]`);
 

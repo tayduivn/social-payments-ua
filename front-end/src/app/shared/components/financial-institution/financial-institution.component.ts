@@ -1,12 +1,12 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   OnDestroy,
   OnInit,
-  ViewChild,
-  ViewContainerRef
+  ViewChild
 } from '@angular/core';
 import {
   FormBuilder,
@@ -16,6 +16,12 @@ import {
   MatAutocomplete,
   MatAutocompleteTrigger
 } from '@angular/material';
+import { Observable } from 'rxjs/Observable';
+import {
+  filter,
+  map,
+  tap
+} from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
 import { FinancialInstitutionModel } from './financial-institution.model';
 import { FinancialInstitutionService } from './financial-institution.service';
@@ -23,7 +29,8 @@ import { FinancialInstitutionService } from './financial-institution.service';
 @Component({
   selector: 'sp-financial-institution',
   templateUrl: './financial-institution.component.html',
-  styleUrls: ['./financial-institution.component.scss']
+  styleUrls: ['./financial-institution.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FinancialInstitutionComponent implements OnInit, AfterViewInit, OnDestroy {
   public form: FormGroup;
@@ -31,7 +38,9 @@ export class FinancialInstitutionComponent implements OnInit, AfterViewInit, OnD
   public readonly mfoMask = [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
   public readonly edrpouMask = [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
 
-  public financialInstitutions: FinancialInstitutionModel[];
+  public financialInstitutionsFiltered: Observable<FinancialInstitutionModel[]>;
+
+  private financialInstitutions: FinancialInstitutionModel[];
 
   private componentSubscriptions: Subscription;
 
@@ -52,9 +61,9 @@ export class FinancialInstitutionComponent implements OnInit, AfterViewInit, OnD
   public ngOnInit() {
     this.componentSubscriptions = this.financialInstitutionService.getList().subscribe((res: FinancialInstitutionModel[]) => {
       this.financialInstitutions = res;
-      this.autocompleteTrigger.openPanel();
+      // this.autocompleteTrigger.openPanel();
       // this.cdRef.detectChanges();
-    })
+    });
   }
 
   public ngAfterViewInit() {
@@ -74,5 +83,18 @@ export class FinancialInstitutionComponent implements OnInit, AfterViewInit, OnD
       mfo: '',
       edrpou: ''
     });
+
+    this.financialInstitutionsFiltered = this.form.valueChanges
+      .pipe(
+        filter((formValues: FinancialInstitutionModel) => {
+          console.log('!!!', formValues);
+
+          return true;
+        }),
+        map(() => this.financialInstitutions),
+        tap(() => {
+          this.autocompleteTrigger.openPanel();
+        })
+      );
   }
 }
