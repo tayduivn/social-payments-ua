@@ -16,6 +16,7 @@ import {
 } from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
 import { UserResponseModel } from '../../../../../api-contracts/user/user-response.model';
+import { ComponentBase } from '../../shared/components/common/component-base';
 import { SpDialogType } from '../../shared/components/sp-dialog/sp-dialog-type.enum';
 import { SpDialogService } from '../../shared/components/sp-dialog/sp-dialog.service';
 import { UserDialogComponent } from './user-dialog/user-dialog.component';
@@ -28,29 +29,25 @@ import { UsersService } from './users.service';
   styleUrls: ['./users.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UsersComponent implements OnInit, OnDestroy {
+export class UsersComponent extends ComponentBase implements OnInit {
   public displayedColumns = ['login', 'fullName', 'admin'];
   public usersDataSource = new MatTableDataSource();
   public selectedUser: UserResponseModel = null;
-
-  private querySubscription: Subscription;
 
   constructor(
     private cdRef: ChangeDetectorRef,
     private dialog: MatDialog,
     private spDialogService: SpDialogService,
-    private usersService: UsersService) {}
+    private usersService: UsersService) {
+      super();
+  }
 
   public ngOnInit() {
-    this.querySubscription = this.usersService.getUsers().subscribe((users: UserResponseModel[]) => {
+    this.componentSubscriptions = this.usersService.getUsers().subscribe((users: UserResponseModel[]) => {
       console.log('users collection updated');
       this.usersDataSource.data = _.sortBy(users, ['login']);
       this.cdRef.markForCheck();
     });
-  }
-
-  public ngOnDestroy() {
-    this.querySubscription && this.querySubscription.unsubscribe();
   }
 
   public usersTrackFn(index: number, user: UserResponseModel): string {
@@ -65,7 +62,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     dialog.afterClosed().subscribe((userInfo: UserDialogModel) => {
       if (!userInfo) { return; }
 
-      this.querySubscription.add(this.usersService.submitUser(userInfo).subscribe(() => {
+      this.componentSubscriptions.add(this.usersService.submitUser(userInfo).subscribe(() => {
         console.log('user submitted');
       }));
     });
@@ -87,7 +84,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     }).pipe(
       filter((confirmed: boolean) => confirmed),
       map(() => {
-        this.querySubscription.add(this.usersService.removeUser(userId).subscribe());
+        this.componentSubscriptions.add(this.usersService.removeUser(userId).subscribe());
       })
     ).subscribe();
   }

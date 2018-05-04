@@ -29,7 +29,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
 
   @ViewChild(PersonComponent)
   private personComponent: PersonComponent;
-
+  private a: any = {};
   constructor(private fb: FormBuilder, private paymentService: PaymentService) {
     this.createForm();
   }
@@ -44,7 +44,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
   }
 
   public onSaveClick() {
-    this.paymentService.submitPayment(this.form.value).subscribe((e) => {
+    this.a = this.paymentService.submitPayment(this.form.value).subscribe((e) => {
       console.log('payment submitted result', e);
     });
   }

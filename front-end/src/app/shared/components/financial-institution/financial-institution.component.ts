@@ -26,6 +26,7 @@ import {
   tap
 } from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
+import { ComponentBase } from '../common/component-base';
 import { FinancialInstitutionModel } from './financial-institution.model';
 import { FinancialInstitutionService } from './financial-institution.service';
 import 'rxjs/add/operator/finally';
@@ -36,19 +37,14 @@ import 'rxjs/add/operator/finally';
   styleUrls: ['./financial-institution.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FinancialInstitutionComponent implements OnInit, AfterViewInit, OnDestroy {
+export class FinancialInstitutionComponent extends ComponentBase implements OnInit, AfterViewInit {
   public form: FormGroup;
-
-  public readonly mfoMask = [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
-  public readonly edrpouMask = [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
 
   public financialInstitutionsFiltered: Observable<FinancialInstitutionModel[]>;
 
   public clearButtonDisabled: boolean = true;
 
   private financialInstitutions: FinancialInstitutionModel[];
-
-  private componentSubscriptions: Subscription;
 
   @ViewChild(MatAutocomplete) private autocomplete: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) private autocompleteTrigger: MatAutocompleteTrigger;
@@ -61,6 +57,7 @@ export class FinancialInstitutionComponent implements OnInit, AfterViewInit, OnD
     private cdRef: ChangeDetectorRef,
     private fb: FormBuilder,
     private financialInstitutionService: FinancialInstitutionService) {
+      super();
       this.createForm();
   }
 
@@ -73,12 +70,6 @@ export class FinancialInstitutionComponent implements OnInit, AfterViewInit, OnD
   public ngAfterViewInit() {
     this.autocomplete.panel = this.autocompleteContainer;
     this.autocompleteTrigger.autocomplete = this.autocomplete;
-  }
-
-  public ngOnDestroy() {
-    if (this.componentSubscriptions) {
-      this.componentSubscriptions.unsubscribe();
-    }
   }
 
   public onAutocompleteItemSelected(selectedItem: MatAutocompleteSelectedEvent) {
@@ -109,7 +100,7 @@ export class FinancialInstitutionComponent implements OnInit, AfterViewInit, OnD
         }),
         filter((filter: FinancialInstitutionModel) => {
           // if all fields are clear and button clear is disabled - stop process
-          const stopProcessing = Object.keys(filter).every(key => !filter[key]);
+          const stopProcessing = Object.values(filter).every(field => !field);
           this.clearButtonDisabled = stopProcessing;
 
           if (stopProcessing) {
@@ -125,8 +116,7 @@ export class FinancialInstitutionComponent implements OnInit, AfterViewInit, OnD
             });
           }));
         }),
-        tap((a) => {
-          // debugger;
+        tap(() => {
           if (!this.autocomplete.isOpen) {
             this.autocompleteTrigger.openPanel();
           }
