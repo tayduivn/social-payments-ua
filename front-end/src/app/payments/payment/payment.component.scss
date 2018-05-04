@@ -8,11 +8,15 @@ $payment-section-indent: 1.2em;
   ::ng-deep {
     .sp-financial-institution-container {
       display: flex;
-    }
 
-    .sp-financial-mfo, .sp-financial-edrpou {
-      margin-right: $input-inline-indent;
-      flex: 0 0 auto;
+      .sp-financial-mfo,
+      .sp-financial-edrpou,
+      .sp-financial-fields-reset {
+        margin-right: $input-inline-indent;
+        flex: 0 0 auto;
+        align-items: center;
+        display: flex;
+      }
     }
 
     .sp-financial-name {
@@ -20,7 +24,33 @@ $payment-section-indent: 1.2em;
     }
 
     .sp-financial-institution .sp-autocomplete-trigger {
+      $left-indent: 56px + $input-inline-indent;
+
       bottom: 18px;
+      left: $left-indent;
+      width: calc(100% - #{$left-indent});
+    }
+  }
+}
+
+::ng-deep {
+  .sp-financial-institution-autocomplete-panel {
+    .sp-financial-institution-option {
+      padding: 0 5px;
+    }
+
+    .mat-option-text {
+      display: flex;
+
+      .sp-financial-institution-autocomplete-item {
+        display: block;
+        flex: 0 0 auto;
+        width: 180px + $input-inline-indent;
+
+        &.sp-fi-name {
+          flex: 1 0 0;
+        }
+      }
     }
   }
 }

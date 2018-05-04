@@ -1,32 +1,51 @@
 <form class="sp-financial-institution-container"
   #autocompleteContainer
   [formGroup]="form">
+
+  <div class="sp-financial-field sp-financial-fields-reset">
+    <button mat-button
+      [disabled]="clearButtonDisabled"
+      (click)="onResetClick()">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+
   <mat-form-field class="sp-financial-field sp-financial-mfo">
     <input matInput
+      autocomplete="off"
       type="text"
       formControlName="mfo"
       placeholder="Код МФО"
-      mask="000000">
+      spInputFilter="[0-9]">
   </mat-form-field>
 
   <mat-form-field class="sp-financial-field sp-financial-edrpou">
     <input matInput
+      autocomplete="off"
       formControlName="edrpou"
-      placeholder="Код ЄДРПОУ">
+      placeholder="Код ЄДРПОУ"
+      spInputFilter="[0-9]">
   </mat-form-field>
 
   <mat-form-field class="sp-financial-field sp-financial-name">
     <input matInput
+      autocomplete="off"
       formControlName="name"
       placeholder="Назва">
   </mat-form-field>
 
-  <input class="sp-autocomplete-trigger"
-    [matAutocomplete]>
-  <mat-autocomplete>
+  <input class="sp-autocomplete-trigger" [matAutocomplete]>
+
+  <mat-autocomplete class="sp-financial-institution-autocomplete-panel"
+    (optionSelected)="onAutocompleteItemSelected($event)">
     <perfect-scrollbar [config]="{minScrollbarLength: 60}" >
-      <mat-option *ngFor="let item of financialInstitutionsFiltered | async">
-        {{item.mfo}} | {{item.edrpou}} | {{item.name}}
+      <mat-option *ngFor="let item of financialInstitutionsFiltered | async"
+        class="sp-financial-institution-option"
+        [value]="item">
+
+        <span class="sp-financial-institution-autocomplete-item sp-fi-mfo">{{item.mfo}}</span>
+        <span class="sp-financial-institution-autocomplete-item sp-fi-edrpou">{{item.edrpou}}</span>
+        <span class="sp-financial-institution-autocomplete-item sp-fi-name">{{item.name}}</span>
       </mat-option>
     </perfect-scrollbar>
   </mat-autocomplete>

@@ -14,10 +14,13 @@ import {
 } from '@angular/forms';
 import {
   MatAutocomplete,
+  MatAutocompleteSelectedEvent,
   MatAutocompleteTrigger
 } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import {
+  debounceTime,
+  distinctUntilChanged,
   filter,
   map,
   tap
@@ -25,6 +28,7 @@ import {
 import { Subscription } from 'rxjs/Subscription';
 import { FinancialInstitutionModel } from './financial-institution.model';
 import { FinancialInstitutionService } from './financial-institution.service';
+import 'rxjs/add/operator/finally';
 
 @Component({
   selector: 'sp-financial-institution',
@@ -39,6 +43,8 @@ export class FinancialInstitutionComponent implements OnInit, AfterViewInit, OnD
   public readonly edrpouMask = [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
 
   public financialInstitutionsFiltered: Observable<FinancialInstitutionModel[]>;
+
+  public clearButtonDisabled: boolean = true;
 
   private financialInstitutions: FinancialInstitutionModel[];
 
@@ -61,8 +67,6 @@ export class FinancialInstitutionComponent implements OnInit, AfterViewInit, OnD
   public ngOnInit() {
     this.componentSubscriptions = this.financialInstitutionService.getList().subscribe((res: FinancialInstitutionModel[]) => {
       this.financialInstitutions = res;
-      // this.autocompleteTrigger.openPanel();
-      // this.cdRef.detectChanges();
     });
   }
 
@@ -77,6 +81,15 @@ export class FinancialInstitutionComponent implements OnInit, AfterViewInit, OnD
     }
   }
 
+  public onAutocompleteItemSelected(selectedItem: MatAutocompleteSelectedEvent) {
+    this.form.patchValue(selectedItem.option.value, {emitEvent: false});
+  }
+
+  public onResetClick() {
+    this.form.reset();
+    this.clearButtonDisabled = true;
+  }
+
   private createForm() {
     this.form = this.fb.group({
       name: '',
@@ -84,16 +97,39 @@ export class FinancialInstitutionComponent implements OnInit, AfterViewInit, OnD
       edrpou: ''
     });
 
+    this.initAutocompleteFiltering();
+  }
+
+  private initAutocompleteFiltering() {
     this.financialInstitutionsFiltered = this.form.valueChanges
       .pipe(
-        filter((formValues: FinancialInstitutionModel) => {
-          console.log('!!!', formValues);
-
-          return true;
+        debounceTime(300),
+        distinctUntilChanged((prev, curr) => {
+          return Object.keys(prev).every(key => prev[key] === curr[key]);
         }),
-        map(() => this.financialInstitutions),
-        tap(() => {
-          this.autocompleteTrigger.openPanel();
+        filter((filter: FinancialInstitutionModel) => {
+          // if all fields are clear and button clear is disabled - stop process
+          const stopProcessing = Object.keys(filter).every(key => !filter[key]);
+          this.clearButtonDisabled = stopProcessing;
+
+          if (stopProcessing) {
+            this.autocompleteTrigger.closePanel();
+          }
+
+          return !stopProcessing;
+        }),
+        map((filter: FinancialInstitutionModel) => {
+          return (this.financialInstitutions.filter((listItem: FinancialInstitutionModel) => {
+            return Object.keys(filter).every((key) => {
+              return listItem[key] && filter[key] ? (listItem[key]).toLowerCase().includes(filter[key].toLowerCase()) : true;
+            });
+          }));
+        }),
+        tap((a) => {
+          // debugger;
+          if (!this.autocomplete.isOpen) {
+            this.autocompleteTrigger.openPanel();
+          }
         })
       );
   }
