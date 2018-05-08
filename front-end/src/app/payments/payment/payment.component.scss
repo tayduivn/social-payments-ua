@@ -79,7 +79,6 @@ $payment-section-indent: 1.2em;
 
 .sp-payment-details {
   display: flex;
-  padding-top: $payment-section-indent;
 }
 
 .sp-payment-num-sum-block {
@@ -101,6 +100,10 @@ $payment-section-indent: 1.2em;
 
 .sp-payment-section {
   padding: $payment-section-indent 0;
+
+  &.sp-financial-institution {
+    padding-bottom: 0;
+  }
 
   .sp-caption {
     margin: 0;

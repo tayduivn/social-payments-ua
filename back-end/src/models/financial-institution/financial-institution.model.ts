@@ -3,8 +3,11 @@ import {
   Schema
 } from 'mongoose';
 
-const financialInstitutionSchema = new Schema({
-  name: String,
+export const financialInstitutionSchemaFields = {
+  name: {
+    type: String,
+    required: [true, 'Ім\'я фінансової установи обов\'язкове поле']
+  },
   mfo: {
     type: String,
     required: [true, 'МФО обов\'язкове поле']
@@ -13,10 +16,10 @@ const financialInstitutionSchema = new Schema({
     type: String,
     required: [true, 'Код ЄДРПОУ обов\'язкове поле']
   }
-});
+};
 
 export const FinancialInstitutionModel = model(
   'FinancialInstitution',
-  financialInstitutionSchema,
+  new Schema(financialInstitutionSchemaFields),
   'financial_institutions'
 );

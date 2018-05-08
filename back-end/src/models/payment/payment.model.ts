@@ -2,6 +2,9 @@ import {
   model,
   Schema
 } from 'mongoose';
+import { financialInstitutionSchemaFields } from '../financial-institution/financial-institution.model';
+import { personSchemaFields } from '../person/person.model';
+import { addPaymentMiddleware } from './payment.model.middleware';
 
 const paymentSchema = new Schema({
   date: {
@@ -18,45 +21,10 @@ const paymentSchema = new Schema({
     type: String,
     required: [true, 'Призначення платежу обов\'язкове поле']
   },
-  financialInstitution: {
-    name: {
-      type: String,
-      required: [true, 'Ім\'я фінансової установи обов\'язкове поле']
-    },
-    mfo: {
-      type: String,
-      required: [true, 'МФО обов\'язкове поле']
-    },
-    edrpou: {
-      type: String,
-      required: [true, 'Код ЄДРПОУ обов\'язкове поле']
-    }
-  },
-  person: {
-    fullName: {
-      type: String,
-      required: [true, 'Прізвище, ім\'я, по батькові одержувача обов\'язкове поле']
-    },
-    passportNumber: {
-      type: String,
-      required: [true, 'Серія та номер паспорта обов\'язкове поле']
-    },
-    identityCode: String,
-    address: {
-      street: {
-        type: String,
-        required: [true, 'Вулиця обов\'язкове поле']
-      },
-      house: {
-        type: String,
-        required: [true, 'Номер будинку обов\'язкове поле']
-      },
-      houseSection: String,
-      apartment: String
-    }
-  }
+  financialInstitution: financialInstitutionSchemaFields,
+  person: personSchemaFields
 });
 
-export const PaymentModel = model('Payment', paymentSchema);
+export const PaymentModel = model('Payment', addPaymentMiddleware(paymentSchema));
 
 
