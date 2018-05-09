@@ -6,8 +6,8 @@ import {
 import { Router } from '@angular/router';
 import { LoginResponse } from '../../../../api-contracts/login-response';
 import { WINDOW } from '../core/window';
-import { SpDialogType } from '../shared/components/sp-dialog/sp-dialog-type.enum';
-import { SpDialogService } from '../shared/components/sp-dialog/sp-dialog.service';
+import { SpDialogType } from '../shared/components/dialog/sp-dialog-type.enum';
+import { SpDialogService } from '../shared/components/dialog/sp-dialog.service';
 import { LoginService } from './login.service';
 
 @Component({

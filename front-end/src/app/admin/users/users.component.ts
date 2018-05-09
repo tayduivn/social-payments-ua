@@ -16,9 +16,9 @@ import {
 } from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
 import { UserResponseModel } from '../../../../../api-contracts/user/user-response.model';
-import { ComponentBase } from '../../shared/components/common/component-base';
-import { SpDialogType } from '../../shared/components/sp-dialog/sp-dialog-type.enum';
-import { SpDialogService } from '../../shared/components/sp-dialog/sp-dialog.service';
+import { UnsubscribableComponent } from '../../shared/components/common/unsubscribable-component';
+import { SpDialogType } from '../../shared/components/dialog/sp-dialog-type.enum';
+import { SpDialogService } from '../../shared/components/dialog/sp-dialog.service';
 import { UserDialogComponent } from './user-dialog/user-dialog.component';
 import { UserDialogModel } from './user-dialog/user-dialog.model';
 import { UsersService } from './users.service';
@@ -29,7 +29,7 @@ import { UsersService } from './users.service';
   styleUrls: ['./users.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UsersComponent extends ComponentBase implements OnInit {
+export class UsersComponent extends UnsubscribableComponent implements OnInit {
   public displayedColumns = ['login', 'fullName', 'admin'];
   public usersDataSource = new MatTableDataSource();
   public selectedUser: UserResponseModel = null;

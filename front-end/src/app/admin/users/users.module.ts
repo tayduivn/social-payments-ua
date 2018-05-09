@@ -7,7 +7,7 @@ import {InputFilterDirective} from '../../shared/directives/input-filter/input-f
 import {UserDialogComponent} from './user-dialog/user-dialog.component';
 import {UsersComponent} from './users.component';
 import {UsersService} from './users.service';
-import {SpDialogModule} from '../../shared/components/sp-dialog/sp-dialog.module';
+import {SpDialogModule} from '../../shared/components/dialog/sp-dialog.module';
 
 @NgModule({
   imports: [

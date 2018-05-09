@@ -3,8 +3,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
-  OnDestroy,
   OnInit,
   ViewChild
 } from '@angular/core';
@@ -17,6 +15,7 @@ import {
   MatAutocompleteSelectedEvent,
   MatAutocompleteTrigger
 } from '@angular/material';
+import 'rxjs/add/operator/finally';
 import { Observable } from 'rxjs/Observable';
 import {
   debounceTime,
@@ -25,11 +24,9 @@ import {
   map,
   tap
 } from 'rxjs/operators';
-import { Subscription } from 'rxjs/Subscription';
-import { ComponentBase } from '../common/component-base';
+import { UnsubscribableComponent } from '../common/unsubscribable-component';
 import { FinancialInstitutionModel } from './financial-institution.model';
 import { FinancialInstitutionService } from './financial-institution.service';
-import 'rxjs/add/operator/finally';
 
 @Component({
   selector: 'sp-financial-institution',
@@ -37,7 +34,7 @@ import 'rxjs/add/operator/finally';
   styleUrls: ['./financial-institution.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FinancialInstitutionComponent extends ComponentBase implements OnInit, AfterViewInit {
+export class FinancialInstitutionComponent extends UnsubscribableComponent implements OnInit, AfterViewInit {
   public form: FormGroup;
 
   public financialInstitutionsFiltered: Observable<FinancialInstitutionModel[]>;
@@ -48,10 +45,6 @@ export class FinancialInstitutionComponent extends ComponentBase implements OnIn
 
   @ViewChild(MatAutocomplete) private autocomplete: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) private autocompleteTrigger: MatAutocompleteTrigger;
-
-  @ViewChild('autocompleteContainer', {
-    read: ElementRef
-  }) private autocompleteContainer: ElementRef;
 
   constructor(
     private cdRef: ChangeDetectorRef,
@@ -68,7 +61,6 @@ export class FinancialInstitutionComponent extends ComponentBase implements OnIn
   }
 
   public ngAfterViewInit() {
-    this.autocomplete.panel = this.autocompleteContainer;
     this.autocompleteTrigger.autocomplete = this.autocomplete;
   }
 
@@ -106,6 +98,7 @@ export class FinancialInstitutionComponent extends ComponentBase implements OnIn
 
           if (stopProcessing) {
             this.autocompleteTrigger.closePanel();
+            this.cdRef.markForCheck();
           }
 
           return !stopProcessing;

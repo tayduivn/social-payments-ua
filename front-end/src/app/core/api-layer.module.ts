@@ -9,9 +9,9 @@ import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { setContext } from 'apollo-link-context';
 import { onError } from 'apollo-link-error';
-import { SpDialogType } from '../shared/components/sp-dialog/sp-dialog-type.enum';
-import { SpDialogModule } from '../shared/components/sp-dialog/sp-dialog.module';
-import { SpDialogService } from '../shared/components/sp-dialog/sp-dialog.service';
+import { SpDialogType } from '../shared/components/dialog/sp-dialog-type.enum';
+import { SpDialogModule } from '../shared/components/dialog/sp-dialog.module';
+import { SpDialogService } from '../shared/components/dialog/sp-dialog.service';
 import { AuthService } from './auth.service';
 
 @NgModule({
