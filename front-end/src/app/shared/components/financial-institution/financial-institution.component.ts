@@ -24,7 +24,7 @@ import {
   map,
   tap
 } from 'rxjs/operators';
-import { UnsubscribableComponent } from '../common/unsubscribable-component';
+import { MultifieldAutocompleteComponent } from '../common/multifield-autocomplete/multifield-autocomplete.component';
 import { FinancialInstitutionModel } from './financial-institution.model';
 import { FinancialInstitutionService } from './financial-institution.service';
 
@@ -34,87 +34,46 @@ import { FinancialInstitutionService } from './financial-institution.service';
   styleUrls: ['./financial-institution.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FinancialInstitutionComponent extends UnsubscribableComponent implements OnInit, AfterViewInit {
-  public form: FormGroup;
-
+export class FinancialInstitutionComponent extends MultifieldAutocompleteComponent implements OnInit, AfterViewInit {
   public financialInstitutionsFiltered: Observable<FinancialInstitutionModel[]>;
-
-  public clearButtonDisabled: boolean = true;
 
   private financialInstitutions: FinancialInstitutionModel[];
 
-  @ViewChild(MatAutocomplete) private autocomplete: MatAutocomplete;
-  @ViewChild(MatAutocompleteTrigger) private autocompleteTrigger: MatAutocompleteTrigger;
-
   constructor(
-    private cdRef: ChangeDetectorRef,
-    private fb: FormBuilder,
+    cdRef: ChangeDetectorRef,
+    fb: FormBuilder,
     private financialInstitutionService: FinancialInstitutionService) {
-      super();
-      this.createForm();
+      super(FinancialInstitutionComponent.createForm(fb), cdRef);
   }
 
   public ngOnInit() {
     this.componentSubscriptions = this.financialInstitutionService.getList().subscribe((res: FinancialInstitutionModel[]) => {
       this.financialInstitutions = res;
     });
+
+    this.initFiltering();
   }
 
-  public ngAfterViewInit() {
-    this.autocompleteTrigger.autocomplete = this.autocomplete;
+  private initFiltering() {
+    this.financialInstitutionsFiltered = this.form.valueChanges
+      .pipe(this.autocompleteFiltering.bind(this))
+      .pipe(map(this.financialInstitutionsFilter.bind(this)));
   }
 
-  public onAutocompleteItemSelected(selectedItem: MatAutocompleteSelectedEvent) {
-    this.form.patchValue(selectedItem.option.value, {emitEvent: false});
+  private financialInstitutionsFilter(filter: FinancialInstitutionModel) {
+    return this.financialInstitutions.filter((listItem: FinancialInstitutionModel) => {
+      return Object.keys(filter).every((key) => {
+        return listItem[key] && filter[key] ? (listItem[key]).toLowerCase().includes(filter[key].toLowerCase()) : true;
+      });
+    });
   }
 
-  public onResetClick() {
-    this.form.reset();
-    this.clearButtonDisabled = true;
-  }
-
-  private createForm() {
-    this.form = this.fb.group({
+  private static createForm(fb: FormBuilder) {
+    return fb.group({
       id: null,
       name: '',
       mfo: '',
       edrpou: ''
     });
-
-    this.initAutocompleteFiltering();
-  }
-
-  private initAutocompleteFiltering() {
-    this.financialInstitutionsFiltered = this.form.valueChanges
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged((prev, curr) => {
-          return Object.keys(prev).every(key => prev[key] === curr[key]);
-        }),
-        filter((filter: FinancialInstitutionModel) => {
-          // if all fields are clear and button clear is disabled - stop process
-          const stopProcessing = Object.values(filter).every(field => !field);
-          this.clearButtonDisabled = stopProcessing;
-
-          if (stopProcessing) {
-            this.autocompleteTrigger.closePanel();
-            this.cdRef.markForCheck();
-          }
-
-          return !stopProcessing;
-        }),
-        map((filter: FinancialInstitutionModel) => {
-          return (this.financialInstitutions.filter((listItem: FinancialInstitutionModel) => {
-            return Object.keys(filter).every((key) => {
-              return listItem[key] && filter[key] ? (listItem[key]).toLowerCase().includes(filter[key].toLowerCase()) : true;
-            });
-          }));
-        }),
-        tap(() => {
-          if (!this.autocomplete.isOpen) {
-            this.autocompleteTrigger.openPanel();
-          }
-        })
-      );
   }
 }
