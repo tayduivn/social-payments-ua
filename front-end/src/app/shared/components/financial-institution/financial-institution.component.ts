@@ -83,6 +83,7 @@ export class FinancialInstitutionComponent extends ComponentBase implements OnIn
 
   private createForm() {
     this.form = this.fb.group({
+      id: null,
       name: '',
       mfo: '',
       edrpou: ''

@@ -27,5 +27,5 @@ export const personSchemaFields = {
   }
 };
 
-export const PersonModel = model('Person', new Schema(personSchemaFields));
+export const PersonModel = model('Person', new Schema(personSchemaFields), 'persons');
 

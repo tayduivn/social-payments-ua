@@ -18,18 +18,6 @@ const passportNumberLetter = new RegExp(`[a-zA-Z${lettersUA_CharsDiapason}]`);
 export class PersonComponent implements OnInit {
   public form: FormGroup;
 
-  public readonly identityCodeMask = [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
-  public passportMask = (rawValue: string) => {
-    console.log('passportMask raw value', rawValue);
-    if(!rawValue) { return []; }
-    // compare with 10 since _ sign also passed in when user enters next symbol
-    if (rawValue.length === 10 && rawValue.indexOf('_') < 0) {
-      return [passportNumberLetter, passportNumberLetter, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
-    } else {
-      return [passportNumberLetter, passportNumberLetter, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
-    }
-  };
-
   constructor(private fb: FormBuilder) {
     this.createForm();
   }
@@ -38,11 +26,10 @@ export class PersonComponent implements OnInit {
   }
 
   private createForm() {
-    // for init need conformed value due to dynamic mask
-    // conformToMask('ВС1231238', [passportNumberLetter, passportNumberLetter, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/])
     this.form = this.fb.group({
+      id: null,
       fullName: '',
-      passportNumber: 'ВС1 231238',
+      passportNumber: '',
       identityCode: '',
       address: this.fb.group({
         street: '',

@@ -4,7 +4,6 @@ import {
 } from 'mongoose';
 import { financialInstitutionSchemaFields } from '../financial-institution/financial-institution.model';
 import { personSchemaFields } from '../person/person.model';
-import { addPaymentMiddleware } from './payment.model.middleware';
 
 const paymentSchema = new Schema({
   date: {
@@ -25,6 +24,6 @@ const paymentSchema = new Schema({
   person: personSchemaFields
 });
 
-export const PaymentModel = model('Payment', addPaymentMiddleware(paymentSchema));
+export const PaymentModel = model('Payment', paymentSchema);
 
 
