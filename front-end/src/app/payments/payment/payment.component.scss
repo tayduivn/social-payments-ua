@@ -34,15 +34,15 @@ $payment-section-indent: 1.2em;
 }
 
 ::ng-deep {
-  .sp-financial-institution-autocomplete-panel {
-    .sp-financial-institution-option {
+  .sp-autocomplete-panel {
+    .sp-autocomplete-option {
       padding: 0 5px;
     }
 
     .mat-option-text {
       display: flex;
 
-      .sp-financial-institution-autocomplete-item {
+      .sp-autocomplete-item {
         display: block;
         flex: 0 0 auto;
         width: 180px + $input-inline-indent;

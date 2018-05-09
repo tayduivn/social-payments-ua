@@ -30,6 +30,8 @@ export abstract class MultifieldAutocompleteComponent extends UnsubscribableComp
 
   protected readonly autocompleteFiltering: UnaryFunction<Object, Object>;
 
+  protected autocompleteItems: Object[];
+
   protected constructor(
     public form: FormGroup,
     private cdRef: ChangeDetectorRef) {
@@ -72,6 +74,13 @@ export abstract class MultifieldAutocompleteComponent extends UnsubscribableComp
         if (!this.autocomplete.isOpen) {
           this.autocompleteTrigger.openPanel();
         }
+      }),
+      map((filter: FinancialInstitutionModel) => {
+        return this.autocompleteItems.filter((listItem: FinancialInstitutionModel) => {
+          return Object.keys(filter).every((key) => {
+            return listItem[key] && filter[key] ? (listItem[key]).toLowerCase().includes(filter[key].toLowerCase()) : true;
+          });
+        });
       })
     );
   }}

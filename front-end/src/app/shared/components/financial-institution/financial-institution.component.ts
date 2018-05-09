@@ -3,27 +3,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnInit,
-  ViewChild
+  OnInit
 } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup
-} from '@angular/forms';
-import {
-  MatAutocomplete,
-  MatAutocompleteSelectedEvent,
-  MatAutocompleteTrigger
-} from '@angular/material';
+import { FormBuilder } from '@angular/forms';
 import 'rxjs/add/operator/finally';
 import { Observable } from 'rxjs/Observable';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  map,
-  tap
-} from 'rxjs/operators';
 import { MultifieldAutocompleteComponent } from '../common/multifield-autocomplete/multifield-autocomplete.component';
 import { FinancialInstitutionModel } from './financial-institution.model';
 import { FinancialInstitutionService } from './financial-institution.service';
@@ -37,18 +21,17 @@ import { FinancialInstitutionService } from './financial-institution.service';
 export class FinancialInstitutionComponent extends MultifieldAutocompleteComponent implements OnInit, AfterViewInit {
   public financialInstitutionsFiltered: Observable<FinancialInstitutionModel[]>;
 
-  private financialInstitutions: FinancialInstitutionModel[];
-
   constructor(
     cdRef: ChangeDetectorRef,
     fb: FormBuilder,
-    private financialInstitutionService: FinancialInstitutionService) {
-      super(FinancialInstitutionComponent.createForm(fb), cdRef);
+    private financialInstitutionService: FinancialInstitutionService
+  ) {
+    super(FinancialInstitutionComponent.createForm(fb), cdRef);
   }
 
   public ngOnInit() {
     this.componentSubscriptions = this.financialInstitutionService.getList().subscribe((res: FinancialInstitutionModel[]) => {
-      this.financialInstitutions = res;
+      this.autocompleteItems = res;
     });
 
     this.initFiltering();
@@ -56,16 +39,7 @@ export class FinancialInstitutionComponent extends MultifieldAutocompleteCompone
 
   private initFiltering() {
     this.financialInstitutionsFiltered = this.form.valueChanges
-      .pipe(this.autocompleteFiltering.bind(this))
-      .pipe(map(this.financialInstitutionsFilter.bind(this)));
-  }
-
-  private financialInstitutionsFilter(filter: FinancialInstitutionModel) {
-    return this.financialInstitutions.filter((listItem: FinancialInstitutionModel) => {
-      return Object.keys(filter).every((key) => {
-        return listItem[key] && filter[key] ? (listItem[key]).toLowerCase().includes(filter[key].toLowerCase()) : true;
-      });
-    });
+      .pipe(this.autocompleteFiltering.bind(this));
   }
 
   private static createForm(fb: FormBuilder) {

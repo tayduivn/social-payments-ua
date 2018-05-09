@@ -1,4 +1,5 @@
 #import './financial-institution.fragment.graphql'
+
 query financialInstitutions {
   financialInstitutions {
     id,

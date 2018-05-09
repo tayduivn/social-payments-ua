@@ -1,0 +1,5 @@
+fragment PersonFields on Person {
+  fullName
+  passportNumber
+  identityCode
+}

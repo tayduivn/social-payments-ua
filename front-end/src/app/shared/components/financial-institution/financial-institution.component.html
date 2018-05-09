@@ -34,17 +34,16 @@
   </mat-form-field>
 
   <input class="sp-autocomplete-trigger" [matAutocomplete]>
-
-  <mat-autocomplete class="sp-financial-institution-autocomplete-panel"
+  <mat-autocomplete class="sp-autocomplete-panel"
     (optionSelected)="onAutocompleteItemSelected($event)">
     <perfect-scrollbar [config]="{minScrollbarLength: 60}" >
       <mat-option *ngFor="let item of financialInstitutionsFiltered | async"
-        class="sp-financial-institution-option"
+        class="sp-autocomplete-option"
         [value]="item">
 
-        <span class="sp-financial-institution-autocomplete-item sp-fi-mfo">{{item.mfo}}</span>
-        <span class="sp-financial-institution-autocomplete-item sp-fi-edrpou">{{item.edrpou}}</span>
-        <span class="sp-financial-institution-autocomplete-item sp-fi-name">{{item.name}}</span>
+        <span class="sp-autocomplete-item sp-fi-mfo">{{item.mfo}}</span>
+        <span class="sp-autocomplete-item sp-fi-edrpou">{{item.edrpou}}</span>
+        <span class="sp-autocomplete-item sp-fi-name">{{item.name}}</span>
       </mat-option>
     </perfect-scrollbar>
   </mat-autocomplete>

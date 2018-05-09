@@ -1,12 +1,15 @@
 import {
+  ChangeDetectorRef,
   Component,
   OnInit
 } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup
-} from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
 import { lettersUA_CharsDiapason } from '../../constants/char-diapason-ua';
+import { MultifieldAutocompleteComponent } from '../common/multifield-autocomplete/multifield-autocomplete.component';
+import { FinancialInstitutionModel } from '../financial-institution/financial-institution.model';
+import { PersonModel } from './person.model';
+import { PersonService } from './person.service';
 
 const passportNumberLetter = new RegExp(`[a-zA-Z${lettersUA_CharsDiapason}]`);
 
@@ -15,23 +18,30 @@ const passportNumberLetter = new RegExp(`[a-zA-Z${lettersUA_CharsDiapason}]`);
   templateUrl: './person.component.html',
   styleUrls: ['./person.component.scss']
 })
-export class PersonComponent implements OnInit {
-  public form: FormGroup;
+export class PersonComponent extends MultifieldAutocompleteComponent implements OnInit {
+  public personsFiltered: Observable<PersonModel[]>;
 
-  constructor(private fb: FormBuilder) {
-    this.createForm();
+  constructor(
+    cdRef: ChangeDetectorRef,
+    fb: FormBuilder,
+    private personService: PersonService
+  ) {
+    super(PersonComponent.createForm(fb), cdRef);
   }
 
   public ngOnInit() {
+    this.componentSubscriptions = this.personService.getList().subscribe((res: PersonModel[]) => {
+      this.autocompleteItems = res;
+    });
   }
 
-  private createForm() {
-    this.form = this.fb.group({
+  private static createForm(fb: FormBuilder) {
+    return fb.group({
       id: null,
       fullName: '',
       passportNumber: '',
       identityCode: '',
-      address: this.fb.group({
+      address: fb.group({
         street: '',
         house: '',
         houseSection: '',
