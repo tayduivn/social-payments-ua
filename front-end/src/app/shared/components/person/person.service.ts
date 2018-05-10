@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 import { PersonModel } from './person.model';
 
 interface Persons {
-  financialInstitutions: PersonModel[]
+  persons: PersonModel[]
 }
 
 
@@ -22,7 +22,7 @@ export class PersonService {
     })
       .valueChanges
       .pipe(
-        map((r: ApolloQueryResult<Persons>) => r.data.financialInstitutions)
+        map((r: ApolloQueryResult<Persons>) => r.data.persons)
       )
   }
 }

@@ -7,7 +7,6 @@ import { FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { lettersUA_CharsDiapason } from '../../constants/char-diapason-ua';
 import { MultifieldAutocompleteComponent } from '../common/multifield-autocomplete/multifield-autocomplete.component';
-import { FinancialInstitutionModel } from '../financial-institution/financial-institution.model';
 import { PersonModel } from './person.model';
 import { PersonService } from './person.service';
 
@@ -33,6 +32,8 @@ export class PersonComponent extends MultifieldAutocompleteComponent implements 
     this.componentSubscriptions = this.personService.getList().subscribe((res: PersonModel[]) => {
       this.autocompleteItems = res;
     });
+
+    this.initFiltering();
   }
 
   private static createForm(fb: FormBuilder) {
@@ -48,5 +49,10 @@ export class PersonComponent extends MultifieldAutocompleteComponent implements 
         apartment: ''
       })
     });
+  }
+
+  private initFiltering() {
+    this.personsFiltered = this.form.valueChanges
+      .pipe(this.autocompleteFiltering.bind(this));
   }
 }

@@ -26,7 +26,6 @@ $payment-section-indent: 1.2em;
     .sp-financial-institution .sp-autocomplete-trigger {
       $left-indent: 56px + $input-inline-indent;
 
-      bottom: 18px;
       left: $left-indent;
       width: calc(100% - #{$left-indent});
     }

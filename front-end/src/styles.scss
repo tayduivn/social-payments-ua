@@ -1,3 +1,5 @@
+@import "./app/shared/components/common/multifield-autocomplete/multifield-autocomplete";
+
 /* You can add global styles to this file, and also import other style files */
 html, body {
   margin: 0;
@@ -26,18 +28,5 @@ body {
   }
   &.md-48 {
     @include mat-icon-size(48px);
-  }
-}
-
-.sp-app-body {
-  .mat-autocomplete-panel {
-    overflow: hidden;
-
-    perfect-scrollbar {
-      $scroll-margin: 2px;
-      margin-top: $scroll-margin;
-      margin-bottom: $scroll-margin;
-      max-height: 256px - $scroll-margin * 2; // the same as parent container minus margins
-    }
   }
 }

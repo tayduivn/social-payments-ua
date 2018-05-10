@@ -50,13 +50,13 @@
   <input class="sp-autocomplete-trigger" [matAutocomplete]>
   <mat-autocomplete class="sp-autocomplete-panel"
     (optionSelected)="onAutocompleteItemSelected($event)">
-    <!--<perfect-scrollbar [config]="{minScrollbarLength: 60}" >-->
+    <perfect-scrollbar [config]="{minScrollbarLength: 60}" >
       <mat-option *ngFor="let item of personsFiltered | async"
         class="sp-autocomplete-option"
         [value]="item">
 
-        <span class="sp-autocomplete-item sp-fi-mfo">{{item}}</span>
+        <span class="sp-autocomplete-item sp-fi-mfo">{{item.fullName}}</span>
       </mat-option>
-    <!--</perfect-scrollbar>-->
+    </perfect-scrollbar>
   </mat-autocomplete>
 </form>

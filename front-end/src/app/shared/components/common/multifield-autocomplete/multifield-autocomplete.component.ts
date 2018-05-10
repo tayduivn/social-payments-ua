@@ -78,7 +78,8 @@ export abstract class MultifieldAutocompleteComponent extends UnsubscribableComp
       map((filter: FinancialInstitutionModel) => {
         return this.autocompleteItems.filter((listItem: FinancialInstitutionModel) => {
           return Object.keys(filter).every((key) => {
-            return listItem[key] && filter[key] ? (listItem[key]).toLowerCase().includes(filter[key].toLowerCase()) : true;
+            return listItem[key] && filter[key] ?
+              (listItem[key] || '').toLowerCase().includes((filter[key] || '').toLowerCase()) : true;
           });
         });
       })

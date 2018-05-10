@@ -37,11 +37,6 @@ export class FinancialInstitutionComponent extends MultifieldAutocompleteCompone
     this.initFiltering();
   }
 
-  private initFiltering() {
-    this.financialInstitutionsFiltered = this.form.valueChanges
-      .pipe(this.autocompleteFiltering.bind(this));
-  }
-
   private static createForm(fb: FormBuilder) {
     return fb.group({
       id: null,
@@ -49,5 +44,10 @@ export class FinancialInstitutionComponent extends MultifieldAutocompleteCompone
       mfo: '',
       edrpou: ''
     });
+  }
+
+  private initFiltering() {
+    this.financialInstitutionsFiltered = this.form.valueChanges
+      .pipe(this.autocompleteFiltering.bind(this));
   }
 }

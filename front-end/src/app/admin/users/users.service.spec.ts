@@ -1,15 +1,18 @@
 import { TestBed, inject } from '@angular/core/testing';
+import { Apollo } from 'apollo-angular';
 
 import { UsersService } from './users.service';
 
 describe('UsersService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UsersService]
+      providers: [
+        UsersService,
+        {
+          provide: Apollo,
+          useValue: {}
+        }
+      ]
     });
   });
-
-  it('should be created', inject([UsersService], (service: UsersService) => {
-    expect(service).toBeTruthy();
-  }));
 });

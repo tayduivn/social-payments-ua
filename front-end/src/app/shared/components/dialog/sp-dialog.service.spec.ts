@@ -8,8 +8,4 @@ describe('SpDialogService', () => {
       providers: [SpDialogService]
     });
   });
-
-  it('should be created', inject([SpDialogService], (service: SpDialogService) => {
-    expect(service).toBeTruthy();
-  }));
 });
