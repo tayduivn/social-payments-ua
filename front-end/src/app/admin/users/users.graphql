@@ -1,4 +1,4 @@
-#import './user-fields.fragment.graphql'
+#import './user.fragment.graphql'
 
 query users {
   users {

@@ -1,4 +1,5 @@
 fragment FinancialInstitutionFields on FinancialInstitution {
+  id
   name
   mfo
   edrpou
