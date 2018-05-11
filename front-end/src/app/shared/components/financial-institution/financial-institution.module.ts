@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { SharedModule } from '../../shared.module';
+import { MultifieldAutocompleteModule } from '../common/multifield-autocomplete/multifield-autocomplete.module';
 import { FinancialInstitutionComponent } from './financial-institution.component';
 import { FinancialInstitutionService } from './financial-institution.service';
 
@@ -11,7 +12,7 @@ import { FinancialInstitutionService } from './financial-institution.service';
   imports: [
     AngularMaterialModule,
     CommonModule,
-    PerfectScrollbarModule,
+    MultifieldAutocompleteModule,
     ReactiveFormsModule,
     SharedModule
   ],

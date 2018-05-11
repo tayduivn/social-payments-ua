@@ -3,7 +3,10 @@ import {
   Component,
   OnInit
 } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup
+} from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { lettersUA_CharsDiapason } from '../../constants/char-diapason-ua';
 import { MultifieldAutocompleteComponent } from '../common/multifield-autocomplete/multifield-autocomplete.component';
@@ -17,32 +20,32 @@ const passportNumberLetter = new RegExp(`[a-zA-Z${lettersUA_CharsDiapason}]`);
   templateUrl: './person.component.html',
   styleUrls: ['./person.component.scss']
 })
-export class PersonComponent extends MultifieldAutocompleteComponent implements OnInit {
-  public personsFiltered: Observable<PersonModel[]>;
+export class PersonComponent implements OnInit {
+  // public personsFiltered: Observable<PersonModel[]>;
+  public form: FormGroup;
 
   constructor(
-    cdRef: ChangeDetectorRef,
-    fb: FormBuilder,
-    private personService: PersonService
+    private fb: FormBuilder,
+    public personService: PersonService
   ) {
-    super(PersonComponent.createForm(fb), cdRef);
+    this.createForm();
   }
 
   public ngOnInit() {
-    this.componentSubscriptions = this.personService.getList().subscribe((res: PersonModel[]) => {
-      this.autocompleteItems = res;
-    });
-
-    this.initFiltering();
+    // this.componentSubscriptions = this.personService.getList().subscribe((res: PersonModel[]) => {
+    //   this.autocompleteItems = res;
+    // });
+    //
+    // this.initFiltering();
   }
 
-  private static createForm(fb: FormBuilder) {
-    return fb.group({
+  private createForm() {
+    this.form = this.fb.group({
       id: null,
       fullName: '',
       passportNumber: '',
       identityCode: '',
-      address: fb.group({
+      address: this.fb.group({
         street: '',
         house: '',
         houseSection: '',
@@ -51,8 +54,8 @@ export class PersonComponent extends MultifieldAutocompleteComponent implements 
     });
   }
 
-  private initFiltering() {
-    this.personsFiltered = this.form.valueChanges
-      .pipe(this.autocompleteFiltering.bind(this));
-  }
+  // private initFiltering() {
+  //   this.personsFiltered = this.form.valueChanges
+  //     .pipe(this.autocompleteFiltering.bind(this));
+  // }
 }

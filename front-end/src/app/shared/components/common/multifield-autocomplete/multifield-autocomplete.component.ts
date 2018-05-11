@@ -1,7 +1,11 @@
 import {
   AfterViewInit,
   ChangeDetectorRef,
-  ViewChild
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
@@ -9,6 +13,7 @@ import {
   MatAutocompleteSelectedEvent,
   MatAutocompleteTrigger
 } from '@angular/material';
+import { Observable } from 'rxjs/Observable';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -19,34 +24,32 @@ import {
 import { UnaryFunction } from 'rxjs/src/interfaces';
 import { pipe } from 'rxjs/util/pipe';
 import { FilterUtils } from '../../../utils/filter-utils';
-import { FinancialInstitutionModel } from '../../financial-institution/financial-institution.model';
 import { UnsubscribableComponent } from '../unsubscribable-component';
 
-export abstract class MultifieldAutocompleteComponent extends UnsubscribableComponent implements AfterViewInit {
-  public allFieldsEmtpy: boolean = true;
+@Component({
+  selector: 'sp-multifield-autocomplete',
+  templateUrl: './multifield-autocomplete.component.html',
+  styleUrls: ['./multifield-autocomplete.component.scss'],
+  encapsulation: ViewEncapsulation.None
+})
+export class MultifieldAutocompleteComponent implements OnInit, AfterViewInit {
+  @Input() public items: Object[];
+  @Input() public form: FormGroup;
 
   @ViewChild(MatAutocomplete) protected autocomplete: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) protected autocompleteTrigger: MatAutocompleteTrigger;
 
-  protected readonly autocompleteFiltering: UnaryFunction<Object, Object>;
+  public filteredItems: Observable<Object[]>;
 
-  protected autocompleteItems: Object[];
-
-  protected constructor(
-    public form: FormGroup,
-    private cdRef: ChangeDetectorRef) {
-      super();
-
-      this.autocompleteFiltering = this.getAutocompleteFiltering();
-  }
+  constructor(private cdRef: ChangeDetectorRef) {}
 
   public onAutocompleteItemSelected(selectedItem: MatAutocompleteSelectedEvent) {
     this.form.patchValue(selectedItem.option.value, {emitEvent: false});
   }
 
-  public onResetClick() {
-    this.form.reset();
-    this.allFieldsEmtpy = true;
+  public ngOnInit() {
+    this.filteredItems = this.form.valueChanges
+      .pipe(this.getAutocompleteFiltering());
   }
 
   public ngAfterViewInit() {
@@ -59,14 +62,14 @@ export abstract class MultifieldAutocompleteComponent extends UnsubscribableComp
       distinctUntilChanged(FilterUtils.equals),
       filter((filter: Object) => {
         // if all fields are clear and button clear is disabled - stop process
-        this.allFieldsEmtpy = FilterUtils.isEmpty(filter);
+        const allFieldsEmtpy = FilterUtils.isEmpty(filter);
 
-        if (this.allFieldsEmtpy) {
+        if (allFieldsEmtpy) {
           this.autocompleteTrigger.closePanel();
           this.cdRef.markForCheck();
         }
 
-        return !this.allFieldsEmtpy;
+        return !allFieldsEmtpy; // stop processing if all fields are empty
       }),
       tap(() => {
         if (!this.autocomplete.isOpen) {
@@ -74,7 +77,8 @@ export abstract class MultifieldAutocompleteComponent extends UnsubscribableComp
         }
       }),
       map((filter: Object[]) => {
-        return this.autocompleteItems.filter((item: Object) => FilterUtils.includes(item, filter));
+        console.log('map');
+        return this.items.filter((item: Object) => FilterUtils.includes(item, filter));
       })
     );
   }}

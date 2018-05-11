@@ -1,15 +1,15 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   OnInit
 } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup
+} from '@angular/forms';
 import 'rxjs/add/operator/finally';
-import { Observable } from 'rxjs/Observable';
-import { MultifieldAutocompleteComponent } from '../common/multifield-autocomplete/multifield-autocomplete.component';
-import { FinancialInstitutionModel } from './financial-institution.model';
+import { tap } from 'rxjs/operators';
 import { FinancialInstitutionService } from './financial-institution.service';
 
 @Component({
@@ -18,36 +18,33 @@ import { FinancialInstitutionService } from './financial-institution.service';
   styleUrls: ['./financial-institution.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FinancialInstitutionComponent extends MultifieldAutocompleteComponent implements OnInit, AfterViewInit {
-  public financialInstitutionsFiltered: Observable<FinancialInstitutionModel[]>;
+export class FinancialInstitutionComponent implements OnInit {
+  // public autocompleteItems: Observable<FinancialInstitutionModel[]>;
+
+  public form: FormGroup;
 
   constructor(
-    cdRef: ChangeDetectorRef,
-    fb: FormBuilder,
-    private financialInstitutionService: FinancialInstitutionService
+    private fb: FormBuilder,
+    public financialInstitutionService: FinancialInstitutionService
   ) {
-    super(FinancialInstitutionComponent.createForm(fb), cdRef);
+    this.createForm();
   }
 
   public ngOnInit() {
-    this.componentSubscriptions = this.financialInstitutionService.getList().subscribe((res: FinancialInstitutionModel[]) => {
-      this.autocompleteItems = res;
-    });
-
-    this.initFiltering();
+    // this.componentSubscriptions = this.financialInstitutionService.getList().subscribe((res: FinancialInstitutionModel[]) => {
+    //   this.autocompleteItems = res;
+    // });
+    //
+    // this.initFiltering();
+    // console.log('oninit');
   }
 
-  private static createForm(fb: FormBuilder) {
-    return fb.group({
+  private createForm() {
+    this.form = this.fb.group({
       id: null,
       name: '',
       mfo: '',
       edrpou: ''
     });
-  }
-
-  private initFiltering() {
-    this.financialInstitutionsFiltered = this.form.valueChanges
-      .pipe(this.autocompleteFiltering.bind(this));
   }
 }
