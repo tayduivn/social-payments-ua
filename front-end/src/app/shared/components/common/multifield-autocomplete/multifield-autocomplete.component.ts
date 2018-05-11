@@ -9,7 +9,6 @@ import {
   MatAutocompleteSelectedEvent,
   MatAutocompleteTrigger
 } from '@angular/material';
-import { Observable } from 'rxjs/Observable';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -19,6 +18,7 @@ import {
 } from 'rxjs/operators';
 import { UnaryFunction } from 'rxjs/src/interfaces';
 import { pipe } from 'rxjs/util/pipe';
+import { FilterUtils } from '../../../utils/filter-utils';
 import { FinancialInstitutionModel } from '../../financial-institution/financial-institution.model';
 import { UnsubscribableComponent } from '../unsubscribable-component';
 
@@ -56,12 +56,10 @@ export abstract class MultifieldAutocompleteComponent extends UnsubscribableComp
   private getAutocompleteFiltering() {
     return pipe(
       debounceTime(300),
-      distinctUntilChanged((prev, curr) => {
-        return Object.keys(prev).every(key => prev[key] === curr[key]);
-      }),
+      distinctUntilChanged(FilterUtils.equals),
       filter((filter: Object) => {
         // if all fields are clear and button clear is disabled - stop process
-        this.allFieldsEmtpy = Object.values(filter).every(field => !field);
+        this.allFieldsEmtpy = FilterUtils.isEmpty(filter);
 
         if (this.allFieldsEmtpy) {
           this.autocompleteTrigger.closePanel();
@@ -75,13 +73,8 @@ export abstract class MultifieldAutocompleteComponent extends UnsubscribableComp
           this.autocompleteTrigger.openPanel();
         }
       }),
-      map((filter: FinancialInstitutionModel) => {
-        return this.autocompleteItems.filter((listItem: FinancialInstitutionModel) => {
-          return Object.keys(filter).every((key) => {
-            return listItem[key] && filter[key] ?
-              (listItem[key] || '').toLowerCase().includes((filter[key] || '').toLowerCase()) : true;
-          });
-        });
+      map((filter: Object[]) => {
+        return this.autocompleteItems.filter((item: Object) => FilterUtils.includes(item, filter));
       })
     );
   }}
