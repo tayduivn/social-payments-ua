@@ -1,15 +1,11 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
-  Component,
-  OnInit
+  ChangeDetectorRef,
+  Component
 } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup
-} from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import 'rxjs/add/operator/finally';
-import { tap } from 'rxjs/operators';
+import { MultifiedAutocompleteCommonComponent } from '../common/multifield-autocomplete/multified-autocomplete-common.component';
 import { FinancialInstitutionService } from './financial-institution.service';
 
 @Component({
@@ -18,29 +14,17 @@ import { FinancialInstitutionService } from './financial-institution.service';
   styleUrls: ['./financial-institution.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FinancialInstitutionComponent implements OnInit {
-  // public autocompleteItems: Observable<FinancialInstitutionModel[]>;
-
-  public form: FormGroup;
-
+export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonComponent {
   constructor(
+    cdRef: ChangeDetectorRef,
     private fb: FormBuilder,
     public financialInstitutionService: FinancialInstitutionService
   ) {
-    this.createForm();
+    super(cdRef, FinancialInstitutionComponent.createForm(fb));
   }
 
-  public ngOnInit() {
-    // this.componentSubscriptions = this.financialInstitutionService.getList().subscribe((res: FinancialInstitutionModel[]) => {
-    //   this.autocompleteItems = res;
-    // });
-    //
-    // this.initFiltering();
-    // console.log('oninit');
-  }
-
-  private createForm() {
-    this.form = this.fb.group({
+  private static createForm(fb: FormBuilder) {
+    return fb.group({
       id: null,
       name: '',
       mfo: '',

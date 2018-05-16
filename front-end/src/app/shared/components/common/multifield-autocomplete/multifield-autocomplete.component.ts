@@ -2,8 +2,10 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
+  ContentChild,
   Input,
   OnInit,
+  TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -21,10 +23,8 @@ import {
   map,
   tap
 } from 'rxjs/operators';
-import { UnaryFunction } from 'rxjs/src/interfaces';
 import { pipe } from 'rxjs/util/pipe';
 import { FilterUtils } from '../../../utils/filter-utils';
-import { UnsubscribableComponent } from '../unsubscribable-component';
 
 @Component({
   selector: 'sp-multifield-autocomplete',
@@ -38,6 +38,7 @@ export class MultifieldAutocompleteComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatAutocomplete) protected autocomplete: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) protected autocompleteTrigger: MatAutocompleteTrigger;
+  @ContentChild(TemplateRef) public template: TemplateRef<any>;
 
   public filteredItems: Observable<Object[]>;
 

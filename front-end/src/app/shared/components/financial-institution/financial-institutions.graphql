@@ -2,6 +2,7 @@
 
 query financialInstitutions {
   financialInstitutions {
+    id
     ...FinancialInstitutionFields
   }
 }

@@ -2,11 +2,11 @@
   [formGroup]="form">
 
   <div class="sp-financial-field sp-financial-fields-reset">
-    <!--<button mat-button-->
-      <!--[disabled]="allFieldsEmtpy"-->
-      <!--(click)="onResetClick()">-->
-      <!--<mat-icon>delete</mat-icon>-->
-    <!--</button>-->
+    <button mat-button
+      [disabled]="allFieldsEmtpy"
+      (click)="onResetClick()">
+      <mat-icon>delete</mat-icon>
+    </button>
   </div>
 
   <mat-form-field class="sp-financial-field sp-financial-mfo">
@@ -35,5 +35,12 @@
 
   <sp-multifield-autocomplete [items]="financialInstitutionService.getList() | async"
     [form]="form">
+
+    <ng-template let-item>
+      <span class="sp-autocomplete-item sp-fi-mfo">{{item.mfo}}</span>
+      <span class="sp-autocomplete-item sp-fi-edrpou">{{item.edrpou}}</span>
+      <span class="sp-autocomplete-item sp-fi-name">{{item.name}}</span>
+    </ng-template>
+
   </sp-multifield-autocomplete>
 </form>

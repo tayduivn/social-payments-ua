@@ -6,9 +6,7 @@
       class="sp-autocomplete-option"
       [value]="item">
 
-      <span class="sp-autocomplete-item sp-fi-mfo">{{item.mfo}}</span>
-      <span class="sp-autocomplete-item sp-fi-edrpou">{{item.edrpou}}</span>
-      <span class="sp-autocomplete-item sp-fi-name">{{item.name}}</span>
+      <ng-container *ngTemplateOutlet="template; context: {$implicit: item}"></ng-container>
     </mat-option>
   </perfect-scrollbar>
 </mat-autocomplete>
