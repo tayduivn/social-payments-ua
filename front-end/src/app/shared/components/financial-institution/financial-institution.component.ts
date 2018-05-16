@@ -17,7 +17,7 @@ import { FinancialInstitutionService } from './financial-institution.service';
 export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonComponent {
   constructor(
     cdRef: ChangeDetectorRef,
-    private fb: FormBuilder,
+    fb: FormBuilder,
     public financialInstitutionService: FinancialInstitutionService
   ) {
     super(cdRef, FinancialInstitutionComponent.createForm(fb));

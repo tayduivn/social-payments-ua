@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  ElementRef,
   Input,
   OnInit,
   TemplateRef,
@@ -25,6 +26,7 @@ import {
 } from 'rxjs/operators';
 import { pipe } from 'rxjs/util/pipe';
 import { FilterUtils } from '../../../utils/filter-utils';
+import { ProxyAutocompleteCommands } from './proxy-autocomplete-commands.enum';
 
 @Component({
   selector: 'sp-multifield-autocomplete',
@@ -38,7 +40,12 @@ export class MultifieldAutocompleteComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatAutocomplete) protected autocomplete: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) protected autocompleteTrigger: MatAutocompleteTrigger;
+
   @ContentChild(TemplateRef) public template: TemplateRef<any>;
+
+  @ViewChild('autocompleteTrigger', {
+    read: ElementRef
+  }) public triggerInput: ElementRef;
 
   public filteredItems: Observable<Object[]>;
 
@@ -55,6 +62,12 @@ export class MultifieldAutocompleteComponent implements OnInit, AfterViewInit {
 
   public ngAfterViewInit() {
     this.autocompleteTrigger.autocomplete = this.autocomplete;
+  }
+
+  public triggerEvent(command: ProxyAutocompleteCommands) {
+    this.triggerInput.nativeElement.dispatchEvent(new KeyboardEvent('keydown', {
+      keyCode: String(command)
+    } as any));
   }
 
   private getAutocompleteFiltering() {
@@ -78,7 +91,6 @@ export class MultifieldAutocompleteComponent implements OnInit, AfterViewInit {
         }
       }),
       map((filter: Object[]) => {
-        console.log('map');
         return this.items.filter((item: Object) => FilterUtils.includes(item, filter));
       })
     );

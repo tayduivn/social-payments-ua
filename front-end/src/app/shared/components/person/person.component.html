@@ -1,62 +1,84 @@
-<form class="sp-person-container"
+<section class="sp-person-container"
   [formGroup]="form">
-  <mat-form-field class="sp-person-full-name">
-    <input matInput
-      formControlName="fullName"
-      placeholder="Прізвище, ім'я, по батькові">
-  </mat-form-field>
 
-  <div class="sp-person-documents-info">
-    <mat-form-field class="sp-passport-number">
-      <input matInput
-        formControlName="passportNumber"
-        placeholder="Серія та номер паспорта">
-    </mat-form-field>
-
-    <mat-form-field class="sp-identity-code">
-      <input matInput
-        formControlName="identityCode"
-        placeholder="Ідентифікаційний код">
-    </mat-form-field>
+  <div class="sp-person-reset">
+    <button mat-button
+      [disabled]="allFieldsEmtpy"
+      (click)="onResetClick()">
+      <mat-icon>delete</mat-icon>
+    </button>
   </div>
 
-  <div class="sp-address"
-    formGroupName="address">
-    <mat-form-field class="sp-street">
+  <div class="sp-person-inputs">
+    <mat-form-field class="sp-person-full-name">
       <input matInput
-        formControlName="street"
-        placeholder="Вулиця">
+        autocomplete="off"
+        formControlName="fullName"
+        placeholder="Прізвище, ім'я, по батькові"
+        [spProxyAutocompleteCommands]="autocomplete">
     </mat-form-field>
 
-    <mat-form-field class="sp-house">
-      <input matInput
-        formControlName="house"
-        placeholder="Будинок">
-    </mat-form-field>
+    <div class="sp-person-documents-info">
+      <mat-form-field class="sp-passport-number">
+        <input matInput
+          autocomplete="off"
+          formControlName="passportNumber"
+          placeholder="Серія та номер паспорта"
+          [spProxyAutocompleteCommands]="autocomplete">
+      </mat-form-field>
 
-    <mat-form-field class="sp-house-section">
-      <input matInput
-        formControlName="houseSection"
-        placeholder="Корпус">
-    </mat-form-field>
+      <mat-form-field class="sp-identity-code">
+        <input matInput
+          autocomplete="off"
+          formControlName="identityCode"
+          placeholder="Ідентифікаційний код"
+          [spProxyAutocompleteCommands]="autocomplete">
+      </mat-form-field>
+    </div>
 
-    <mat-form-field class="sp-apartment">
-      <input matInput
-        formControlName="apartment"
-        placeholder="Квартира">
-    </mat-form-field>
+    <div class="sp-address"
+      formGroupName="address">
+      <mat-form-field class="sp-street">
+        <input matInput
+          autocomplete="off"
+          formControlName="street"
+          placeholder="Вулиця"
+          [spProxyAutocompleteCommands]="autocomplete">
+      </mat-form-field>
+
+      <mat-form-field class="sp-house">
+        <input matInput
+          autocomplete="off"
+          formControlName="house"
+          placeholder="Будинок"
+          [spProxyAutocompleteCommands]="autocomplete">
+      </mat-form-field>
+
+      <mat-form-field class="sp-house-section">
+        <input matInput
+          autocomplete="off"
+          formControlName="houseSection"
+          placeholder="Корпус"
+          [spProxyAutocompleteCommands]="autocomplete">
+      </mat-form-field>
+
+      <mat-form-field class="sp-apartment">
+        <input matInput
+          formControlName="apartment"
+          placeholder="Квартира"
+          [spProxyAutocompleteCommands]="autocomplete">
+      </mat-form-field>
+    </div>
+
+    <sp-multifield-autocomplete #autocomplete
+      [items]="personService.getList() | async"
+      [form]="form">
+      <ng-template let-item>
+        {{item.fullName}},
+        {{item.passportNumber}},
+        {{item.identityCode}},
+        {{item.address.street}} {{item.address.house}} {{item.address.houseSection}}, {{item.address.apartment}}
+      </ng-template>
+    </sp-multifield-autocomplete>
   </div>
-
-  <input class="sp-autocomplete-trigger" [matAutocomplete]>
-  <mat-autocomplete class="sp-autocomplete-panel"
-    (optionSelected)="onAutocompleteItemSelected($event)">
-    <perfect-scrollbar [config]="{minScrollbarLength: 60}" >
-      <mat-option *ngFor="let item of personsFiltered | async"
-        class="sp-autocomplete-option"
-        [value]="item">
-
-        <span class="sp-autocomplete-item sp-fi-mfo">{{item.fullName}}</span>
-      </mat-option>
-    </perfect-scrollbar>
-  </mat-autocomplete>
-</form>
+</section>

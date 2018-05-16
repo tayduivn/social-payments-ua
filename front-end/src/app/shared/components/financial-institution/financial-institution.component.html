@@ -1,4 +1,4 @@
-<form class="sp-financial-institution-container"
+<section class="sp-financial-institution-container"
   [formGroup]="form">
 
   <div class="sp-financial-field sp-financial-fields-reset">
@@ -15,7 +15,8 @@
       type="text"
       formControlName="mfo"
       placeholder="Код МФО"
-      spInputFilter="[0-9]">
+      spInputFilter="[0-9]"
+      [spProxyAutocompleteCommands]="autocomplete">
   </mat-form-field>
 
   <mat-form-field class="sp-financial-field sp-financial-edrpou">
@@ -23,24 +24,25 @@
       autocomplete="off"
       formControlName="edrpou"
       placeholder="Код ЄДРПОУ"
-      spInputFilter="[0-9]">
+      spInputFilter="[0-9]"
+      [spProxyAutocompleteCommands]="autocomplete">
   </mat-form-field>
 
   <mat-form-field class="sp-financial-field sp-financial-name">
     <input matInput
       autocomplete="off"
       formControlName="name"
-      placeholder="Назва">
+      placeholder="Назва"
+      [spProxyAutocompleteCommands]="autocomplete">
   </mat-form-field>
 
-  <sp-multifield-autocomplete [items]="financialInstitutionService.getList() | async"
+  <sp-multifield-autocomplete #autocomplete
+    [items]="financialInstitutionService.getList() | async"
     [form]="form">
-
     <ng-template let-item>
-      <span class="sp-autocomplete-item sp-fi-mfo">{{item.mfo}}</span>
-      <span class="sp-autocomplete-item sp-fi-edrpou">{{item.edrpou}}</span>
-      <span class="sp-autocomplete-item sp-fi-name">{{item.name}}</span>
+      <span class="sp-fi-item sp-fi-mfo">{{item.mfo}}</span>
+      <span class="sp-fi-item sp-fi-edrpou">{{item.edrpou}}</span>
+      <span class="sp-fi-item sp-fi-name">{{item.name}}</span>
     </ng-template>
-
   </sp-multifield-autocomplete>
-</form>
+</section>

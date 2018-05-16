@@ -10,7 +10,6 @@ import {
   FormGroup
 } from '@angular/forms';
 import { FinancialInstitutionComponent } from '../../shared/components/financial-institution/financial-institution.component';
-import { FinancialInstitutionModel } from '../../shared/components/financial-institution/financial-institution.model';
 import { PersonComponent } from '../../shared/components/person/person.component';
 import { PaymentService } from './payment.service';
 
@@ -29,7 +28,6 @@ export class PaymentComponent implements OnInit, AfterViewInit {
 
   @ViewChild(PersonComponent)
   private personComponent: PersonComponent;
-  private a: any = {};
   constructor(private fb: FormBuilder, private paymentService: PaymentService) {
     this.createForm();
   }
@@ -44,9 +42,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
   }
 
   public onSaveClick() {
-    this.a = this.paymentService.submitPayment(this.form.value).subscribe((e) => {
-      console.log('payment submitted result', e);
-    });
+    this.paymentService.submitPayment(this.form.value).subscribe();
   }
 
   private createForm() {
