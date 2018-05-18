@@ -2,7 +2,6 @@ import { PersonModel } from './person.model';
 
 export function checkAndUpdate(person: any) {
   return new Promise((resolve, reject) => {
-    console.log('checkAndUpdate person model');
     if (person.id) {
       resolve(person);
     } else {
