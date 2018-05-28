@@ -33,7 +33,9 @@ export class PaymentComponent implements OnInit, AfterViewInit {
   }
 
   public ngOnInit() {
-    console.log('PaymentComponent created');
+    this.paymentService.getPersonAccounts().subscribe(() => {
+      console.log('QUYER');
+    });
   }
 
   public ngAfterViewInit() {
