@@ -9,10 +9,14 @@ type Query {
 type PersonAccount {
   id: ID
   person: ID
-  financialInstitutions: [FinancialSinstitutionAccount!]!
+  financialInstitutions: [FinancialInstitutionAccount!]!
 }
 
-type FinancialSinstitutionAccount {
+type FinancialInstitutionAccount {
   financialInstitution: ID
-  accounts: [String!]!
+  accounts: [Account!]!
+}
+
+type Account  {
+  account: String!
 }

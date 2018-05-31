@@ -3,6 +3,8 @@ fragment PersonAccountsFields on PersonAccount {
   person
   financialInstitutions {
     financialInstitution
-    accounts
+    accounts {
+      account
+    }
   }
 }

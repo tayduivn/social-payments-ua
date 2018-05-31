@@ -72,7 +72,8 @@
 
     <sp-multifield-autocomplete #autocomplete
       [items]="personService.getList() | async"
-      [form]="form">
+      [form]="form"
+      (itemSelected)="onAutocompleteItemSelected($event)">
       <ng-template let-item>
         {{item.fullName}},
         {{item.passportNumber}},

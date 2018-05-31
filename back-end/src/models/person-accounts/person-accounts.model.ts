@@ -18,8 +18,10 @@ const personAccountsModel = new Schema({
       },
       accounts: [
         {
-          type: String,
-          required: true
+          account: {
+            type: String,
+            required: true
+          }
         }
       ]
     }

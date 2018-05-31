@@ -11,7 +11,7 @@ describe('person-accounts check-and-update', () => {
     });
   });
 
-  it('should delete id field if it null', () => {
+  it('should delete id field if it is null', () => {
     const param: any = {
       id: null,
       test: true
@@ -40,7 +40,11 @@ describe('person-accounts check-and-update', () => {
         financialInstitutions: [
           {
             financialInstitution: 'financialInstitution_id',
-            accounts: ['111']
+            accounts: [
+              {
+                account: '111'
+              }
+            ]
           }
         ]
       });
@@ -61,7 +65,9 @@ describe('person-accounts check-and-update', () => {
       person: 'person_id',
       financialInstitutions: [{
         financialInstitution: fiIdMock,
-        accounts: ['111']
+        accounts: [{
+          account: '111'
+        }]
       }],
       save: jasmine.createSpy('save').and.returnValue('savePromise')
     };
@@ -80,11 +86,15 @@ describe('person-accounts check-and-update', () => {
       expect(modelMock.financialInstitutions.length).toBe(2);
       expect(modelMock.financialInstitutions[0]).toEqual({
         financialInstitution: fiIdMock,
-        accounts: ['111']
+        accounts: [{
+          account: '111'
+        }]
       });
       expect(modelMock.financialInstitutions[1]).toEqual({
         financialInstitution: 'financialInstitution_id2',
-        accounts: ['222']
+        accounts: [{
+          account: '222'
+        }]
       });
 
       done();
@@ -103,7 +113,9 @@ describe('person-accounts check-and-update', () => {
       person: 'person_id',
       financialInstitutions: [{
         financialInstitution: fiIdMock,
-        accounts: ['111']
+        accounts: [{
+          account: '111'
+        }]
       }],
       save: jasmine.createSpy('save').and.returnValue('savePromise')
     };
@@ -122,7 +134,14 @@ describe('person-accounts check-and-update', () => {
       expect(modelMock.financialInstitutions.length).toBe(1);
       expect(modelMock.financialInstitutions[0]).toEqual({
         financialInstitution: fiIdMock,
-        accounts: ['111', '222']
+        accounts: [
+          {
+            account: '111'
+          },
+          {
+            account: '222'
+          }
+        ]
       });
 
       done();

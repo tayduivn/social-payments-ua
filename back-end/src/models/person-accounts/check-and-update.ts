@@ -7,9 +7,9 @@ function createPersonAccount(personAccount: PersonAccountInfo) {
     financialInstitutions: [
       {
         financialInstitution: personAccount.financialInstitution,
-        accounts: [
-          personAccount.account
-        ]
+        accounts: [{
+          account: personAccount.account
+        }]
       }
     ]
   });
@@ -22,21 +22,21 @@ function updatePersonAccount(personAccountModel: any, personAccount: PersonAccou
 
   if (fiIndex > -1) {
     const accounts = personAccountModel.financialInstitutions[fiIndex].accounts;
-    const accountIndex = accounts.indexOf(personAccount.account);
+    const accountIndex = accounts.findIndex((item: any) => item.account === personAccount.account);
 
     if (accountIndex > -1) {
       // todo: return
     } else {
-      accounts.push(personAccount.account);
+      accounts.push({account: personAccount.account});
 
       return personAccountModel.save();
     }
   } else {
     personAccountModel.financialInstitutions.push({
       financialInstitution: personAccount.financialInstitution,
-      accounts: [
-        personAccount.account
-      ]
+      accounts: [{
+        account: personAccount.account
+      }]
     });
 
     return personAccountModel.save();

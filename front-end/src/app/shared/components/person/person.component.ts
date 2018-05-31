@@ -1,16 +1,14 @@
 import {
   ChangeDetectorRef,
   Component,
-  OnInit
+  EventEmitter,
+  Input,
+  Output
 } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup
-} from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { FormBuilder } from '@angular/forms';
+import { map } from 'rxjs/operators';
 import { lettersUA_CharsDiapason } from '../../constants/char-diapason-ua';
 import { MultifiedAutocompleteCommonComponent } from '../common/multifield-autocomplete/multified-autocomplete-common.component';
-import { MultifieldAutocompleteComponent } from '../common/multifield-autocomplete/multifield-autocomplete.component';
 import { PersonModel } from './person.model';
 import { PersonService } from './person.service';
 
@@ -22,12 +20,23 @@ const passportNumberLetter = new RegExp(`[a-zA-Z${lettersUA_CharsDiapason}]`);
   styleUrls: ['./person.component.scss']
 })
 export class PersonComponent extends MultifiedAutocompleteCommonComponent {
+  @Output() public personSelected = new EventEmitter<PersonModel>();
+
   constructor(
     cdRef: ChangeDetectorRef,
     fb: FormBuilder,
     public personService: PersonService
   ) {
     super(cdRef, PersonComponent.createForm(fb));
+
+    this.form.valueChanges.subscribe(i => {
+      console.log('PersonComponent valueChanges', i);
+    });
+  }
+
+  public onAutocompleteItemSelected(item: PersonModel) {
+    console.log('onAutocompleteItemSelected', item);
+    this.personSelected.emit(item);
   }
 
   private static createForm(fb: FormBuilder) {

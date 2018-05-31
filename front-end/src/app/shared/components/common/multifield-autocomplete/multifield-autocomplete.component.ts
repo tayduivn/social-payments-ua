@@ -4,8 +4,10 @@ import {
   Component,
   ContentChild,
   ElementRef,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
@@ -38,6 +40,8 @@ export class MultifieldAutocompleteComponent implements OnInit, AfterViewInit {
   @Input() public items: Object[];
   @Input() public form: FormGroup;
 
+  @Output() public itemSelected = new EventEmitter();
+
   @ViewChild(MatAutocomplete) protected autocomplete: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) protected autocompleteTrigger: MatAutocompleteTrigger;
 
@@ -53,6 +57,7 @@ export class MultifieldAutocompleteComponent implements OnInit, AfterViewInit {
 
   public onAutocompleteItemSelected(selectedItem: MatAutocompleteSelectedEvent) {
     this.form.patchValue(selectedItem.option.value, {emitEvent: false});
+    this.itemSelected.next(selectedItem.option.value);
   }
 
   public ngOnInit() {
