@@ -4,7 +4,7 @@
 
 <mat-autocomplete autoActiveFirstOption
   class="sp-autocomplete-panel"
-  (optionSelected)="onAutocompleteItemSelected($event)">
+  (optionSelected)="itemSelected.emit($event)">
 
   <perfect-scrollbar [config]="{minScrollbarLength: 60}" >
     <mat-option *ngFor="let item of filteredItems | async"

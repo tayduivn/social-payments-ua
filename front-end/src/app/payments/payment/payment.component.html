@@ -22,12 +22,13 @@
 
       <div class="sp-payment-section">
         <h4 class="sp-caption">Одержувач</h4>
-        <sp-person></sp-person>
+        <sp-person (idChange)="onPersonIdChange($event)"></sp-person>
       </div>
 
       <div class="sp-payment-section sp-financial-institution">
         <h4 class="sp-caption">Фінансова установа</h4>
-        <sp-financial-institution class="sp-financial-institution"></sp-financial-institution>
+        <sp-financial-institution [id]="financialInstitutionId"
+          class="sp-financial-institution"></sp-financial-institution>
       </div>
 
       <div class="sp-payment-details">

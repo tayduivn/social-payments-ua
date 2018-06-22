@@ -20,23 +20,16 @@ const passportNumberLetter = new RegExp(`[a-zA-Z${lettersUA_CharsDiapason}]`);
   styleUrls: ['./person.component.scss']
 })
 export class PersonComponent extends MultifiedAutocompleteCommonComponent {
-  @Output() public personSelected = new EventEmitter<PersonModel>();
-
   constructor(
     cdRef: ChangeDetectorRef,
     fb: FormBuilder,
     public personService: PersonService
   ) {
     super(cdRef, PersonComponent.createForm(fb));
-
-    this.form.valueChanges.subscribe(i => {
-      console.log('PersonComponent valueChanges', i);
-    });
   }
 
-  public onAutocompleteItemSelected(item: PersonModel) {
-    console.log('onAutocompleteItemSelected', item);
-    this.personSelected.emit(item);
+  protected updateFormOnIdChange() {
+    console.log('Person id change cb called');
   }
 
   private static createForm(fb: FormBuilder) {

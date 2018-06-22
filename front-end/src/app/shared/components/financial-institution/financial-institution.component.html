@@ -4,7 +4,7 @@
   <div class="sp-financial-field sp-financial-fields-reset">
     <button mat-button
       [disabled]="allFieldsEmtpy"
-      (click)="onResetClick()">
+      (click)="reset()">
       <mat-icon>delete</mat-icon>
     </button>
   </div>
@@ -38,7 +38,8 @@
 
   <sp-multifield-autocomplete #autocomplete
     [items]="financialInstitutionService.getList() | async"
-    [form]="form">
+    [filter$]="form.valueChanges"
+    (itemSelected)="onAutocompleteItemSelected($event)">
     <ng-template let-item>
       <span class="sp-fi-item sp-fi-mfo">{{item.mfo}}</span>
       <span class="sp-fi-item sp-fi-edrpou">{{item.edrpou}}</span>

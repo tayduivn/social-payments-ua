@@ -38,7 +38,7 @@ import { ProxyAutocompleteCommands } from './proxy-autocomplete-commands.enum';
 })
 export class MultifieldAutocompleteComponent implements OnInit, AfterViewInit {
   @Input() public items: Object[];
-  @Input() public form: FormGroup;
+  @Input() public filter$: Observable<Object>;
 
   @Output() public itemSelected = new EventEmitter();
 
@@ -55,13 +55,8 @@ export class MultifieldAutocompleteComponent implements OnInit, AfterViewInit {
 
   constructor(private cdRef: ChangeDetectorRef) {}
 
-  public onAutocompleteItemSelected(selectedItem: MatAutocompleteSelectedEvent) {
-    this.form.patchValue(selectedItem.option.value, {emitEvent: false});
-    this.itemSelected.next(selectedItem.option.value);
-  }
-
   public ngOnInit() {
-    this.filteredItems = this.form.valueChanges
+    this.filteredItems = this.filter$
       .pipe(this.getAutocompleteFiltering());
   }
 

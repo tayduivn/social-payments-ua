@@ -1,7 +1,8 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component
+  Component,
+  Input
 } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import 'rxjs/add/operator/finally';
@@ -21,6 +22,17 @@ export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonCo
     public financialInstitutionService: FinancialInstitutionService
   ) {
     super(cdRef, FinancialInstitutionComponent.createForm(fb));
+  }
+
+  protected updateFormOnIdChange() {
+    const fiItem = this.financialInstitutionService.getById(this.id);
+
+    if (fiItem) {
+      this.form.patchValue(Object.assign({id: this.id}, fiItem), {emitEvent: false});
+      this.allFieldsEmtpy = false;
+    } else {
+      this.reset();
+    }
   }
 
   private static createForm(fb: FormBuilder) {

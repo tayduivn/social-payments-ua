@@ -3,8 +3,14 @@ import { Apollo } from 'apollo-angular';
 import { ApolloQueryResult } from 'apollo-client';
 import gql from 'graphql-tag';
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
+import {
+  filter,
+  map
+} from 'rxjs/operators';
+import { FinancialInstitutionModel } from '../financial-institution/financial-institution.model';
 import { PersonAccountsModel } from './person-accounts.model';
+
+const personAccountsQuery = gql(require('webpack-graphql-loader!./person-accounts.graphql'));
 
 interface PersonAccountsList {
   personAccounts: PersonAccountsModel[]
@@ -12,12 +18,11 @@ interface PersonAccountsList {
 
 @Injectable()
 export class PersonAccountsService {
-
   constructor(private apollo: Apollo) { }
 
   public getPersonAccounts(): Observable<PersonAccountsModel[]> {
     return this.apollo.watchQuery<PersonAccountsList>({
-      query: gql(require('webpack-graphql-loader!./person-accounts.graphql'))
+      query: personAccountsQuery
     })
       .valueChanges
       .pipe(
@@ -25,4 +30,14 @@ export class PersonAccountsService {
       )
   }
 
+  public getById(id: string): Observable<PersonAccountsModel | undefined> {
+    return this.apollo.query({
+      query: personAccountsQuery
+    })
+      .pipe(
+        map((r: ApolloQueryResult<PersonAccountsList>) => r.data.personAccounts.find((item: PersonAccountsModel) => {
+          return item.person === id;
+        }))
+      )
+  }
 }

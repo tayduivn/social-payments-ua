@@ -16,23 +16,25 @@ interface Users {
   users: UserResponseModel[]
 }
 
+const readAllUsersQuery = gql(require('webpack-graphql-loader!./users.graphql'));
+const submitMutation = gql(require('webpack-graphql-loader!./submit-user.graphql'));
+const removeMutation = gql(require('webpack-graphql-loader!./remove-user.graphql'));
+
 @Injectable()
 export class UsersService {
-  private static readAllUsersQuery = gql(require('webpack-graphql-loader!./users.graphql'));
-
   constructor(private apollo: Apollo) {}
 
   private static getUsersInStore(store: DataProxy) {
-    return store.readQuery<Users>({query: UsersService.readAllUsersQuery});
+    return store.readQuery<Users>({query: readAllUsersQuery});
   }
 
   private static writeUsersStoreData(store, data) {
-    store.writeQuery({query: UsersService.readAllUsersQuery, data});
+    store.writeQuery({query: readAllUsersQuery, data});
   }
 
   public getUsers(): Observable<UserResponseModel[]> {
     return this.apollo.watchQuery<Users>({
-      query: UsersService.readAllUsersQuery
+      query: readAllUsersQuery
     })
       .valueChanges
       .pipe(
@@ -44,7 +46,7 @@ export class UsersService {
     const userFields = Object.assign({password: userInfo.password}, userInfo.user);
 
     return this.apollo.mutate<UserResponseModel>({
-      mutation: gql(require('webpack-graphql-loader!./submit-user.graphql')),
+      mutation: submitMutation,
       variables: {user: userFields},
       optimisticResponse: {
         __typename: 'Mutation',
@@ -68,7 +70,7 @@ export class UsersService {
 
   public removeUser(id: string): Observable<any> {
     return this.apollo.mutate({
-      mutation: gql(require('webpack-graphql-loader!./remove-user.graphql')),
+      mutation: removeMutation,
       variables: {
         id
       },

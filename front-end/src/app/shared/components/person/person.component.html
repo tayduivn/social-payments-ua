@@ -4,7 +4,7 @@
   <div class="sp-person-reset">
     <button mat-button
       [disabled]="allFieldsEmtpy"
-      (click)="onResetClick()">
+      (click)="reset()">
       <mat-icon>delete</mat-icon>
     </button>
   </div>
@@ -72,7 +72,7 @@
 
     <sp-multifield-autocomplete #autocomplete
       [items]="personService.getList() | async"
-      [form]="form"
+      [filter$]="form.valueChanges"
       (itemSelected)="onAutocompleteItemSelected($event)">
       <ng-template let-item>
         {{item.fullName}},

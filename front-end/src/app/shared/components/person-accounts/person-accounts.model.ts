@@ -4,7 +4,9 @@ export class PersonAccountsModel {
   financialInstitutions: [
     {
       financialInstitution: string;
-      accounts: string[];
+      accounts: [{
+        account: string;
+      }];
     }
   ]
 }

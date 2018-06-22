@@ -10,6 +10,10 @@ interface FinancialInstitutions {
   financialInstitutions: FinancialInstitutionModel[]
 }
 
+const listQuery = gql(require('webpack-graphql-loader!./financial-institutions.graphql'));
+const fieldsFragment = gql(require('webpack-graphql-loader!./financial-institution.fragment.graphql'));
+const typeName = fieldsFragment.definitions.find(i => i.kind === 'FragmentDefinition').typeCondition.name.value;
+
 @Injectable()
 export class FinancialInstitutionService {
 
@@ -17,11 +21,19 @@ export class FinancialInstitutionService {
 
   public getList(): Observable<FinancialInstitutionModel[]> {
     return this.apollo.watchQuery<FinancialInstitutions>({
-      query: gql(require('webpack-graphql-loader!./financial-institutions.graphql'))
+      query: listQuery,
     })
       .valueChanges
       .pipe(
         map((r: ApolloQueryResult<FinancialInstitutions>) => r.data.financialInstitutions)
       )
+  }
+
+  public getById(id: string): FinancialInstitutionModel {
+    console.log('!!!!!!!!!!!!!!!!!!typeName', typeName);
+    return this.apollo.getClient().readFragment<FinancialInstitutionModel>({
+      id: `${typeName}:${id}`,
+      fragment: fieldsFragment
+    });
   }
 }
