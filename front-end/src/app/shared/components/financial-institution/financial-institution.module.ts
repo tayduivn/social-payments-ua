@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { SharedModule } from '../../shared.module';
 import { MultifieldAutocompleteModule } from '../common/multifield-autocomplete/multifield-autocomplete.module';

@@ -15,24 +15,25 @@ export class InputFilterDirective {
   private filterRegexp: RegExp;
 
   @HostListener('keydown', ['$event'])
-  public filterLoginInput(event: KeyboardEvent) {
+  private filterInput(event: KeyboardEvent) {
     const key = event.key;
 
-    if (!this.filterRegexp || !this.filterable(key)) { return; }
+    if (!key || !this.filterRegexp || !this.isCommandKeyPressed(key)) { return; }
     if (!this.filterRegexp.test(key)) {
       event.preventDefault();
     }
   }
 
-  private filterable(key: string): boolean {
-    const excludeKeysPhrases = [
+  private isCommandKeyPressed(key: string): boolean {
+    const excludeKeyNames = [
       'arrow',
       'backspace',
       'delete',
       'home',
-      'end'
+      'end',
+      'tab'
     ];
 
-    return !excludeKeysPhrases.some(keyPhrase => key.toLowerCase().includes(keyPhrase));
+    return !excludeKeyNames.some(keyPhrase => key.toLowerCase().includes(keyPhrase));
   }
 }

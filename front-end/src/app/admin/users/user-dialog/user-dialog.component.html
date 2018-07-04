@@ -10,7 +10,7 @@
       required
       spInputFilter="[a-z0-9]">
     <mat-hint>Латинські літери та цифри</mat-hint>
-    <mat-error *ngIf="login.invalid">{{getErrorMessage(login)}}</mat-error>
+    <mat-error *ngIf="login.invalid && login.hasError('required')">Введіть логін</mat-error>
   </mat-form-field>
 
   <mat-form-field>
@@ -21,7 +21,7 @@
       placeholder="Повне ім'я"
       required
       [spInputFilter]="fullNameFilter">
-    <mat-error *ngIf="fullName.invalid">{{getErrorMessage(login)}}</mat-error>
+    <mat-error *ngIf="fullName.invalid && fullName.hasError('required')">Введіть повне ім'я користувача</mat-error>
     <mat-hint>Прізвище, ім'я, по батькові</mat-hint>
   </mat-form-field>
 
@@ -33,7 +33,7 @@
       type="password"
       placeholder="Пароль"
       required>
-    <mat-error *ngIf="password.invalid">{{getErrorMessage(password)}}</mat-error>
+    <mat-error *ngIf="password.invalid && password.hasError('required')">Введіть пароль</mat-error>
   </mat-form-field>
 
   <mat-form-field *ngIf="!showResetPasswordButton">
@@ -44,15 +44,15 @@
       placeholder="Повторіть пароль"
       required
       [errorStateMatcher]="repeatPasswordMatcher">
-    <mat-error *ngIf="repeatPassword.invalid">{{getErrorMessage(repeatPassword)}}</mat-error>
+      <mat-error *ngIf="repeatPassword.invalid && repeatPassword.hasError('required')">Введіть пароль повторно</mat-error>
+      <mat-error *ngIf="repeatPassword.invalid && repeatPassword.hasError('matchError')">Паролі не співпадають</mat-error>
   </mat-form-field>
 
   <div class="sp-reset-password">
     <button *ngIf="showResetPasswordButton"
       mat-raised-button
       (click)="onResetButton()"
-      color="primary">Встановити пароль
-    </button>
+      color="primary">Встановити пароль</button>
   </div>
 
   <div class="sp-is-admin">

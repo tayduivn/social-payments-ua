@@ -17,6 +17,7 @@
       placeholder="Код МФО"
       spInputFilter="[0-9]"
       [spProxyAutocompleteCommands]="autocomplete">
+    <mat-error *ngIf="mfo.invalid && mfo.hasError('required')">Введіть код МФО</mat-error>
   </mat-form-field>
 
   <mat-form-field class="sp-financial-field sp-financial-edrpou">
@@ -26,6 +27,7 @@
       placeholder="Код ЄДРПОУ"
       spInputFilter="[0-9]"
       [spProxyAutocompleteCommands]="autocomplete">
+    <mat-error *ngIf="edrpou.invalid && edrpou.hasError('required')">Введіть код ЄДРПОУ</mat-error>
   </mat-form-field>
 
   <mat-form-field class="sp-financial-field sp-financial-name">
@@ -34,6 +36,7 @@
       formControlName="name"
       placeholder="Назва"
       [spProxyAutocompleteCommands]="autocomplete">
+    <mat-error *ngIf="name.invalid && name.hasError('required')">Введіть назву</mat-error>
   </mat-form-field>
 
   <sp-multifield-autocomplete #autocomplete

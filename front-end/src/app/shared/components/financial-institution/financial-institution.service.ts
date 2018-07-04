@@ -30,7 +30,6 @@ export class FinancialInstitutionService {
   }
 
   public getById(id: string): FinancialInstitutionModel {
-    console.log('!!!!!!!!!!!!!!!!!!typeName', typeName);
     return this.apollo.getClient().readFragment<FinancialInstitutionModel>({
       id: `${typeName}:${id}`,
       fragment: fieldsFragment

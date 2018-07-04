@@ -10,13 +10,16 @@ import { FinancialInstitutionModel } from '../../financial-institution/financial
 import { PersonModel } from '../../person/person.model';
 
 export abstract class MultifiedAutocompleteCommonComponent {
-  @Input() public set id(val: string) {
+  @Input()
+  public set id(val: string) {
     this._id = val;
     this.updateFormOnIdChange();
   }
+
   public get id(): string {
     return this._id;
   }
+
   @Output() public idChange = new EventEmitter<string>();
 
   public allFieldsEmtpy: boolean = true;
@@ -27,15 +30,14 @@ export abstract class MultifiedAutocompleteCommonComponent {
     this.initReset();
 
     this.form.valueChanges.subscribe(i => {
-      if (this.id) {
-        this.consolidateId(null);
-        this.form.patchValue({id: this.id}, {emitEvent: false});
-      }
+      this.consolidateId(null);
+      this.form.patchValue({id: this.id}, {emitEvent: false});
     });
   }
 
   public reset() {
     this.allFieldsEmtpy = true;
+    this.consolidateId(null);
     this.form.reset();
   }
 

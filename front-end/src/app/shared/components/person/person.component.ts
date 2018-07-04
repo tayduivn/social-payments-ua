@@ -5,14 +5,16 @@ import {
   Input,
   Output
 } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  Validators
+} from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { lettersUA_CharsDiapason } from '../../constants/char-diapason-ua';
 import { MultifiedAutocompleteCommonComponent } from '../common/multifield-autocomplete/multified-autocomplete-common.component';
 import { PersonModel } from './person.model';
 import { PersonService } from './person.service';
-
-const passportNumberLetter = new RegExp(`[a-zA-Z${lettersUA_CharsDiapason}]`);
 
 @Component({
   selector: 'sp-person',
@@ -20,12 +22,22 @@ const passportNumberLetter = new RegExp(`[a-zA-Z${lettersUA_CharsDiapason}]`);
   styleUrls: ['./person.component.scss']
 })
 export class PersonComponent extends MultifiedAutocompleteCommonComponent {
+  public readonly passportNumberLetter = new RegExp(`[0-9a-zA-Z${lettersUA_CharsDiapason}]`);
+
+  public fullName: FormControl;
+  public passportNumber: FormControl;
+  public identityCode: FormControl;
+  public street: FormControl;
+  public house: FormControl;
+
   constructor(
     cdRef: ChangeDetectorRef,
     fb: FormBuilder,
     public personService: PersonService
   ) {
     super(cdRef, PersonComponent.createForm(fb));
+
+    this.initControls();
   }
 
   protected updateFormOnIdChange() {
@@ -35,15 +47,23 @@ export class PersonComponent extends MultifiedAutocompleteCommonComponent {
   private static createForm(fb: FormBuilder) {
     return fb.group({
       id: null,
-      fullName: '',
-      passportNumber: '',
-      identityCode: '',
+      fullName: ['', Validators.required],
+      passportNumber: ['', Validators.required],
+      identityCode: ['', Validators.required],
       address: fb.group({
-        street: '',
-        house: '',
+        street: ['', Validators.required],
+        house: ['', Validators.required],
         houseSection: '',
         apartment: ''
       })
     });
+  }
+
+  private initControls() {
+    this.fullName = <FormControl> this.form.get('fullName');
+    this.passportNumber = <FormControl> this.form.get('passportNumber');
+    this.identityCode = <FormControl> this.form.get('identityCode');
+    this.street = <FormControl> this.form.get('address.street');
+    this.house = <FormControl> this.form.get('address.house');
   }
 }

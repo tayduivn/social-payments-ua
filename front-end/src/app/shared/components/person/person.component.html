@@ -16,6 +16,7 @@
         formControlName="fullName"
         placeholder="Прізвище, ім'я, по батькові"
         [spProxyAutocompleteCommands]="autocomplete">
+      <mat-error *ngIf="fullName.invalid && fullName.hasError('required')">Введіть прізвище, ім'я, по батькові</mat-error>
     </mat-form-field>
 
     <div class="sp-person-documents-info">
@@ -24,7 +25,9 @@
           autocomplete="off"
           formControlName="passportNumber"
           placeholder="Серія та номер паспорта"
+          [spInputFilter]="passportNumberLetter"
           [spProxyAutocompleteCommands]="autocomplete">
+        <mat-error *ngIf="passportNumber.invalid && passportNumber.hasError('required')">Введіть cерію та номер паспорта</mat-error>
       </mat-form-field>
 
       <mat-form-field class="sp-identity-code">
@@ -32,7 +35,9 @@
           autocomplete="off"
           formControlName="identityCode"
           placeholder="Ідентифікаційний код"
+          spInputFilter="[0-9]"
           [spProxyAutocompleteCommands]="autocomplete">
+        <mat-error *ngIf="identityCode.invalid && identityCode.hasError('required')">Введіть ідентифікаційний код</mat-error>
       </mat-form-field>
     </div>
 
@@ -44,6 +49,7 @@
           formControlName="street"
           placeholder="Вулиця"
           [spProxyAutocompleteCommands]="autocomplete">
+        <mat-error *ngIf="street.invalid && street.hasError('required')">Введіть назву вулиці</mat-error>
       </mat-form-field>
 
       <mat-form-field class="sp-house">
@@ -52,6 +58,7 @@
           formControlName="house"
           placeholder="Будинок"
           [spProxyAutocompleteCommands]="autocomplete">
+        <mat-error *ngIf="house.invalid && house.hasError('required')">Введіть номер будинку</mat-error>
       </mat-form-field>
 
       <mat-form-field class="sp-house-section">

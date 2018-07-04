@@ -64,19 +64,6 @@ export class UserDialogComponent implements OnInit {
     }
   }
 
-  public getErrorMessage(input: FormControl) {
-    switch (input) {
-      case this.login:
-        return this.login.hasError('required') ? 'Введіть логін' : '';
-      case this.fullName:
-        return this.fullName.hasError('required') ? 'Введіть повне ім\'я користувача' : '';
-      case this.password:
-        return this.password.hasError('required') ? 'Введіть пароль' : '';
-      case this.repeatPassword:
-        return this.getRepeatPasswordError();
-    }
-  }
-
   public isSaveDisabled(): boolean {
     const passwordError = this.showResetPasswordButton ? false : !!this.password.errors || !!this.repeatPassword.errors;
 
@@ -92,10 +79,5 @@ export class UserDialogComponent implements OnInit {
       const matchError = control.value !== this.password.value;
       return matchError ? {matchError} : null;
     }
-  }
-
-  private getRepeatPasswordError(): string {
-    return this.repeatPassword.hasError('required') ? 'Введіть пароль повторно' :
-      this.repeatPassword.hasError('matchError') ? 'Паролі не співпадають' : '';
   }
 }

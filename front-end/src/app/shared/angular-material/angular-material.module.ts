@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import {
+  MAT_DATE_LOCALE,
   MatAutocompleteModule,
   MatCardModule,
   MatDatepickerModule,
@@ -37,6 +38,12 @@ const importedExports = [
 
 @NgModule({
   imports: importedExports,
-  exports: importedExports
+  exports: importedExports,
+  providers: [
+    {
+      provide: MAT_DATE_LOCALE,
+      useValue: 'uk'
+    }
+  ]
 })
 export class AngularMaterialModule { }

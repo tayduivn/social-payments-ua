@@ -4,7 +4,11 @@ import {
   Component,
   Input
 } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  Validators
+} from '@angular/forms';
 import 'rxjs/add/operator/finally';
 import { MultifiedAutocompleteCommonComponent } from '../common/multifield-autocomplete/multified-autocomplete-common.component';
 import { FinancialInstitutionService } from './financial-institution.service';
@@ -16,12 +20,18 @@ import { FinancialInstitutionService } from './financial-institution.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonComponent {
+  public name: FormControl;
+  public mfo: FormControl;
+  public edrpou: FormControl;
+
   constructor(
     cdRef: ChangeDetectorRef,
     fb: FormBuilder,
     public financialInstitutionService: FinancialInstitutionService
   ) {
     super(cdRef, FinancialInstitutionComponent.createForm(fb));
+
+    this.initControls();
   }
 
   protected updateFormOnIdChange() {
@@ -38,9 +48,15 @@ export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonCo
   private static createForm(fb: FormBuilder) {
     return fb.group({
       id: null,
-      name: '',
-      mfo: '',
-      edrpou: ''
+      name: ['', Validators.required],
+      mfo: ['', Validators.required],
+      edrpou: ['', Validators.required]
     });
+  }
+
+  private initControls() {
+    this.name = <FormControl> this.form.get('name');
+    this.mfo = <FormControl> this.form.get('mfo');
+    this.edrpou = <FormControl> this.form.get('edrpou');
   }
 }

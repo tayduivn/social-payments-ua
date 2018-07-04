@@ -10,14 +10,17 @@
   <perfect-scrollbar class="sp-payment-body">
     <mat-card-content class="sp-payment-content">
       <mat-form-field>
-        <input matInput
+        <input #dateInput
+          matInput
           name="date"
           formControlName="date"
+          autocomplete="off"
           placeholder="Дата виплати"
           [matDatepicker]="paymentDatepicker">
         <mat-datepicker-toggle matSuffix
           [for]="paymentDatepicker"></mat-datepicker-toggle>
         <mat-datepicker #paymentDatepicker></mat-datepicker>
+        <mat-error *ngIf="date.invalid && date.hasError('required')">Введіть дату платежу</mat-error>
       </mat-form-field>
 
       <div class="sp-payment-section">
@@ -28,6 +31,7 @@
       <div class="sp-payment-section sp-financial-institution">
         <h4 class="sp-caption">Фінансова установа</h4>
         <sp-financial-institution [id]="financialInstitutionId"
+          (idChange)="onFinancialInstitutionIdChange($event)"
           class="sp-financial-institution"></sp-financial-institution>
       </div>
 
@@ -36,15 +40,19 @@
           <mat-form-field>
             <input matInput
               formControlName="accountNumber"
+              autocomplete="off"
               placeholder="Номер особового рахунку"
               [spInputFilter]="'[0-9]'">
+            <mat-error *ngIf="accountNumber.invalid && accountNumber.hasError('required')">Введіть номер особового рахунку</mat-error>
           </mat-form-field>
 
           <mat-form-field>
             <input matInput
               type="number"
               formControlName="sum"
+              autocomplete="off"
               placeholder="Сума платежу">
+            <mat-error *ngIf="sum.invalid && sum.hasError('required')">Введіть суму платежу</mat-error>
           </mat-form-field>
         </div>
 
@@ -52,7 +60,9 @@
           <mat-form-field class="sp-payment-description">
           <textarea matInput
             formControlName="description"
+            autocomplete="off"
             placeholder="Призначення платежу"></textarea>
+            <mat-error *ngIf="description.invalid && description.hasError('required')">Введіть призначення платежу</mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -66,6 +76,7 @@
       <button class="sp-payment-save"
         mat-raised-button
         color="primary"
+        [disabled]="saveButtonDisabled"
         (click)="onSaveClick()">Зберегти
       </button>
       <button mat-raised-button>Відміна</button>
