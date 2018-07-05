@@ -1,8 +1,7 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
-  Input
+  Component
 } from '@angular/core';
 import {
   FormBuilder,
@@ -11,6 +10,7 @@ import {
 } from '@angular/forms';
 import 'rxjs/add/operator/finally';
 import { MultifiedAutocompleteCommonComponent } from '../common/multifield-autocomplete/multified-autocomplete-common.component';
+import { FinancialInstitutionModel } from './financial-institution.model';
 import { FinancialInstitutionService } from './financial-institution.service';
 
 @Component({
@@ -35,14 +35,14 @@ export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonCo
   }
 
   protected updateFormOnIdChange() {
-    const fiItem = this.financialInstitutionService.getById(this.id);
-
-    if (fiItem) {
-      this.form.patchValue(Object.assign({id: this.id}, fiItem), {emitEvent: false});
-      this.allFieldsEmtpy = false;
-    } else {
-      this.reset();
-    }
+    this.financialInstitutionService.getById(this.id).subscribe((fiItem: FinancialInstitutionModel) => {
+      if (fiItem) {
+        this.form.patchValue(Object.assign({id: this.id}, fiItem), {emitEvent: false});
+        this.allFieldsEmtpy = false;
+      } else {
+        this.reset();
+      }
+    });
   }
 
   private static createForm(fb: FormBuilder) {

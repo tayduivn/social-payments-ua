@@ -29,10 +29,10 @@ export class FinancialInstitutionService {
       )
   }
 
-  public getById(id: string): FinancialInstitutionModel {
-    return this.apollo.getClient().readFragment<FinancialInstitutionModel>({
+  public getById(id: string): Observable<FinancialInstitutionModel> {
+    return Observable.of(this.apollo.getClient().readFragment<FinancialInstitutionModel>({
       id: `${typeName}:${id}`,
       fragment: fieldsFragment
-    });
+    }));
   }
 }
