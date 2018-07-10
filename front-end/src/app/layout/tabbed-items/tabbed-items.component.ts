@@ -1,15 +1,12 @@
 import {
-  AfterViewChecked,
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ComponentFactoryResolver,
   ComponentRef,
   Input,
-  OnInit,
   QueryList,
   Renderer2,
-  ViewChild,
   ViewChildren,
   ViewContainerRef
 } from '@angular/core';

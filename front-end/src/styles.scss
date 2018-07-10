@@ -7,6 +7,10 @@ html, body {
 
 body {
   font-family: "Roboto", "Open Sans", Helvetica, Arial, sans-serif;
+
+  * {
+    user-select: none;
+  }
 }
 
 @mixin mat-icon-size($size) {
