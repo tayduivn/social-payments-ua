@@ -1,12 +1,16 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PaymentsRoutingModule } from './payments-routing.module';
+import { NgModule } from '@angular/core';
+import { TabbedItemsModule } from '../layout/tabbed-items/tabbed-items.module';
+import { PaymentModule } from './payment/payment.module';
+import { PaymentsDashboardModule } from './payments-dashboard/payments-dashboard.module';
 import { PaymentsComponent } from './payments.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    PaymentsRoutingModule
+    PaymentModule,
+    PaymentsDashboardModule,
+    TabbedItemsModule
   ],
   declarations: [PaymentsComponent]
 })

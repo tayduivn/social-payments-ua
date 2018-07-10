@@ -1,0 +1,6 @@
+fragment PersonAddress on PersonAddress {
+  street
+  house
+  houseSection
+  apartment
+}

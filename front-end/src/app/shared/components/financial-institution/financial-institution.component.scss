@@ -1,0 +1,19 @@
+@import "../../styles/general.variables";
+
+:host {
+  display: block;
+}
+
+.sp-financial-field {
+  display: block;
+}
+
+.sp-financial-institution-container {
+  position: relative;
+}
+
+.sp-financial-fields-reset {
+  button {
+    min-width: auto;
+  }
+}

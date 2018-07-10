@@ -1,0 +1,19 @@
+<ng-container *ngFor="let fi of personAccounts.financialInstitutions">
+  <h3 class="sp-person-accounts-fi">
+    {{(financialInstitutionService.getById(fi.financialInstitution) | async).name}},
+    МФО: {{(financialInstitutionService.getById(fi.financialInstitution) | async).mfo}},
+    ЄДРПОУ: {{(financialInstitutionService.getById(fi.financialInstitution) | async).edrpou}}
+  </h3>
+
+  <mat-nav-list>
+    <a mat-list-item
+      *ngFor="let account of fi.accounts"
+      (click)="onAccountSelected(fi, account)">
+      {{account.account}}
+    </a>
+  </mat-nav-list>
+
+  <mat-divider></mat-divider>
+</ng-container>
+
+

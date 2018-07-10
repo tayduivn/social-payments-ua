@@ -1,0 +1,10 @@
+fragment PersonAccountsFields on PersonAccount {
+  id
+  person
+  financialInstitutions {
+    financialInstitution
+    accounts {
+      account
+    }
+  }
+}

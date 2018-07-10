@@ -12,7 +12,7 @@ import {
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { UserResponseModel } from '../../../../../../api-contracts/user/user-response.model';
 import { InputInstantStateMatcher } from '../../../shared/angular-material/input-instant-state-matcher';
-import { charsDiapasonUA } from '../../../shared/constants/char-diapason-ua';
+import { allUA_CharsDiapason } from '../../../shared/constants/char-diapason-ua';
 import { UserDialogModel } from './user-dialog.model';
 
 @Component({
@@ -21,7 +21,7 @@ import { UserDialogModel } from './user-dialog.model';
   styleUrls: ['./user-dialog.component.scss']
 })
 export class UserDialogComponent implements OnInit {
-  public readonly fullNameFilter = `[a-zA-Z${charsDiapasonUA} .'-]`;
+  public readonly fullNameFilter = `[a-zA-Z${allUA_CharsDiapason} .'-]`;
   public login = new FormControl('', [Validators.required]);
   public fullName = new FormControl('', [Validators.required]);
   public password = new FormControl('', [Validators.required]);
@@ -41,6 +41,7 @@ export class UserDialogComponent implements OnInit {
 
     this.userId = this.user ? this.user.id : null;
     this.showResetPasswordButton = !!this.user;
+
   }
 
   public saveUserChanges(): UserDialogModel {
@@ -63,19 +64,6 @@ export class UserDialogComponent implements OnInit {
     }
   }
 
-  public getErrorMessage(input: FormControl) {
-    switch (input) {
-      case this.login:
-        return this.login.hasError('required') ? 'Введіть логін' : '';
-      case this.fullName:
-        return this.fullName.hasError('required') ? 'Введіть повне ім\'я користувача' : '';
-      case this.password:
-        return this.password.hasError('required') ? 'Введіть пароль' : '';
-      case this.repeatPassword:
-        return this.getRepeatPasswordError();
-    }
-  }
-
   public isSaveDisabled(): boolean {
     const passwordError = this.showResetPasswordButton ? false : !!this.password.errors || !!this.repeatPassword.errors;
 
@@ -91,10 +79,5 @@ export class UserDialogComponent implements OnInit {
       const matchError = control.value !== this.password.value;
       return matchError ? {matchError} : null;
     }
-  }
-
-  private getRepeatPasswordError(): string {
-    return this.repeatPassword.hasError('required') ? 'Введіть пароль повторно' :
-      this.repeatPassword.hasError('matchError') ? 'Паролі не співпадають' : '';
   }
 }

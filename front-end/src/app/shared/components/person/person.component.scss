@@ -1,0 +1,45 @@
+@import "../../styles/general.variables";
+
+:host {
+  display: block;
+}
+
+.sp-person-reset {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+
+  button {
+    min-width: auto;
+  }
+}
+
+.sp-person-inputs {
+  $inputs-width: 56px + $input-inline-indent;
+
+  position: relative;
+  width: calc(100% - #{$inputs-width});
+  left: $inputs-width;
+}
+
+.sp-person-full-name {
+  display: block;
+}
+
+.sp-passport-number {
+  margin-right: $input-inline-indent;
+}
+
+.sp-street {
+  display: block;
+}
+
+.sp-house, .sp-house-section {
+  margin-right: $input-inline-indent;
+}
+
+.sp-person-container {
+  position: relative;
+}

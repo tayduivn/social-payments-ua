@@ -1,0 +1,20 @@
+<h2 matDialogTitle>Виберіть існуючий рахунок</h2>
+
+<mat-dialog-content>
+  <p>
+    <small>
+      Якщо потрібного рахунку немає в списку - закрийте даний діалог і введіть необхідні реквізити
+    </small>
+  </p>
+
+  <mat-divider></mat-divider><br/>
+
+  <sp-person-accounts [personAccounts]="data"
+    (accountSelected)="onAccountSelected($event)"></sp-person-accounts>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button
+    matDialogClose
+    color="basic">Відміна</button>
+</mat-dialog-actions>

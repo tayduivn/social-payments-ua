@@ -1,0 +1,16 @@
+#import '../../shared/components/financial-institution/financial-institution.fragment.graphql'
+#import '../../shared/components/person/person.fragment.graphql'
+
+fragment PaymentFields on Payment {
+  id
+  date
+  sum
+  accountNumber
+  description
+  financialInstitution {
+    ...FinancialInstitutionFields
+  }
+  person {
+    ...PersonFields
+  }
+}

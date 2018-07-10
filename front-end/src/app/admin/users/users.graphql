@@ -1,8 +1,7 @@
-query usersList {
+#import './user.fragment.graphql'
+
+query users {
   users {
-    login
-    fullName,
-    id,
-    isAdmin
+    ...UserFields
   }
 }

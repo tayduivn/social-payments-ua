@@ -1,0 +1,52 @@
+<section class="sp-financial-institution-container"
+  [formGroup]="form">
+
+  <div class="sp-financial-field sp-financial-fields-reset">
+    <button mat-button
+      [disabled]="allFieldsEmtpy"
+      (click)="reset()">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+
+  <mat-form-field class="sp-financial-field sp-financial-mfo">
+    <input matInput
+      autocomplete="off"
+      type="text"
+      formControlName="mfo"
+      placeholder="Код МФО"
+      spInputFilter="[0-9]"
+      [spProxyAutocompleteCommands]="autocomplete">
+    <mat-error *ngIf="mfo.invalid && mfo.hasError('required')">Введіть код МФО</mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="sp-financial-field sp-financial-edrpou">
+    <input matInput
+      autocomplete="off"
+      formControlName="edrpou"
+      placeholder="Код ЄДРПОУ"
+      spInputFilter="[0-9]"
+      [spProxyAutocompleteCommands]="autocomplete">
+    <mat-error *ngIf="edrpou.invalid && edrpou.hasError('required')">Введіть код ЄДРПОУ</mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="sp-financial-field sp-financial-name">
+    <input matInput
+      autocomplete="off"
+      formControlName="name"
+      placeholder="Назва"
+      [spProxyAutocompleteCommands]="autocomplete">
+    <mat-error *ngIf="name.invalid && name.hasError('required')">Введіть назву</mat-error>
+  </mat-form-field>
+
+  <sp-multifield-autocomplete #autocomplete
+    [items]="financialInstitutionService.getList() | async"
+    [filter$]="form.valueChanges"
+    (itemSelected)="onAutocompleteItemSelected($event)">
+    <ng-template let-item>
+      <span class="sp-fi-item sp-fi-mfo">{{item.mfo}}</span>
+      <span class="sp-fi-item sp-fi-edrpou">{{item.edrpou}}</span>
+      <span class="sp-fi-item sp-fi-name">{{item.name}}</span>
+    </ng-template>
+  </sp-multifield-autocomplete>
+</section>

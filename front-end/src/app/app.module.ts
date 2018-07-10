@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Router } from '@angular/router';
+import { NgxMaskModule } from 'ngx-mask';
 import { AppRoutingModule } from './app-routing.module';
+import { AppStartupModulesModule } from './app-startup-modules.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
+import { MainNavModule } from './layout/main-nav/main-nav.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -12,12 +14,13 @@ import { CoreModule } from './core/core.module';
     BrowserModule,
     BrowserAnimationsModule,
     CoreModule,
+    AppStartupModulesModule,
+    NgxMaskModule.forRoot(),
+    MainNavModule,
     AppRoutingModule
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(private router: Router) {
-    console.log('Routes: ', JSON.stringify(router.config, undefined, 2));
-  }
+  constructor() {}
 }

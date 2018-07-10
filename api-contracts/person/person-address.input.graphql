@@ -1,0 +1,6 @@
+input PersonAddressInput {
+  street: String!
+  house: String!
+  houseSection: String
+  apartment: String
+}

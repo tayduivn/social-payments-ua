@@ -1,0 +1,7 @@
+#import './person.fragment.graphql'
+
+query persons {
+  persons {
+    ...PersonFields
+  }
+}

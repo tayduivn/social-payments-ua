@@ -1,0 +1,118 @@
+@import "../../shared/styles/general.variables";
+
+$payment-section-indent: 1.2em;
+
+:host {
+  display: flex;
+
+  ::ng-deep {
+    .sp-financial-institution-container {
+      display: flex;
+
+      .sp-financial-mfo,
+      .sp-financial-edrpou,
+      .sp-financial-fields-reset {
+        margin-right: $input-inline-indent;
+        flex: 0 0 auto;
+        align-items: center;
+        display: flex;
+      }
+    }
+
+    .sp-financial-name {
+      flex: 1 0 0;
+    }
+
+    .sp-financial-institution .sp-autocomplete-trigger {
+      $left-indent: 56px + $input-inline-indent;
+
+      left: $left-indent;
+      width: calc(100% - #{$left-indent});
+    }
+  }
+}
+
+::ng-deep {
+  .sp-autocomplete-panel {
+    .sp-autocomplete-option {
+      padding: 0 5px;
+    }
+
+    .mat-option-text {
+      display: flex;
+
+      .sp-fi-item {
+        display: block;
+        flex: 0 0 auto;
+        width: 180px + $input-inline-indent;
+
+        &.sp-fi-name {
+          flex: 1 0 0;
+        }
+      }
+    }
+  }
+}
+
+.sp-payment-card {
+  flex: 1 0 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sp-payment-header,
+.sp-payment-footer {
+  flex: 0 0;
+}
+
+.sp-payment-body {
+  flex: 1 1 auto;
+  margin: 2px 0;
+  padding-right: 10px;
+}
+
+.sp-payment-content {
+  margin-bottom: 0;
+  padding-top: $payment-section-indent;
+}
+
+.sp-payment-details {
+  display: flex;
+}
+
+.sp-payment-num-sum-block {
+  display: flex;
+  flex-direction: column;
+  margin-right: $input-inline-indent;
+  flex: 0 0 auto;
+}
+
+.sp-payment-description-block {
+  flex: 1 1 0;
+  display: flex;
+  align-items: flex-end;
+}
+
+.sp-payment-description {
+  width: 100%;
+}
+
+.sp-payment-section {
+  padding: $payment-section-indent 0;
+
+  &.sp-financial-institution {
+    padding-bottom: 0;
+  }
+
+  .sp-caption {
+    margin: 0;
+  }
+}
+
+.sp-payment-actions {
+  margin: 1em 0 0;
+
+  .sp-payment-save {
+    margin-right: $input-inline-indent;
+  }
+}

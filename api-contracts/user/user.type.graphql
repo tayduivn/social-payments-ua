@@ -1,0 +1,6 @@
+type User {
+  id: ID!
+  login: String!
+  fullName: String!
+  isAdmin: Boolean!
+}

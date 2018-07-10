@@ -1,0 +1,32 @@
+<mat-sidenav-container class="sp-actions-menu">
+  <mat-sidenav mode="side" opened="true" class="sp-mat-sidenav">
+    <mat-nav-list>
+      <ng-template ngFor let-item [ngForOf]="items?.list" [ngForTrackBy]="listItemTrackFn">
+        <mat-list-item (click)="onItemClick(item)">
+          <mat-icon matListIcon>{{item.icon}}</mat-icon>
+          <h3 matLine>{{item.title}}</h3>
+        </mat-list-item>
+
+        <mat-divider></mat-divider>
+      </ng-template>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="sp-content">
+    <mat-card class="sp-container">
+      <mat-tab-group class="sp-tab-group">
+        <mat-tab *ngFor="let item of openedTabs; listItemTrackFn">
+          <ng-template mat-tab-label>
+            <div class="sp-tab-label">
+              <mat-icon>{{item.icon}}</mat-icon>
+              <span class="sp-tab-label-text">{{item.title}}</span>
+            </div>
+          </ng-template>
+
+          <ng-template #tabContent></ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+

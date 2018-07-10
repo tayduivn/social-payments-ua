@@ -1,0 +1,9 @@
+#import PersonAddressInput from './person-address.input.graphql'
+
+input PersonInput {
+  id: ID
+  fullName: String!
+  passportNumber: String!
+  identityCode: String
+  address: PersonAddressInput
+}

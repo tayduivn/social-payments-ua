@@ -1,12 +1,9 @@
 import { Types } from 'mongoose';
-import { UserResponseModel } from '../../../../api-contracts/user/user-response.model';
 import { UserModel } from '../../models/user/user.model';
 
 export const resolvers = {
   Query: {
-    users(): {then: () => Promise<UserResponseModel[]>} {
-      return UserModel.find();
-    }
+    users: () => UserModel.find()
   },
   Mutation: {
     submitUser(obj: any, {user}: any) {

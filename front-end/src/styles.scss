@@ -28,3 +28,9 @@ body {
     @include mat-icon-size(48px);
   }
 }
+
+.sp-app-body {
+  .mat-option.mat-active {
+    background: rgba(0,0,0,.08);
+  }
+}

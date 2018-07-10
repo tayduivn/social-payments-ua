@@ -1,0 +1,6 @@
+input FinancialInstitutionInput {
+  id: ID
+  name: String!
+  mfo: String!
+  edrpou: String!
+}

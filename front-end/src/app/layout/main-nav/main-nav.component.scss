@@ -1,0 +1,35 @@
+@import '../../../../node_modules/@angular/material/theming';
+
+$nav-shadow-size: 10px;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sp-top-panel {
+  box-shadow: 0 0 $nav-shadow-size mat-color($mat-gray, 900);
+
+  .sp-nav {
+    .sp-nav-link {
+      margin-right: 1em;
+    }
+  }
+}
+
+.sp-body {
+  flex: 1;
+  display: flex;
+  margin-top: $nav-shadow-size;
+
+  ::ng-deep > {
+    * {
+      flex: 1;
+    }
+
+    router-outlet {
+      display: none;
+    }
+  }
+}

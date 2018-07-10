@@ -1,0 +1,22 @@
+schema {
+  query: Query
+}
+
+type Query {
+  personAccounts: [PersonAccount!]!
+}
+
+type PersonAccount {
+  id: ID
+  person: ID
+  financialInstitutions: [FinancialInstitutionAccount!]!
+}
+
+type FinancialInstitutionAccount {
+  financialInstitution: ID
+  accounts: [Account!]!
+}
+
+type Account  {
+  account: String!
+}

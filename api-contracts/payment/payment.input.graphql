@@ -1,0 +1,11 @@
+#import FinancialInstitutionInput from '../financial-institution/financial-institution.input.graphql'
+#import PersonInput from '../person/person.input.graphql'
+
+input PaymentInput {
+  date: DateTime!
+  sum: Float!
+  accountNumber: String!
+  description: String!
+  person: PersonInput!
+  financialInstitution: FinancialInstitutionInput!
+}

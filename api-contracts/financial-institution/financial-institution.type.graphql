@@ -1,0 +1,6 @@
+type FinancialInstitution {
+  id: ID!
+  name: String!
+  mfo: String!
+  edrpou: String!
+}

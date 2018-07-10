@@ -6,8 +6,8 @@ import {
 import { Router } from '@angular/router';
 import { LoginResponse } from '../../../../api-contracts/login-response';
 import { WINDOW } from '../core/window';
-import { SpDialogType } from '../shared/components/sp-dialog/sp-dialog-type.enum';
-import { SpDialogService } from '../shared/components/sp-dialog/sp-dialog.service';
+import { SpDialogType } from '../shared/components/dialog/sp-dialog-type.enum';
+import { SpDialogService } from '../shared/components/dialog/sp-dialog.service';
 import { LoginService } from './login.service';
 
 @Component({
@@ -33,12 +33,33 @@ export class LoginComponent {
           this.router.navigate(['/']);
         }
       },
-      () => {
-        this.spDialogService.open({
-          type: SpDialogType.Alert,
-          title: 'Помилка',
-          text: 'Невірний логін або пароль'
-        }, {panelClass: 'sp-login-error-alert'});
+      (error: any) => {
+        let text: string;
+
+        if (!error) {
+          text = 'Невідома помилка';
+        } else {
+          switch (error.status) {
+            case 0:
+              text = 'Помилка сертифікату';
+              break;
+            case 401:
+              text = 'Невірний логін або пароль';
+              break;
+            default:
+              text = error.message;
+          }
+        }
+
+        this.spDialogService.open(
+          {
+            type: SpDialogType.Alert,
+            title: 'Помилка',
+            text
+          },
+         {
+            panelClass: 'sp-login-error-alert'
+          });
       }
     );
   }

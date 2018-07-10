@@ -9,9 +9,9 @@ import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { setContext } from 'apollo-link-context';
 import { onError } from 'apollo-link-error';
-import { SpDialogType } from '../shared/components/sp-dialog/sp-dialog-type.enum';
-import { SpDialogModule } from '../shared/components/sp-dialog/sp-dialog.module';
-import { SpDialogService } from '../shared/components/sp-dialog/sp-dialog.service';
+import { SpDialogType } from '../shared/components/dialog/sp-dialog-type.enum';
+import { SpDialogModule } from '../shared/components/dialog/sp-dialog.module';
+import { SpDialogService } from '../shared/components/dialog/sp-dialog.service';
 import { AuthService } from './auth.service';
 
 @NgModule({
@@ -66,13 +66,26 @@ export class ApiLayerModule {
   }
 
   private getErrorLink() {
-    return onError(({graphQLErrors, networkError}) => {
-      const text = networkError ? (networkError as HttpErrorResponse).statusText : graphQLErrors[0].message;
+    return onError(({graphQLErrors, networkError, response}) => {
+      let errorText: string[] = [];
+
+      if (networkError) {
+        errorText.push((networkError as HttpErrorResponse).statusText + ': ');
+
+        if ((networkError as any).error && (networkError as any).error.errors) {
+          const {errors} = (networkError as any).error;
+          if (errors && errors.length) {
+            errors.forEach(err => errorText.push(err && err.message ? err.message : ''))
+          }
+        }
+      } else {
+        errorText.push(graphQLErrors[0].message);
+      }
 
       this.spDialogService.open({
         type: SpDialogType.Alert,
         title: 'Помилка',
-        text
+        text: errorText.join(' ')
       });
     });
   }
