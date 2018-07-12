@@ -14,7 +14,9 @@
 
   <mat-sidenav-content class="sp-content">
     <mat-card class="sp-container">
-      <mat-tab-group class="sp-tab-group" [selectedIndex]="openedTabs.length - 1">
+      <mat-tab-group *ngIf="openedTabs.length"
+        class="sp-tab-group"
+        [selectedIndex]="openedTabs.length - 1">
         <mat-tab *ngFor="let item of openedTabs; listItemTrackFn">
           <ng-template mat-tab-label>
             <div class="sp-tab-label">

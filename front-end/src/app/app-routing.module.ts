@@ -5,12 +5,12 @@ import {
 } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
 import { AdminModule } from './admin/admin.module';
-import { MainNavComponent } from './layout/main-nav/main-nav.component';
-import { MainNavModule } from './layout/main-nav/main-nav.module';
 import { LoginComponent } from './login/login.component';
 import { LoginModule } from './login/login.module';
 import { PaymentsComponent } from './payments/payments.component';
 import { PaymentsModule } from './payments/payments.module';
+import { ReportsComponent } from './reports/reports.component';
+import { ReportsModule } from './reports/reports.module';
 
 const routes: Routes = [
   {
@@ -20,6 +20,10 @@ const routes: Routes = [
   {
     path: 'payments',
     component: PaymentsComponent
+  },
+  {
+    path: 'reports',
+    component: ReportsComponent
   },
   {
     path: 'admin',
@@ -37,6 +41,7 @@ const routes: Routes = [
     LoginModule,
     AdminModule,
     PaymentsModule,
+    ReportsModule,
     RouterModule.forRoot(routes)
   ],
   exports: [RouterModule]

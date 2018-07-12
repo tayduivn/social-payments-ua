@@ -1,0 +1,19 @@
+@import "../../shared/styles/general.variables";
+
+.sp-period-report-content {
+  margin-top: $input-block-indent;
+}
+
+.sp-period-option {
+  display: block;
+  margin-bottom: $input-block-indent;
+  margin-left: $input-inline-indent;
+
+  &:first-child {
+    margin-top: $input-block-indent;
+  }
+}
+
+.sp-date-period-from {
+  margin-right: $input-inline-indent * 3;
+}

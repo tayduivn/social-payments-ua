@@ -2,7 +2,7 @@ import { TabbedItemsConfig } from '../layout/tabbed-items/tabbed-items-config.mo
 import { PaymentComponent } from './payment/payment.component';
 import { PaymentsDashboardComponent } from './payments-dashboard/payments-dashboard.component';
 
-export const PaymentsConfig: TabbedItemsConfig = {
+export const paymentsConfig: TabbedItemsConfig = {
   list: [
     {
       title: 'Новий платіж',

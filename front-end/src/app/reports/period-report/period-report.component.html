@@ -1,0 +1,47 @@
+<mat-card class="sp-period-report">
+  <div>
+    <mat-card-title class="sp-period-report-header">
+      Платежі за період
+    </mat-card-title>
+
+    <mat-divider></mat-divider>
+  </div>
+
+  <mat-card-content class="sp-period-report-content">
+    <p>Вкажіть період:</p>
+
+    <mat-radio-group class="sp-period-group" (change)="selectedRangeChange($event)">
+      <mat-radio-button class="sp-period-option" [value]="PeriodReportRange.Week">Тиждень</mat-radio-button>
+      <mat-radio-button class="sp-period-option" [value]="PeriodReportRange.Month">Місяць</mat-radio-button>
+      <mat-radio-button class="sp-period-option" [value]="PeriodReportRange.Range">Інше</mat-radio-button>
+    </mat-radio-group>
+
+    <div class="sp-period-select-container">
+      <mat-form-field class="sp-date-period-from">
+        <input matInput
+          name="date"
+          autocomplete="off"
+          placeholder="Дата з"
+          [disabled]="datePeriodDisabled"
+          [matDatepicker]="fromDate">
+        <mat-datepicker-toggle matSuffix
+          [for]="fromDate"></mat-datepicker-toggle>
+        <mat-datepicker #fromDate></mat-datepicker>
+        <!--<mat-error *ngIf="date.invalid && date.hasError('required')">Введіть дату платежу</mat-error>-->
+      </mat-form-field>
+
+      <mat-form-field class="sp-date-period-to">
+        <input matInput
+          name="date"
+          autocomplete="off"
+          placeholder="Дата по"
+          [disabled]="datePeriodDisabled"
+          [matDatepicker]="toDate">
+        <mat-datepicker-toggle matSuffix
+          [for]="toDate"></mat-datepicker-toggle>
+        <mat-datepicker #toDate></mat-datepicker>
+        <!--<mat-error *ngIf="date.invalid && date.hasError('required')">Введіть дату платежу</mat-error>-->
+      </mat-form-field>
+    </div>
+  </mat-card-content>
+</mat-card>
