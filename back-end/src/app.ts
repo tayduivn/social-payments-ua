@@ -14,6 +14,7 @@ import { UserModel } from './models/user/user.model';
 import { graphqlRouter } from './routes/graphql';
 import { loginRouter } from './routes/login';
 import { rootRouter } from './routes/root';
+import { reportsRouter } from './routes/reports';
 
 const appConfig = express();
 
@@ -27,7 +28,8 @@ connectDb();
 
 // no authentication routes
 appConfig.use('/', rootRouter);
-appConfig.use('/', loginRouter);
+appConfig.use('/reports', reportsRouter);
+appConfig.use('/login', loginRouter);
 
 appConfig.use('/', passport.authenticate('bearer', { session: false }), graphqlRouter);
 
@@ -57,7 +59,6 @@ appConfig.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
   res.status(err.status || 500);
 
   res.send(Object.assign({error: true, message: err.message}, err));

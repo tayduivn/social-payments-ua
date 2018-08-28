@@ -18,7 +18,6 @@ export class PeriodReportComponent {
   constructor() { }
 
   public selectedRangeChange(val: {value: PeriodReportRange}) {
-    console.log('asdfasdfasdf');
-    this.datePeriodDisabled = val.value !== PeriodReportRange.Range;
+    this.datePeriodDisabled = val.value !== PeriodReportRange.Period;
   }
 }

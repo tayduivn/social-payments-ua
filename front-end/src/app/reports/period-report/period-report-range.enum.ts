@@ -1,5 +1,5 @@
 export enum PeriodReportRange {
-  Week,
+  Day,
   Month,
-  Range
+  Period
 }

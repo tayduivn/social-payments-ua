@@ -11,9 +11,9 @@
     <p>Вкажіть період:</p>
 
     <mat-radio-group class="sp-period-group" (change)="selectedRangeChange($event)">
-      <mat-radio-button class="sp-period-option" [value]="PeriodReportRange.Week">Тиждень</mat-radio-button>
+      <mat-radio-button class="sp-period-option" [value]="PeriodReportRange.Day">День</mat-radio-button>
       <mat-radio-button class="sp-period-option" [value]="PeriodReportRange.Month">Місяць</mat-radio-button>
-      <mat-radio-button class="sp-period-option" [value]="PeriodReportRange.Range">Інше</mat-radio-button>
+      <mat-radio-button class="sp-period-option" [value]="PeriodReportRange.Period">Період</mat-radio-button>
     </mat-radio-group>
 
     <div class="sp-period-select-container">
@@ -27,7 +27,7 @@
         <mat-datepicker-toggle matSuffix
           [for]="fromDate"></mat-datepicker-toggle>
         <mat-datepicker #fromDate></mat-datepicker>
-        <!--<mat-error *ngIf="date.invalid && date.hasError('required')">Введіть дату платежу</mat-error>-->
+        <!--<mat-error *ngIf="date.invalid && date.hasError('required')">Вкажіть початок періоду</mat-error>-->
       </mat-form-field>
 
       <mat-form-field class="sp-date-period-to">
@@ -40,7 +40,7 @@
         <mat-datepicker-toggle matSuffix
           [for]="toDate"></mat-datepicker-toggle>
         <mat-datepicker #toDate></mat-datepicker>
-        <!--<mat-error *ngIf="date.invalid && date.hasError('required')">Введіть дату платежу</mat-error>-->
+        <!--<mat-error *ngIf="date.invalid && date.hasError('required')">Вкажіть кінець періоду</mat-error>-->
       </mat-form-field>
     </div>
   </mat-card-content>
