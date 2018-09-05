@@ -28,9 +28,12 @@ connectDb();
 
 // no authentication routes
 appConfig.use('/', rootRouter);
-appConfig.use('/reports', reportsRouter);
 appConfig.use('/login', loginRouter);
 
+// todo: remove to routes with auth
+appConfig.use('/reports', reportsRouter);
+
+// routes with authentication
 appConfig.use('/', passport.authenticate('bearer', { session: false }), graphqlRouter);
 
 // Bearer token authentication
