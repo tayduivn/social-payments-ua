@@ -38,8 +38,9 @@ router.get('/period', (req: Request, res: Response, next: NextFunction) => {
       res.setHeader("Content-Disposition", "attachment; filename=" + "Report.xlsx");
 
       worksheet.mergeCells('A1', 'K1');
+      const dateFormat = 'DD-MM-YYYY';
       const captionCell = worksheet.getCell('A1');
-      captionCell.value= `Звіт платежів за період з ${startDate} по ${endDate}`;
+      captionCell.value= `Звіт платежів за період з ${moment(startDate).format(dateFormat)} по ${moment(endDate).format(dateFormat)}`;
       captionCell.alignment = {
         vertical: 'middle',
         horizontal: 'center'
@@ -61,7 +62,7 @@ router.get('/period', (req: Request, res: Response, next: NextFunction) => {
         'Призначення платежу'
       ];
 
-      headerRow.height = 110;
+      headerRow.height = 120;
       headerRow.eachCell((cell) => {
         cell.alignment = {
           vertical: 'middle',
@@ -78,16 +79,16 @@ router.get('/period', (req: Request, res: Response, next: NextFunction) => {
       });
 
       worksheet.columns = [
-        {key: 'date', width: 15},
-        {key: 'account_number', width: 15},
-        {key: 'bank_name', width: 15},
+        {key: 'date', width: 14},
+        {key: 'account_number', width: 20},
+        {key: 'bank_name', width: 20},
         {key: 'mfo', width: 15},
         {key: 'edrpou', width: 15},
         {key: 'sum', width: 15},
-        {key: 'person', width: 15},
-        {key: 'ident_code', width: 15},
+        {key: 'person', width: 30},
+        {key: 'ident_code', width: 20},
         {key: 'passport_code', width: 15},
-        {key: 'address', width: 15},
+        {key: 'address', width: 20},
         {key: 'description', width: 25},
       ];
 

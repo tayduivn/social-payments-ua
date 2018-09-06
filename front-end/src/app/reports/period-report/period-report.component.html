@@ -10,7 +10,7 @@
   <mat-card-content class="sp-period-report-content">
     <p>Вкажіть період:</p>
 
-    <mat-radio-group class="sp-period-group" (change)="selectedRangeChange($event)">
+    <mat-radio-group class="sp-period-group" (change)="selectedRangeChange($event)" [(ngModel)]="selectedRange">
       <mat-radio-button class="sp-period-option" [value]="PeriodReportRange.Day">День</mat-radio-button>
       <mat-radio-button class="sp-period-option" [value]="PeriodReportRange.Month">Місяць</mat-radio-button>
       <mat-radio-button class="sp-period-option" [value]="PeriodReportRange.Period">Період</mat-radio-button>
@@ -19,29 +19,42 @@
     <div class="sp-period-select-container">
       <mat-form-field class="sp-date-period-from">
         <input matInput
-          name="date"
+          required
           autocomplete="off"
           placeholder="Дата з"
+          #fromDateInput="ngModel"
+          [(ngModel)]="startDate"
+          [max]="endDate"
           [disabled]="datePeriodDisabled"
-          [matDatepicker]="fromDate">
+          [matDatepicker]="fromDateCmp">
         <mat-datepicker-toggle matSuffix
-          [for]="fromDate"></mat-datepicker-toggle>
-        <mat-datepicker #fromDate></mat-datepicker>
-        <!--<mat-error *ngIf="date.invalid && date.hasError('required')">Вкажіть початок періоду</mat-error>-->
+          [for]="fromDateCmp"></mat-datepicker-toggle>
+        <mat-datepicker #fromDateCmp></mat-datepicker>
+        <mat-error *ngIf="fromDateInput.invalid && fromDateInput.hasError('required')">Вкажіть початок періоду</mat-error>
       </mat-form-field>
 
       <mat-form-field class="sp-date-period-to">
         <input matInput
+          required
           name="date"
           autocomplete="off"
           placeholder="Дата по"
+          #toDateInput="ngModel"
+          [(ngModel)]="endDate"
+          [min]="startDate"
           [disabled]="datePeriodDisabled"
-          [matDatepicker]="toDate">
+          [matDatepicker]="toDateCmp">
         <mat-datepicker-toggle matSuffix
-          [for]="toDate"></mat-datepicker-toggle>
-        <mat-datepicker #toDate></mat-datepicker>
-        <!--<mat-error *ngIf="date.invalid && date.hasError('required')">Вкажіть кінець періоду</mat-error>-->
+          [for]="toDateCmp"></mat-datepicker-toggle>
+        <mat-datepicker #toDateCmp></mat-datepicker>
+        <mat-error *ngIf="toDateInput.invalid && toDateInput.hasError('required')">Вкажіть кінець періоду</mat-error>
       </mat-form-field>
     </div>
+
+    <button mat-raised-button
+      color="primary"
+        [disabled]="buttonDisabled"
+      (click)="onGenerateClick()">Сформувати звіт
+    </button>
   </mat-card-content>
 </mat-card>
