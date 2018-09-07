@@ -59,6 +59,7 @@ export class ApiLayerModule {
     });
   }
 
+  // todo: change to flexible solution
   private getHttpLink() {
     return this.httpLink.create({
       uri: 'https://localhost/graphql'

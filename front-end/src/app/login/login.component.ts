@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginResponse } from '../../../../api-contracts/login-response';
-import { WINDOW } from '../core/window';
+import { WindowProvider } from '../shared/providers/window-provider';
 import { SpDialogType } from '../shared/components/dialog/sp-dialog-type.enum';
 import { SpDialogService } from '../shared/components/dialog/sp-dialog.service';
 import { LoginService } from './login.service';

@@ -1,18 +1,12 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
-import { PaymentsConfig } from './payments.config';
+import { Component } from '@angular/core';
+import { paymentsConfig } from './payments.config';
 
 @Component({
   templateUrl: './payments.component.html',
   styleUrls: ['./payments.component.scss']
 })
-export class PaymentsComponent implements OnInit {
-  public paymentComponentItems = PaymentsConfig;
+export class PaymentsComponent {
+  public paymentComponentItems = paymentsConfig;
 
   constructor() {}
-
-  ngOnInit() {
-  }
 }

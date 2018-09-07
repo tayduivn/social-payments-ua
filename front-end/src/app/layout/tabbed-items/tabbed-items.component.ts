@@ -24,7 +24,7 @@ import {
 export class TabbedItemsComponent implements AfterViewInit {
   @Input() public set items(val: TabbedItemsConfig) {
     this._items = val;
-    this.openedTabs = val.pinnedTabs.concat();
+    this.openedTabs = (val.pinnedTabs || []).concat();
   }
   public get items(): TabbedItemsConfig {
     return this._items;
