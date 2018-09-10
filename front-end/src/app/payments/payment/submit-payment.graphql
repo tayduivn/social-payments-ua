@@ -1,4 +1,4 @@
-#import './payment-fields.fragment.graphql'
+#import '../shared/payment-fields.fragment.graphql'
 
 mutation submitPayment($payment: PaymentInput) {
   submitPayment(payment: $payment) {

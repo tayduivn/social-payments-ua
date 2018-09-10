@@ -3,7 +3,7 @@ import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
-import { FetchResult } from '../../../../../back-end/node_modules/apollo-link/lib';
+import { FetchResult } from 'apollo-link';
 import { PaymentModel } from './payment.model';
 
 @Injectable()

@@ -19,7 +19,6 @@ import { FinancialInstitutionComponent } from '../../shared/components/financial
 import { PersonAccountSelectedModel } from '../../shared/components/person-accounts/person-account-selected.model';
 import { PersonAccountsModel } from '../../shared/components/person-accounts/person-accounts.model';
 import { PersonAccountsService } from '../../shared/components/person-accounts/person-accounts.service';
-import { PersonFinancialInstitutionsModel } from '../../shared/components/person-accounts/person-financial-institutions.model';
 import { PersonComponent } from '../../shared/components/person/person.component';
 import { PaymentService } from './payment.service';
 import { SelectPersonAccountDialogComponent } from './select-person-account-dialog/select-person-account-dialog.component';

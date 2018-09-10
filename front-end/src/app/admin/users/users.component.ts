@@ -44,7 +44,6 @@ export class UsersComponent extends UnsubscribableComponent implements OnInit {
 
   public ngOnInit() {
     this.componentSubscriptions = this.usersService.getUsers().subscribe((users: UserResponseModel[]) => {
-      console.log('users collection updated');
       this.usersDataSource.data = _.sortBy(users, ['login']);
       this.cdRef.markForCheck();
     });
@@ -62,9 +61,7 @@ export class UsersComponent extends UnsubscribableComponent implements OnInit {
     dialog.afterClosed().subscribe((userInfo: UserDialogModel) => {
       if (!userInfo) { return; }
 
-      this.componentSubscriptions.add(this.usersService.submitUser(userInfo).subscribe(() => {
-        console.log('user submitted');
-      }));
+      this.componentSubscriptions.add(this.usersService.submitUser(userInfo).subscribe());
     });
   }
 
