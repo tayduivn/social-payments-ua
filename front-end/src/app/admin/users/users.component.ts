@@ -30,7 +30,7 @@ import { UsersService } from './users.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsersComponent extends UnsubscribableComponent implements OnInit {
-  public displayedColumns = ['login', 'fullName', 'admin'];
+  public readonly displayedColumns = ['login', 'fullName', 'admin'];
   public usersDataSource = new MatTableDataSource();
   public selectedUser: UserResponseModel = null;
 
@@ -44,7 +44,6 @@ export class UsersComponent extends UnsubscribableComponent implements OnInit {
 
   public ngOnInit() {
     this.componentSubscriptions = this.usersService.getUsers().subscribe((users: UserResponseModel[]) => {
-      console.log('users collection updated');
       this.usersDataSource.data = _.sortBy(users, ['login']);
       this.cdRef.markForCheck();
     });
@@ -62,9 +61,7 @@ export class UsersComponent extends UnsubscribableComponent implements OnInit {
     dialog.afterClosed().subscribe((userInfo: UserDialogModel) => {
       if (!userInfo) { return; }
 
-      this.componentSubscriptions.add(this.usersService.submitUser(userInfo).subscribe(() => {
-        console.log('user submitted');
-      }));
+      this.componentSubscriptions.add(this.usersService.submitUser(userInfo).subscribe());
     });
   }
 
@@ -75,7 +72,7 @@ export class UsersComponent extends UnsubscribableComponent implements OnInit {
   public removeUser() {
     // remember currently selected user's id since
     // at the moment when usersService.removeUser (after user confirms dialog prompt) will ask for id
-    // it not exists (clicked outside action already removed it)
+    // which not exists (clicked outside action already removed it)
     const userId = this.selectedUser.id;
 
     this.spDialogService.open({

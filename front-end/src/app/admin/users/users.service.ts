@@ -4,12 +4,10 @@ import { DataProxy } from 'apollo-cache';
 import { ApolloQueryResult } from 'apollo-client';
 import gql from 'graphql-tag';
 import * as _ from 'lodash';
-import 'rxjs/add/observable/from';
-import 'rxjs/add/observable/of';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import { UserResponseModel } from '../../../../../api-contracts/user/user-response.model';
-import { FetchResult } from '../../../../../back-end/node_modules/apollo-link/lib';
+import { FetchResult } from 'apollo-link';
 import { UserDialogModel } from './user-dialog/user-dialog.model';
 
 interface Users {

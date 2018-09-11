@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import { FinancialInstitutionModel } from './financial-institution.model';
+import 'rxjs/add/observable/of';
 
 interface FinancialInstitutions {
   financialInstitutions: FinancialInstitutionModel[]
