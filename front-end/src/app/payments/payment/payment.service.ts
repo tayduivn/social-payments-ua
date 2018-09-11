@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import { FetchResult } from 'apollo-link';
-import { PaymentModel } from './payment.model';
+import { PaymentModel } from '../shared/payment.model';
 
 @Injectable()
 export class PaymentService {
