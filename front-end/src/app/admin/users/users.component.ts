@@ -15,7 +15,7 @@ import {
   map
 } from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
-import { UserResponseModel } from '../../../../../api-contracts/user/user-response.model';
+import { UserResponse } from '../../../../../api-contracts/user/user.response';
 import { UnsubscribableComponent } from '../../shared/components/common/unsubscribable-component';
 import { SpDialogType } from '../../shared/components/dialog/sp-dialog-type.enum';
 import { SpDialogService } from '../../shared/components/dialog/sp-dialog.service';
@@ -32,7 +32,7 @@ import { UsersService } from './users.service';
 export class UsersComponent extends UnsubscribableComponent implements OnInit {
   public readonly displayedColumns = ['login', 'fullName', 'admin'];
   public usersDataSource = new MatTableDataSource();
-  public selectedUser: UserResponseModel = null;
+  public selectedUser: UserResponse = null;
 
   constructor(
     private cdRef: ChangeDetectorRef,
@@ -43,13 +43,13 @@ export class UsersComponent extends UnsubscribableComponent implements OnInit {
   }
 
   public ngOnInit() {
-    this.componentSubscriptions = this.usersService.getUsers().subscribe((users: UserResponseModel[]) => {
+    this.componentSubscriptions = this.usersService.getUsers().subscribe((users: UserResponse[]) => {
       this.usersDataSource.data = _.sortBy(users, ['login']);
       this.cdRef.markForCheck();
     });
   }
 
-  public usersTrackFn(index: number, user: UserResponseModel): string {
+  public usersTrackFn(index: number, user: UserResponse): string {
     return user.id;
   }
 
@@ -65,7 +65,7 @@ export class UsersComponent extends UnsubscribableComponent implements OnInit {
     });
   }
 
-  public rowClick(row: UserResponseModel) {
+  public rowClick(row: UserResponse) {
     this.selectedUser = this.selectedUser === row ? null : row;
   }
 

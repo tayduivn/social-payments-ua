@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { DataProxy } from 'apollo-cache';
@@ -6,79 +7,59 @@ import gql from 'graphql-tag';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
-import { UserResponseModel } from '../../../../../api-contracts/user/user-response.model';
+import { User } from '../../../../../api-contracts/user/user';
 import { FetchResult } from 'apollo-link';
+import { apiEndpoint } from '../../shared/constants/api-endpoint';
 import { UserDialogModel } from './user-dialog/user-dialog.model';
-
-interface Users {
-  users: UserResponseModel[]
-}
-
-const readAllUsersQuery = gql(require('webpack-graphql-loader!./users.graphql'));
-const submitMutation = gql(require('webpack-graphql-loader!./submit-user.graphql'));
-const removeMutation = gql(require('webpack-graphql-loader!./remove-user.graphql'));
 
 @Injectable()
 export class UsersService {
-  constructor(private apollo: Apollo) {}
+  private readonly usersUrl = `${apiEndpoint}/users`;
+  constructor(private http: HttpClient) {}
 
-  private static getUsersInStore(store: DataProxy) {
-    return store.readQuery<Users>({query: readAllUsersQuery});
+  public getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.usersUrl);
   }
 
-  private static writeUsersStoreData(store, data) {
-    store.writeQuery({query: readAllUsersQuery, data});
-  }
-
-  public getUsers(): Observable<UserResponseModel[]> {
-    return this.apollo.watchQuery<Users>({
-      query: readAllUsersQuery
-    })
-      .valueChanges
-      .pipe(
-        map((r: ApolloQueryResult<Users>) => r.data.users)
-      );
-  }
-
-  public submitUser(userInfo: UserDialogModel): Observable<UserResponseModel> {
-    const userFields = Object.assign({password: userInfo.password}, userInfo.user);
-
-    return this.apollo.mutate<UserResponseModel>({
-      mutation: submitMutation,
-      variables: {user: userFields},
-      optimisticResponse: {
-        __typename: 'Mutation',
-        submitUser: Object.assign({__typename: 'User'}, userFields)
-      },
-      update: (store: DataProxy, {data: {submitUser}}) => {
-        // skip this fn logic for edit action
-        if (userFields.id) { return; }
-
-        const data = UsersService.getUsersInStore(store);
-
-        data.users.push(submitUser);
-
-        UsersService.writeUsersStoreData(store, data);
-      }
-    })
-    .pipe(
-      map((res: FetchResult<UserResponseModel>) => res.data.submitUser)
-    );
+  public submitUser(userInfo: UserDialogModel): any { //Observable<User> {
+    // const userFields = Object.assign({password: userInfo.password}, userInfo.user);
+    //
+    // return this.apollo.mutate<UserResponse>({
+    //   mutation: submitMutation,
+    //   variables: {user: userFields},
+    //   optimisticResponse: {
+    //     __typename: 'Mutation',
+    //     submitUser: Object.assign({__typename: 'User'}, userFields)
+    //   },
+    //   update: (store: DataProxy, {data: {submitUser}}) => {
+    //     // skip this fn logic for edit action
+    //     if (userFields.id) { return; }
+    //
+    //     const data = UsersService.getUsersInStore(store);
+    //
+    //     data.users.push(submitUser);
+    //
+    //     UsersService.writeUsersStoreData(store, data);
+    //   }
+    // })
+    // .pipe(
+    //   map((res: FetchResult<UserResponse>) => res.data.submitUser)
+    // );
   }
 
   public removeUser(id: string): Observable<any> {
-    return this.apollo.mutate({
-      mutation: removeMutation,
-      variables: {
-        id
-      },
-      update: (store: DataProxy, {data: {removeUser}}) => {
-        const data = UsersService.getUsersInStore(store);
-
-        _.remove(data.users, user => user.id === removeUser);
-
-        UsersService.writeUsersStoreData(store, data);
-      }
-    });
+    // return this.apollo.mutate({
+    //   mutation: removeMutation,
+    //   variables: {
+    //     id
+    //   },
+    //   update: (store: DataProxy, {data: {removeUser}}) => {
+    //     const data = UsersService.getUsersInStore(store);
+    //
+    //     _.remove(data.users, user => user.id === removeUser);
+    //
+    //     UsersService.writeUsersStoreData(store, data);
+    //   }
+    // });
   }
 }

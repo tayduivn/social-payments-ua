@@ -1,6 +1,0 @@
-type PersonAddress {
-  street: String!
-  house: String!
-  houseSection: String
-  apartment: String
-}

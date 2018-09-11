@@ -5,7 +5,8 @@ import express, {
   Response
 } from 'express';
 import { sign } from 'jws';
-import { LoginResponse } from '../../../api-contracts/login-response';
+import { LoginResponse } from '../../../api-contracts/login.response';
+import { User } from '../../../api-contracts/user/user';
 import { UserModel } from '../models/user/user.model';
 
 const router = express.Router();
@@ -18,7 +19,7 @@ router.post('/login', (req: Request, res: Response, next: NextFunction) => {
     secret: login
   });
 
-  UserModel.findOneAndUpdate({login}, {token}, (err, user: UserModel) => {
+  UserModel.findOneAndUpdate({login}, {token}, (err, user: User) => {
     if (user && bcrypt.compareSync(password, user.password)) {
       res.send(<LoginResponse> {
         authorized: true,

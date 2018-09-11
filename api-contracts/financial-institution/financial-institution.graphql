@@ -1,9 +1,0 @@
-#import FinancialInstitution from './financial-institution.type.graphql'
-
-schema {
-  query: Query
-}
-
-type Query {
-  financialInstitutions: [FinancialInstitution!]!
-}

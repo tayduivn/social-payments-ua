@@ -14,7 +14,6 @@ import { MainNavModule } from './layout/main-nav/main-nav.module';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    HttpClientModule,
     CoreModule,
     AppStartupModulesModule,
     NgxMaskModule.forRoot(),

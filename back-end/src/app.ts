@@ -8,13 +8,14 @@ import express, {
 } from 'express';
 import morgan from 'morgan';
 import passport from 'passport';
-import {Strategy as BearerStrategy } from 'passport-http-bearer';
+import { Strategy as BearerStrategy } from 'passport-http-bearer';
+import { User } from '../../api-contracts/user/user';
 import { connectDb } from './core/db/db-connection';
 import { UserModel } from './models/user/user.model';
-import { graphqlRouter } from './routes/graphql';
 import { loginRouter } from './routes/login';
-import { rootRouter } from './routes/root';
 import { reportsRouter } from './routes/reports';
+import { rootRouter } from './routes/root';
+import { usersRouter } from './routes/users';
 
 const appConfig = express();
 
@@ -30,24 +31,19 @@ connectDb();
 appConfig.use('/', rootRouter);
 appConfig.use('/login', loginRouter);
 
-// todo: remove to routes with auth
-appConfig.use('/reports', reportsRouter);
-
 // routes with authentication
-appConfig.use('/', passport.authenticate('bearer', { session: false }), graphqlRouter);
+appConfig.use('/reports', passport.authenticate('bearer', { session: false }), reportsRouter);
+appConfig.use('/api/users', passport.authenticate('bearer', { session: false }), usersRouter);
 
 // Bearer token authentication
 passport.use(new BearerStrategy((token: string, done) => {
-  UserModel.findOne({token}, (err, user: UserModel) => {
+  UserModel.findOne({token}, (err, user: User) => {
     if (err) { return done(err); }
     if (!user) { return done(null, false); }
 
     return done(null, user);
   });
 }));
-
-// secured routes
-appConfig.use('/', passport.authenticate('bearer', { session: false }), graphqlRouter);
 
 // catch 404 and forward to error handler
 appConfig.use((req: Request, res: Response, next: NextFunction) => {

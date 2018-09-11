@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs/Observable';
 import { tap } from 'rxjs/operators';
-import { LoginResponse } from '../../../../api-contracts/login-response';
+import { LoginResponse } from '../../../../api-contracts/login.response';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
 
