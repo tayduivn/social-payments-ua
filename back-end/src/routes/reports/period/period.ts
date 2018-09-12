@@ -6,11 +6,11 @@ import express, {
 } from 'express';
 import moment from 'moment';
 import * as Excel from 'exceljs';
-import { PaymentModel } from '../models/payment/payment.model';
+import { PaymentModel } from '../../../models/payment/payment.model';
 
 const router = express.Router();
 
-router.get('/period', (req: Request, res: Response, next: NextFunction) => {
+router.get('/', (req: Request, res: Response, next: NextFunction) => {
   const {startDate, endDate} = req.query;
 
   if (!startDate || !endDate) {
@@ -123,4 +123,4 @@ router.get('/period', (req: Request, res: Response, next: NextFunction) => {
     })
 });
 
-export const reportsRouter = router;
+export const periodRouter = router;

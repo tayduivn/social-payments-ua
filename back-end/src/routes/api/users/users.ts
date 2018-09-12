@@ -3,8 +3,8 @@ import express, {
   Request,
   Response
 } from 'express';
-import { User } from '../../../api-contracts/user/user';
-import { UserModel } from '../models/user/user.model';
+import { User } from '../../../../../api-contracts/user/user';
+import { UserModel } from '../../../models/user/user.model';
 
 const router = express.Router();
 

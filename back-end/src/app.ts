@@ -7,15 +7,8 @@ import express, {
   Response
 } from 'express';
 import morgan from 'morgan';
-import passport from 'passport';
-import { Strategy as BearerStrategy } from 'passport-http-bearer';
-import { User } from '../../api-contracts/user/user';
 import { connectDb } from './core/db/db-connection';
-import { UserModel } from './models/user/user.model';
-import { loginRouter } from './routes/login';
-import { reportsRouter } from './routes/reports';
-import { rootRouter } from './routes/root';
-import { usersRouter } from './routes/users';
+import { initRoutes } from './routes/init-routes';
 
 const appConfig = express();
 
@@ -25,25 +18,9 @@ appConfig.use(bodyParser.json());
 appConfig.use(bodyParser.urlencoded({extended: false}));
 appConfig.use(cookieParser());
 
+initRoutes(appConfig);
+
 connectDb();
-
-// no authentication routes
-appConfig.use('/', rootRouter);
-appConfig.use('/login', loginRouter);
-
-// routes with authentication
-appConfig.use('/reports', passport.authenticate('bearer', { session: false }), reportsRouter);
-appConfig.use('/api/users', passport.authenticate('bearer', { session: false }), usersRouter);
-
-// Bearer token authentication
-passport.use(new BearerStrategy((token: string, done) => {
-  UserModel.findOne({token}, (err, user: User) => {
-    if (err) { return done(err); }
-    if (!user) { return done(null, false); }
-
-    return done(null, user);
-  });
-}));
 
 // catch 404 and forward to error handler
 appConfig.use((req: Request, res: Response, next: NextFunction) => {

@@ -11,7 +11,7 @@ import { UserModel } from '../models/user/user.model';
 
 const router = express.Router();
 
-router.post('/login', (req: Request, res: Response, next: NextFunction) => {
+router.post('/', (req: Request, res: Response, next: NextFunction) => {
   const {login, password} = req.body;
   const token = sign({
     header: {alg: 'HS256'},
