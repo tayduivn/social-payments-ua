@@ -24,7 +24,8 @@ export function initRoutes(app: Express) {
   app.use('/login', loginRouter);
 
   // routes with authentication
-  app.all('*', passport.authenticate('bearer', { session: false }))
+  app
+    .all('*', passport.authenticate('bearer', { session: false }))
     .use('/reports', reportsRouter)
     .use('/api', apiRouter);
 }
