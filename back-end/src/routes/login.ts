@@ -5,7 +5,7 @@ import express, {
   Response
 } from 'express';
 import { sign } from 'jws';
-import { LoginResponse } from '../../../api-contracts/login.response';
+import { LoginResponse } from '../../../api-contracts/login-response';
 import { User } from '../../../api-contracts/user/user';
 import { UserModel } from '../models/user/user.model';
 

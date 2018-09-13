@@ -4,11 +4,11 @@ import {
   Input,
   Output
 } from '@angular/core';
+import { PersonAccount } from '../../../../../../api-contracts/person-accounts/person-account';
+import { PersonAccounts } from '../../../../../../api-contracts/person-accounts/person-accounts';
+import { PersonFinancialInstitutions } from '../../../../../../api-contracts/person-accounts/person-financial-institutions';
 import { FinancialInstitutionService } from '../financial-institution/financial-institution.service';
 import { PersonAccountSelectedModel } from './person-account-selected.model';
-import { PersonAccountModel } from './person-account.model';
-import { PersonAccountsModel } from './person-accounts.model';
-import { PersonFinancialInstitutionsModel } from './person-financial-institutions.model';
 
 @Component({
   selector: 'sp-person-accounts',
@@ -16,13 +16,13 @@ import { PersonFinancialInstitutionsModel } from './person-financial-institution
   styleUrls: ['./person-accounts.component.scss']
 })
 export class PersonAccountsComponent {
-  @Input() public personAccounts: PersonAccountsModel;
+  @Input() public personAccounts: PersonAccounts;
 
   @Output() public accountSelected = new EventEmitter<PersonAccountSelectedModel>();
 
   constructor(public financialInstitutionService: FinancialInstitutionService) {}
 
-  public onAccountSelected(fi: PersonFinancialInstitutionsModel, account: PersonAccountModel) {
+  public onAccountSelected(fi: PersonFinancialInstitutions, account: PersonAccount) {
     this.accountSelected.emit({
       id: this.personAccounts.id,
       person: this.personAccounts.person,

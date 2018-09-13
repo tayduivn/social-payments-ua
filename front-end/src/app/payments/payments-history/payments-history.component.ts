@@ -60,6 +60,6 @@ export class PaymentsHistoryComponent extends UnsubscribableComponent implements
   }
 
   public paymentsTrackFn(index: number, payment: Payment): string {
-    return payment.id;
+    return payment._id;
   }
 }

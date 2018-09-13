@@ -1,6 +1,6 @@
 import { PersonFinancialInstitutions } from './person-financial-institutions';
 
-export class PersonAccounts {
+export interface PersonAccounts {
   id: string;
   person: string;
   financialInstitutions: PersonFinancialInstitutions[];

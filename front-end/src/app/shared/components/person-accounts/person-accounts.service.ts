@@ -1,13 +1,12 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {map} from 'rxjs/operators';
-import {PersonAccountsModel} from './person-accounts.model';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { PersonAccounts } from '../../../../../../api-contracts/person-accounts/person-accounts';
 
 @Injectable()
 export class PersonAccountsService {
   constructor() { }
 
-  public getPersonAccounts(): Observable<PersonAccountsModel[]> {
+  public getPersonAccounts() { //: Observable<PersonAccounts[]> {
     // return this.apollo.watchQuery<PersonAccountsList>({
     //   query: personAccountsQuery
     // })
@@ -17,7 +16,7 @@ export class PersonAccountsService {
     //   )
   }
 
-  public getById(id: string): Observable<PersonAccountsModel | undefined> {
+  public getById(id: string) { //: Observable<PersonAccounts | undefined> {
     // return this.apollo.query({
     //   query: personAccountsQuery
     // })

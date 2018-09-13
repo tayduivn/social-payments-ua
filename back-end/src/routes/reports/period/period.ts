@@ -6,12 +6,13 @@ import express, {
 } from 'express';
 import moment from 'moment';
 import * as Excel from 'exceljs';
+import { PeriodReportQueryParams } from '../../../../../api-contracts/reports/period-report.query.params';
 import { PaymentModel } from '../../../models/payment/payment.model';
 
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
-  const {startDate, endDate} = req.query;
+  const {startDate, endDate} = req.query as PeriodReportQueryParams;
 
   if (!startDate || !endDate) {
     const err: any = new Error('requires startDate and endDate query params');
@@ -27,7 +28,7 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
 
   PaymentModel
     .find()
-    .where('date').gt(startDate).lt(endDate)
+    .where('date').gt(startDate as any).lt(endDate as any) // works with strings but type definition accepts only numbers... wtf
     .exec(function (err: any, result: any[]) {
       if (err) next(err);
 

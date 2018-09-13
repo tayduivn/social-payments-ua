@@ -12,7 +12,7 @@ import {UserDialogModel} from './user-dialog/user-dialog.model';
 
 @Injectable()
 export class UsersService {
-  private readonly usersUrl = `${apiEndpoint}/users/`;
+  private readonly requestUrl = `${apiEndpoint}/users/`;
 
   private userListSubject: Subject<User[]>;
 
@@ -31,20 +31,20 @@ export class UsersService {
     let req: Observable<null>;
 
     if (!userInfo.user._id) {
-      req = this.http.post<null>(this.usersUrl, user);
+      req = this.http.post<null>(this.requestUrl, user);
     } else {
-      req = this.http.put<null>(this.usersUrl + user._id, user);
+      req = this.http.put<null>(this.requestUrl + user._id, user);
     }
 
     req.subscribe(this.updateUserList.bind(this));
   }
 
   public removeUser(id: string): void {
-    this.http.delete<null>(this.usersUrl + id)
+    this.http.delete<null>(this.requestUrl + id)
       .subscribe(this.updateUserList.bind(this));
   }
 
   private updateUserList() {
-    this.http.get<User[]>(this.usersUrl).subscribe((users) => this.userListSubject.next(users));
+    this.http.get<User[]>(this.requestUrl).subscribe((users) => this.userListSubject.next(users));
   }
 }

@@ -5,9 +5,8 @@ import {
   Output
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { FinancialInstitution } from '../../../../../../../api-contracts/financial-institution/financial.institution';
 import { FilterUtils } from '../../../utils/filter-utils';
-import { FinancialInstitutionModel } from '../../financial-institution/financial-institution.model';
-import { PersonModel } from '../../person/person.model';
 
 export abstract class MultifiedAutocompleteCommonComponent {
   @Input()
@@ -54,7 +53,7 @@ export abstract class MultifiedAutocompleteCommonComponent {
   }
 
   private initReset() {
-    this.form.valueChanges.subscribe((filter: FinancialInstitutionModel) => {
+    this.form.valueChanges.subscribe((filter: FinancialInstitution) => {
       this.allFieldsEmtpy = FilterUtils.isEmpty(filter);
       this.cdRef.markForCheck();
     });

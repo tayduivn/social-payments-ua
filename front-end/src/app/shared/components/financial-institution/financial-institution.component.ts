@@ -9,8 +9,8 @@ import {
   Validators
 } from '@angular/forms';
 import 'rxjs/add/operator/finally';
+import { FinancialInstitution } from '../../../../../../api-contracts/financial-institution/financial.institution';
 import { MultifiedAutocompleteCommonComponent } from '../common/multifield-autocomplete/multified-autocomplete-common.component';
-import { FinancialInstitutionModel } from './financial-institution.model';
 import { FinancialInstitutionService } from './financial-institution.service';
 
 @Component({
@@ -35,7 +35,7 @@ export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonCo
   }
 
   protected updateFormOnIdChange() {
-    this.financialInstitutionService.getById(this.id).subscribe((fiItem: FinancialInstitutionModel) => {
+    this.financialInstitutionService.getById(this.id).subscribe((fiItem: FinancialInstitution) => {
       if (fiItem) {
         this.form.patchValue(Object.assign({id: this.id}, fiItem), {emitEvent: false});
         this.allFieldsEmtpy = false;

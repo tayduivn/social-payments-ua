@@ -1,9 +1,9 @@
-import { PersonAccountModel } from './person-account.model';
-import { PersonFinancialInstitutionsModel } from './person-financial-institutions.model';
+import { PersonAccount } from '../../../../../../api-contracts/person-accounts/person-account';
+import { PersonFinancialInstitutions } from '../../../../../../api-contracts/person-accounts/person-financial-institutions';
 
 export interface PersonAccountSelectedModel {
   id: string;
   person: string;
-  financialInstitution: PersonFinancialInstitutionsModel;
-  account: PersonAccountModel;
+  financialInstitution: PersonFinancialInstitutions;
+  account: PersonAccount;
 }

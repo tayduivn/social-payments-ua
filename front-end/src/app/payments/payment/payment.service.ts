@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
-import { PaymentModel } from '../shared/payment.model';
+import { Payment } from '../../../../../api-contracts/payment/payment';
 
 @Injectable()
 export class PaymentService {
 
   constructor() { }
 
-  public submitPayment(payment: PaymentModel): Observable<PaymentModel> {
+  public submitPayment(payment: Payment): Observable<Payment> {
     // return this.apollo.mutate<PaymentModel>({
     //   mutation: gql(require('webpack-graphql-loader!./submit-payment.graphql')),
     //   variables: {payment}

@@ -14,10 +14,10 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import * as moment from 'moment';
+import { PersonAccounts } from '../../../../../api-contracts/person-accounts/person-accounts';
 import { UnsubscribableComponent } from '../../shared/components/common/unsubscribable-component';
 import { FinancialInstitutionComponent } from '../../shared/components/financial-institution/financial-institution.component';
 import { PersonAccountSelectedModel } from '../../shared/components/person-accounts/person-account-selected.model';
-import { PersonAccountsModel } from '../../shared/components/person-accounts/person-accounts.model';
 import { PersonAccountsService } from '../../shared/components/person-accounts/person-accounts.service';
 import { PersonComponent } from '../../shared/components/person/person.component';
 import { PaymentService } from './payment.service';
@@ -88,7 +88,7 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
       this.financialInstitutionId = id;
       this.updateAccountNumber('');
     } else {
-      this.personAccountsService.getById(id).subscribe((personAccounts: PersonAccountsModel | undefined) => {
+      this.personAccountsService.getById(id).subscribe((personAccounts: PersonAccounts | undefined) => {
         if (personAccounts) {
           this.processPersonAccounts(personAccounts);
         }
@@ -100,7 +100,7 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
     this.updateAccountNumber('');
   }
 
-  private processPersonAccounts(personAccounts: PersonAccountsModel) {
+  private processPersonAccounts(personAccounts: PersonAccounts) {
     const fiInfo = personAccounts.financialInstitutions;
     const fiItem = fiInfo[0];
 

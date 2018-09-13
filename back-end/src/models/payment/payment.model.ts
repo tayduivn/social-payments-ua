@@ -1,7 +1,9 @@
 import {
+  Document,
   model,
   Schema
 } from 'mongoose';
+import { Payment } from '../../../../api-contracts/payment/payment';
 import { financialInstitutionSchemaFields } from '../financial-institution/financial-institution.model';
 import { personSchemaFields } from '../person/person.model';
 
@@ -24,6 +26,8 @@ const paymentSchema = new Schema({
   person: personSchemaFields
 });
 
-export const PaymentModel = model('Payment', paymentSchema);
+export interface PaymentModel extends Payment {}
+
+export const PaymentModel = model<PaymentModel & Document>('Payment', paymentSchema);
 
 
