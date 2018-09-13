@@ -1,4 +1,4 @@
-export declare interface User {
+export interface User {
   _id: string;
   login: string;
   fullName: string;

@@ -2,16 +2,19 @@ import {
   HTTP_INTERCEPTORS,
   HttpClientModule
 } from '@angular/common/http';
-import { NgModule, Optional, SkipSelf } from '@angular/core';
-import { AuthGuard } from './auth.guard';
-import { throwIfAlreadyLoaded } from './module-import-guard';
-import { AuthService } from './auth.service';
+import {
+  NgModule,
+  Optional,
+  SkipSelf
+} from '@angular/core';
 import * as moment from 'moment';
+import { AuthGuard } from './auth.guard';
+import { AuthService } from './auth.service';
+import { throwIfAlreadyLoaded } from './module-import-guard';
 import { TokenInterceptor } from './token.interceptor';
 
 @NgModule({
   imports: [
-    // ApiLayerModule,
     HttpClientModule
   ],
   providers: [

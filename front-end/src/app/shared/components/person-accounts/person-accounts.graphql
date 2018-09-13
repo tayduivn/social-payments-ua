@@ -1,7 +1,0 @@
-#import './person-accounts.fragment.graphql'
-
-query personAccounts {
-  personAccounts {
-    ...PersonAccountsFields
-  }
-}

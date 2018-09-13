@@ -1,7 +1,0 @@
-#import './user.fragment.graphql'
-
-mutation submitUser($user: UserInput) {
-  submitUser(user: $user) {
-    ...UserFields
-  }
-}

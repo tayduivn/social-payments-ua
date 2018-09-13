@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
-import { FinancialInstitutionModel } from './financial-institution.model';
+import { FinancialInstitution } from '../../../../../../api-contracts/financial-institution/financial.institution';
 import 'rxjs/add/observable/of';
 
 @Injectable()
@@ -9,7 +9,7 @@ export class FinancialInstitutionService {
 
   constructor() { }
 
-  public getList(): Observable<FinancialInstitutionModel[]> {
+  public getList(): Observable<FinancialInstitution[]> {
     // return this.apollo.watchQuery<FinancialInstitutions>({
     //   query: listQuery,
     // })
@@ -19,7 +19,7 @@ export class FinancialInstitutionService {
     //   )
   }
 
-  public getById(id: string): Observable<FinancialInstitutionModel> {
+  public getById(id: string): Observable<FinancialInstitution> {
     // return Observable.of(this.apollo.getClient().readFragment<FinancialInstitutionModel>({
     //   id: `${typeName}:${id}`,
     //   fragment: fieldsFragment

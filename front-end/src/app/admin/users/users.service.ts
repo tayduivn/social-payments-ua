@@ -1,5 +1,8 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {
+  Injectable,
+  OnDestroy
+} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import { tap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';

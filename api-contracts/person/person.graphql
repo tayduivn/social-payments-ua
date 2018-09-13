@@ -1,9 +1,0 @@
-#import Person from './person.type.graphql'
-
-schema {
-  query: Query
-}
-
-type Query {
-  persons: [Person!]!
-}

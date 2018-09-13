@@ -1,4 +1,4 @@
-export declare interface LoginResponse {
+export interface LoginResponse {
   authorized: boolean;
   token: string;
 }
