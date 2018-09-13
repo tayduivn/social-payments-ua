@@ -14,8 +14,7 @@ import {
   filter,
   map
 } from 'rxjs/operators';
-import { Subscription } from 'rxjs/Subscription';
-import { UserResponse } from '../../../../../api-contracts/user/user.response';
+import { User } from '../../../../../api-contracts/user/user';
 import { UnsubscribableComponent } from '../../shared/components/common/unsubscribable-component';
 import { SpDialogType } from '../../shared/components/dialog/sp-dialog-type.enum';
 import { SpDialogService } from '../../shared/components/dialog/sp-dialog.service';
@@ -32,7 +31,7 @@ import { UsersService } from './users.service';
 export class UsersComponent extends UnsubscribableComponent implements OnInit {
   public readonly displayedColumns = ['login', 'fullName', 'admin'];
   public usersDataSource = new MatTableDataSource();
-  public selectedUser: UserResponse = null;
+  public selectedUser: User = null;
 
   constructor(
     private cdRef: ChangeDetectorRef,
@@ -43,14 +42,14 @@ export class UsersComponent extends UnsubscribableComponent implements OnInit {
   }
 
   public ngOnInit() {
-    this.componentSubscriptions = this.usersService.getUsers().subscribe((users: UserResponse[]) => {
+    this.componentSubscriptions = this.usersService.getUsers().subscribe((users: User[]) => {
       this.usersDataSource.data = _.sortBy(users, ['login']);
       this.cdRef.markForCheck();
     });
   }
 
-  public usersTrackFn(index: number, user: UserResponse): string {
-    return user.id;
+  public usersTrackFn(index: number, user: User): string {
+    return user._id;
   }
 
   public openUserDialog() {
@@ -65,7 +64,7 @@ export class UsersComponent extends UnsubscribableComponent implements OnInit {
     });
   }
 
-  public rowClick(row: UserResponse) {
+  public rowClick(row: User) {
     this.selectedUser = this.selectedUser === row ? null : row;
   }
 
@@ -73,7 +72,7 @@ export class UsersComponent extends UnsubscribableComponent implements OnInit {
     // remember currently selected user's id since
     // at the moment when usersService.removeUser (after user confirms dialog prompt) will ask for id
     // which not exists (clicked outside action already removed it)
-    const userId = this.selectedUser.id;
+    const userId = this.selectedUser._id;
 
     this.spDialogService.open({
       type: SpDialogType.Confirm,

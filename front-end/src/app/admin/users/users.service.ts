@@ -1,16 +1,9 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
-import { DataProxy } from 'apollo-cache';
-import { ApolloQueryResult } from 'apollo-client';
-import gql from 'graphql-tag';
-import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
-import { User } from '../../../../../api-contracts/user/user';
-import { FetchResult } from 'apollo-link';
-import { apiEndpoint } from '../../shared/constants/api-endpoint';
-import { UserDialogModel } from './user-dialog/user-dialog.model';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import {User} from '../../../../../api-contracts/user/user';
+import {apiEndpoint} from '../../shared/constants/api-endpoint';
+import {UserDialogModel} from './user-dialog/user-dialog.model';
 
 @Injectable()
 export class UsersService {
