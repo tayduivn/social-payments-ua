@@ -1,58 +1,47 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
+import { tap } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 import {User} from '../../../../../api-contracts/user/user';
 import {apiEndpoint} from '../../shared/constants/api-endpoint';
 import {UserDialogModel} from './user-dialog/user-dialog.model';
 
 @Injectable()
 export class UsersService {
-  private readonly usersUrl = `${apiEndpoint}/users`;
+  private readonly usersUrl = `${apiEndpoint}/users/`;
+
+  private userListSubject: Subject<User[]>;
+
   constructor(private http: HttpClient) {}
 
   public getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.usersUrl);
+    if (!this.userListSubject) {
+      this.userListSubject = new Subject<User[]>();
+      this.updateUserList();
+    }
+    return this.userListSubject.asObservable();
   }
 
-  public submitUser(userInfo: UserDialogModel): any { //Observable<User> {
-    // const userFields = Object.assign({password: userInfo.password}, userInfo.user);
-    //
-    // return this.apollo.mutate<UserResponse>({
-    //   mutation: submitMutation,
-    //   variables: {user: userFields},
-    //   optimisticResponse: {
-    //     __typename: 'Mutation',
-    //     submitUser: Object.assign({__typename: 'User'}, userFields)
-    //   },
-    //   update: (store: DataProxy, {data: {submitUser}}) => {
-    //     // skip this fn logic for edit action
-    //     if (userFields.id) { return; }
-    //
-    //     const data = UsersService.getUsersInStore(store);
-    //
-    //     data.users.push(submitUser);
-    //
-    //     UsersService.writeUsersStoreData(store, data);
-    //   }
-    // })
-    // .pipe(
-    //   map((res: FetchResult<UserResponse>) => res.data.submitUser)
-    // );
+  public submitUser(userInfo: UserDialogModel): void {
+    const user: User = Object.assign(userInfo.user, {password: userInfo.password});
+    let req: Observable<null>;
+
+    if (!userInfo.user._id) {
+      req = this.http.post<null>(this.usersUrl, user);
+    } else {
+      req = this.http.put<null>(this.usersUrl + user._id, user);
+    }
+
+    req.subscribe(this.updateUserList.bind(this));
   }
 
-  public removeUser(id: string): Observable<any> {
-    // return this.apollo.mutate({
-    //   mutation: removeMutation,
-    //   variables: {
-    //     id
-    //   },
-    //   update: (store: DataProxy, {data: {removeUser}}) => {
-    //     const data = UsersService.getUsersInStore(store);
-    //
-    //     _.remove(data.users, user => user.id === removeUser);
-    //
-    //     UsersService.writeUsersStoreData(store, data);
-    //   }
-    // });
+  public removeUser(id: string): void {
+    this.http.delete<null>(this.usersUrl + id)
+      .subscribe(this.updateUserList.bind(this));
+  }
+
+  private updateUserList() {
+    this.http.get<User[]>(this.usersUrl).subscribe((users) => this.userListSubject.next(users));
   }
 }

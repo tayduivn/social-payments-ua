@@ -26,7 +26,7 @@ export class UserDialogComponent implements OnInit {
   public fullName = new FormControl('', [Validators.required]);
   public password = new FormControl('', [Validators.required]);
   public repeatPassword: FormControl;
-  public isAdmin = new FormControl('');
+  public isAdmin = new FormControl(false);
   public showResetPasswordButton: boolean;
 
   public repeatPasswordMatcher = new InputInstantStateMatcher();

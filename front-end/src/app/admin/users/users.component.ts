@@ -37,8 +37,9 @@ export class UsersComponent extends UnsubscribableComponent implements OnInit {
     private cdRef: ChangeDetectorRef,
     private dialog: MatDialog,
     private spDialogService: SpDialogService,
-    private usersService: UsersService) {
-      super();
+    private usersService: UsersService
+  ) {
+    super();
   }
 
   public ngOnInit() {
@@ -60,7 +61,7 @@ export class UsersComponent extends UnsubscribableComponent implements OnInit {
     dialog.afterClosed().subscribe((userInfo: UserDialogModel) => {
       if (!userInfo) { return; }
 
-      this.componentSubscriptions.add(this.usersService.submitUser(userInfo).subscribe());
+      this.usersService.submitUser(userInfo);
     });
   }
 
@@ -78,10 +79,8 @@ export class UsersComponent extends UnsubscribableComponent implements OnInit {
       type: SpDialogType.Confirm,
       text: 'Ви справді бажаєте видалити користувача?'
     }).pipe(
-      filter((confirmed: boolean) => confirmed),
-      map(() => {
-        this.componentSubscriptions.add(this.usersService.removeUser(userId).subscribe());
-      })
-    ).subscribe();
+      filter((confirmed: boolean) => confirmed)
+    )
+    .subscribe(() => this.usersService.removeUser(userId));
   }
 }

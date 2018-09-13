@@ -9,6 +9,7 @@ export class PersonService {
   constructor() { }
 
   public getList(): Observable<PersonModel[]> {
+    return Observable.of([]);
     // return this.apollo.watchQuery<Persons>({
     //   query: gql(require('webpack-graphql-loader!./persons.graphql'))
     // })
