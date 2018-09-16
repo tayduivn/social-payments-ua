@@ -8,6 +8,7 @@ export class PaymentService {
   constructor() { }
 
   public submitPayment(payment: Payment): Observable<Payment> {
+    return Observable.of({}) as any;
     // return this.apollo.mutate<PaymentModel>({
     //   mutation: gql(require('webpack-graphql-loader!./submit-payment.graphql')),
     //   variables: {payment}

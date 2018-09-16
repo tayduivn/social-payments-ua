@@ -7,6 +7,10 @@ import express, {
   Response
 } from 'express';
 import morgan from 'morgan';
+import {
+  AppRequest,
+  appRequestProcessor
+} from './app-request';
 import { connectDb } from './core/db/db-connection';
 import { initRoutes } from './routes/init-routes';
 
@@ -17,10 +21,10 @@ appConfig.use(morgan('dev'));
 appConfig.use(bodyParser.json());
 appConfig.use(bodyParser.urlencoded({extended: false}));
 appConfig.use(cookieParser());
-
-initRoutes(appConfig);
+appConfig.use(appRequestProcessor);
 
 connectDb();
+initRoutes(appConfig);
 
 // catch 404 and forward to error handler
 appConfig.use((req: Request, res: Response, next: NextFunction) => {

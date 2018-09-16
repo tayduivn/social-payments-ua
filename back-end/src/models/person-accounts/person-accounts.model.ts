@@ -1,7 +1,9 @@
 import {
+  Document,
   model,
   Schema
 } from 'mongoose';
+import { PersonAccounts } from '../../../../api-contracts/person-accounts/person-accounts';
 
 const personAccountsModel = new Schema({
   person: {
@@ -28,4 +30,6 @@ const personAccountsModel = new Schema({
   ]
 });
 
-export const PersonAccountsModel = model('PersonAccounts', personAccountsModel, 'person_accounts');
+export interface PersonAccountsModel extends PersonAccounts {}
+
+export const PersonAccountsModel = model<PersonAccountsModel & Document>('PersonAccounts', personAccountsModel, 'person_accounts');

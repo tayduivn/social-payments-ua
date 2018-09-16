@@ -5,7 +5,9 @@ import express, {
 } from 'express';
 import { Types } from "mongoose";
 import { User } from '../../../../../api-contracts/user/user';
+import { AppRequest } from '../../../app-request';
 import { UserModel } from '../../../models/user/user.model';
+import { initRoutes } from '../../init-routes';
 
 const router = express.Router();
 
@@ -19,31 +21,22 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
     );
 });
 
-router.post('/', (req: Request, res: Response, next: NextFunction) => {
+router.post('/', (req: AppRequest, res: Response, next: NextFunction) => {
   const user = Object.assign({id: new Types.ObjectId()}, req.body);
 
   return UserModel
     .create(user)
-    .then(
-      () => res.end(),
-      (err) => next(err)
-    );
+    .then(...req.apiHelpers.promiseResolver)
 });
 
-router.put('/:id', (req: Request, res: Response, next: NextFunction) => {
+router.put('/:id', (req: AppRequest, res: Response, next: NextFunction) => {
   UserModel.findByIdAndUpdate(req.params.id, req.body)
-    .then(
-      () => res.end(),
-      (err) => next(err)
-    );
+    .then(...req.apiHelpers.promiseResolver);
 });
 
-router.delete('/:id', (req: Request, res: Response, next: NextFunction) => {
+router.delete('/:id', (req: AppRequest, res: Response, next: NextFunction) => {
   UserModel.findByIdAndRemove(req.params.id)
-    .then(
-      () => res.end(),
-      (err) => next(err)
-    );
+    .then(...req.apiHelpers.promiseResolver);
 });
 
 export const usersRouter = router;
