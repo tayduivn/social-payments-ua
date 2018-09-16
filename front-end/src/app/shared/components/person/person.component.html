@@ -78,7 +78,7 @@
     </div>
 
     <sp-multifield-autocomplete #autocomplete
-      [items]="personService.getList() | async"
+      [items]="personService.getData() | async"
       [filter$]="form.valueChanges"
       (itemSelected)="onAutocompleteItemSelected($event)">
       <ng-template let-item>

@@ -42,7 +42,7 @@ export abstract class MultifiedAutocompleteCommonComponent {
 
   public onAutocompleteItemSelected({option: {value}}) {
     this.form.patchValue(value, {emitEvent: false});
-    this.consolidateId(value.id);
+    this.consolidateId(value._id);
   }
 
   protected abstract updateFormOnIdChange(): void;

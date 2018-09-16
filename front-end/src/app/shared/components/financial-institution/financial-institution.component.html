@@ -40,7 +40,7 @@
   </mat-form-field>
 
   <sp-multifield-autocomplete #autocomplete
-    [items]="financialInstitutionService.getList() | async"
+    [items]="financialInstitutionService.getData() | async"
     [filter$]="form.valueChanges"
     (itemSelected)="onAutocompleteItemSelected($event)">
     <ng-template let-item>

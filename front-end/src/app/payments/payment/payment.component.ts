@@ -84,11 +84,12 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
   }
 
   public onPersonIdChange(id: string) {
+    debugger;
     if (!id) {
       this.financialInstitutionId = id;
       this.updateAccountNumber('');
     } else {
-      this.personAccountsService.getById(id).subscribe((personAccounts: PersonAccounts | undefined) => {
+      this.personAccountsService.getByUserId(id).subscribe((personAccounts: PersonAccounts) => {
         if (personAccounts) {
           this.processPersonAccounts(personAccounts);
         }

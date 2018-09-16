@@ -3,16 +3,16 @@ import express, {
   Request,
   Response
 } from 'express';
-import { Payment } from '../../../../../api-contracts/payment/payment';
-import { PaymentModel } from '../../../models/payment/payment.model';
+import { FinancialInstitution } from '../../../../../api-contracts/financial-institution/financial.institution';
+import { FinancialInstitutionModel } from '../../../models/financial-institution/financial-institution.model';
 
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
-  return PaymentModel
+  return FinancialInstitutionModel
     .find()
     .then(
-      (payments: Payment[]) => res.send(payments),
+      (payments: FinancialInstitution[]) => res.send(payments),
       (err) => next(err)
     );
 });
