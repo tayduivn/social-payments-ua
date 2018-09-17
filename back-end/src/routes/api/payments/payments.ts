@@ -23,34 +23,35 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
 
 router.post('/', (req: Request, res: Response, next: NextFunction) => {
   const payment: Payment = req.body;
+  let financialInstitution: any;
+  let person: any;
 
-  if (Types.ObjectId.isValid(payment._id)) {
-    // here will be update logic for payment edit action
-
-    // return UserModel.findByIdAndUpdate(payment.id, payment, {
-    //   new: true
-    // });
-  } else {
-    let financialInstitution: any;
-    let person: any;
-
-    fiCheckAndUpdate(payment.financialInstitution)
-      .then((fi) => {
-        financialInstitution = fi;
-        return personCheckAndUpdate(payment.person)
-      })
-      .then((prsn) => {
-        person = prsn;
-        return personAccountsCheckAndUpdate({
-          id: null,
-          person: person.id,
-          financialInstitution: financialInstitution.id,
-          account: payment.accountNumber
-        });
+  fiCheckAndUpdate(payment.financialInstitution)
+    .then((fi) => {
+      financialInstitution = fi;
+      return personCheckAndUpdate(payment.person)
+    })
+    .then((prsn) => {
+      person = prsn;
+      return personAccountsCheckAndUpdate({
+        id: null,
+        person: person._id,
+        financialInstitution: financialInstitution._id,
+        account: payment.accountNumber
       });
+    });
 
-    return PaymentModel.create(Object.assign(payment, {id: new Types.ObjectId()}));
-  }
+  PaymentModel.create(Object.assign(payment, {_id: new Types.ObjectId()}))
+    .then(
+      (payment: Payment) => {
+        payment.financialInstitution = financialInstitution;
+        payment.financialInstitution._id = financialInstitution._id;
+        payment.person = person;
+
+        res.send(payment);
+      },
+      (err: any) => next(err)
+    );
 });
 
 export const paymentsRouter = router;

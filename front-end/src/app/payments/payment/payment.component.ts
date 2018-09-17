@@ -84,7 +84,6 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
   }
 
   public onPersonIdChange(id: string) {
-    debugger;
     if (!id) {
       this.financialInstitutionId = id;
       this.updateAccountNumber('');
@@ -107,7 +106,7 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
 
     if (fiInfo.length === 1 && fiItem.accounts.length === 1) {
       this.setFinancialInstitutionAndAccount(fiItem.financialInstitution, fiItem.accounts[0].account);
-    } else if (fiInfo.length > 1 && fiItem.accounts.length > 1) {
+    } else {
       this.selectPersonAccountDialogService.setDialogRef(this.dialog.open(SelectPersonAccountDialogComponent, {
         data: personAccounts
       }));

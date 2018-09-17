@@ -7,7 +7,7 @@ import { CachedDataService } from '../../services/cached-data.service';
 
 @Injectable()
 export class PersonAccountsService extends CachedDataService<PersonAccounts> {
-  protected readonly requestUrl = 'person-accounts';
+  protected readonly requestUrl = '/person-accounts';
 
   constructor(protected http: HttpClient) {
     super();
