@@ -11,26 +11,26 @@ import { FilterUtils } from '../../../utils/filter-utils';
 export abstract class MultifiedAutocompleteCommonComponent {
   @Input()
   public set id(val: string) {
-    this._id = val;
+    this.currId = val;
     this.updateFormOnIdChange();
   }
 
   public get id(): string {
-    return this._id;
+    return this.currId;
   }
 
   @Output() public idChange = new EventEmitter<string>();
 
   public allFieldsEmtpy: boolean = true;
 
-  private _id: string;
+  private currId: string;
 
   protected constructor(private cdRef: ChangeDetectorRef, public form: FormGroup) {
     this.initReset();
 
     this.form.valueChanges.subscribe(i => {
       this.consolidateId(null);
-      this.form.patchValue({id: this.id}, {emitEvent: false});
+      this.form.patchValue({_id: this.id}, {emitEvent: false});
     });
   }
 
@@ -48,7 +48,7 @@ export abstract class MultifiedAutocompleteCommonComponent {
   protected abstract updateFormOnIdChange(): void;
 
   private consolidateId(id: string) {
-    this._id = id;
+    this.currId = id;
     this.idChange.next(id);
   }
 

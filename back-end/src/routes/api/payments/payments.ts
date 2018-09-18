@@ -3,7 +3,10 @@ import express, {
   Request,
   Response
 } from 'express';
-import { Types } from "mongoose";
+import {
+  Document,
+  Types
+} from 'mongoose';
 import { Payment } from '../../../../../api-contracts/payment/payment';
 import { checkAndUpdate as fiCheckAndUpdate } from '../../../models/financial-institution/check-and-update';
 import { PaymentModel } from '../../../models/payment/payment.model';
@@ -39,19 +42,19 @@ router.post('/', (req: Request, res: Response, next: NextFunction) => {
         financialInstitution: financialInstitution._id,
         account: payment.accountNumber
       });
+    })
+    .then(() => {
+      PaymentModel.create(Object.assign(payment, {_id: new Types.ObjectId()}))
+        .then(
+          (payment: PaymentModel) => {
+            const responsePayment = (payment as any).toObject();
+            responsePayment.financialInstitution = financialInstitution;
+            responsePayment.person = person;
+
+            res.send(responsePayment);
+          }
+        );
     });
-
-  PaymentModel.create(Object.assign(payment, {_id: new Types.ObjectId()}))
-    .then(
-      (payment: Payment) => {
-        payment.financialInstitution = financialInstitution;
-        payment.financialInstitution._id = financialInstitution._id;
-        payment.person = person;
-
-        res.send(payment);
-      },
-      (err: any) => next(err)
-    );
 });
 
 export const paymentsRouter = router;

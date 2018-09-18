@@ -22,7 +22,7 @@ export const financialInstitutionSchemaFields = {
 
 export interface FinancialInstitutionModel extends FinancialInstitution {}
 
-export const FinancialInstitutionModel = model<FinancialInstitution & Document>(
+export const FinancialInstitutionModel = model<FinancialInstitutionModel & Document>(
   'FinancialInstitution',
   new Schema(financialInstitutionSchemaFields),
   'financial_institutions'

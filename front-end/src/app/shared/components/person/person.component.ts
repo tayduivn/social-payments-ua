@@ -41,7 +41,7 @@ export class PersonComponent extends MultifiedAutocompleteCommonComponent {
 
   private static createForm(fb: FormBuilder) {
     return fb.group({
-      id: null,
+      _id: null,
       fullName: ['', Validators.required],
       passportNumber: ['', Validators.required],
       identityCode: ['', Validators.required],

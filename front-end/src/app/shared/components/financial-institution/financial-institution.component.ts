@@ -47,7 +47,7 @@ export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonCo
 
   private static createForm(fb: FormBuilder) {
     return fb.group({
-      id: null,
+      _id: null,
       name: ['', Validators.required],
       mfo: ['', Validators.required],
       edrpou: ['', Validators.required]
