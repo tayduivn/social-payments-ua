@@ -11,7 +11,7 @@ import { reportsConfig } from './reports.config';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReportsComponent {
-  public reportComponentItems = reportsConfig;
+  public readonly reportComponentItems = reportsConfig;
 
-  constructor() { }
+  constructor() {}
 }

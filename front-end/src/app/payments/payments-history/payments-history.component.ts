@@ -7,9 +7,9 @@ import {
 import { MatTableDataSource } from '@angular/material';
 import * as moment from 'moment';
 import { map } from 'rxjs/operators';
+import { Payment } from '../../../../../api-contracts/payment/payment';
 import { UnsubscribableComponent } from '../../shared/components/common/unsubscribable-component';
 import { dateFormat } from '../../shared/constants/date-format';
-import { PaymentModel } from '../shared/payment.model';
 import { PaymentsHistoryService } from './payments-history.service';
 
 @Component({
@@ -45,7 +45,7 @@ export class PaymentsHistoryComponent extends UnsubscribableComponent implements
   ngOnInit() {
     this.componentSubscriptions = this.paymentsHistoryService.getPayments()
       .pipe(
-        map((payments: PaymentModel[]) => payments.map((item) => Object.assign(
+        map((payments: Payment[]) => payments.map((item) => Object.assign(
           {},
           item,
           {
@@ -53,13 +53,13 @@ export class PaymentsHistoryComponent extends UnsubscribableComponent implements
           }
         )))
       )
-      .subscribe((payments: PaymentModel[]) => {
+      .subscribe((payments: Payment[]) => {
         this.paymentsDataSource.data = payments;
         this.cdRef.markForCheck();
       });
   }
 
-  public paymentsTrackFn(index: number, payment: PaymentModel): string {
-    return payment.id;
+  public paymentsTrackFn(index: number, payment: Payment): string {
+    return payment._id;
   }
 }

@@ -1,6 +1,6 @@
-import { UserResponseModel } from '../../../../../../api-contracts/user/user-response.model';
+import { User } from '../../../../../../api-contracts/user/user';
 
 export interface UserDialogModel {
-  user: UserResponseModel;
+  user: User;
   password: string;
 }

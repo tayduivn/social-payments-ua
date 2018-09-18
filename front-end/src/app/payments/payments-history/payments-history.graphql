@@ -1,7 +1,0 @@
-#import '../shared/payment-fields.fragment.graphql'
-
-query payments {
-  payments {
-    ...PaymentFields
-  }
-}

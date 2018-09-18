@@ -10,7 +10,7 @@ import {
   Validators
 } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { UserResponseModel } from '../../../../../../api-contracts/user/user-response.model';
+import { User } from '../../../../../../api-contracts/user/user';
 import { InputInstantStateMatcher } from '../../../shared/angular-material/input-instant-state-matcher';
 import { allUA_CharsDiapason } from '../../../shared/constants/char-diapason-ua';
 import { UserDialogModel } from './user-dialog.model';
@@ -26,20 +26,20 @@ export class UserDialogComponent implements OnInit {
   public fullName = new FormControl('', [Validators.required]);
   public password = new FormControl('', [Validators.required]);
   public repeatPassword: FormControl;
-  public isAdmin = new FormControl('');
+  public isAdmin = new FormControl(false);
   public showResetPasswordButton: boolean;
 
   public repeatPasswordMatcher = new InputInstantStateMatcher();
 
   private readonly userId: string;
 
-  constructor(@Inject(MAT_DIALOG_DATA) private user: UserResponseModel) {
+  constructor(@Inject(MAT_DIALOG_DATA) private user: User) {
     this.repeatPassword = new FormControl('', [
       Validators.required,
       this.passwordsMatchValidator()
     ]);
 
-    this.userId = this.user ? this.user.id : null;
+    this.userId = this.user ? this.user._id : null;
     this.showResetPasswordButton = !!this.user;
 
   }
@@ -47,7 +47,7 @@ export class UserDialogComponent implements OnInit {
   public saveUserChanges(): UserDialogModel {
     return {
       user: {
-        id: this.userId,
+        _id: this.userId,
         login: this.login.value,
         fullName: this.fullName.value,
         isAdmin: this.isAdmin.value

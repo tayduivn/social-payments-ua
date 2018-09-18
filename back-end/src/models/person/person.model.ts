@@ -1,7 +1,9 @@
 import {
+  Document,
   model,
   Schema
 } from 'mongoose';
+import { Person } from '../../../../api-contracts/person/person';
 
 export const personSchemaFields = {
   fullName: {
@@ -27,5 +29,7 @@ export const personSchemaFields = {
   }
 };
 
-export const PersonModel = model('Person', new Schema(personSchemaFields), 'persons');
+export type PersonModel = Person & Document;
+
+export const PersonModel = model<PersonModel>('Person', new Schema(personSchemaFields), 'persons');
 

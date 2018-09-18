@@ -1,8 +1,8 @@
 <ng-container *ngFor="let fi of personAccounts.financialInstitutions">
   <h3 class="sp-person-accounts-fi">
-    {{(financialInstitutionService.getById(fi.financialInstitution) | async).name}},
-    МФО: {{(financialInstitutionService.getById(fi.financialInstitution) | async).mfo}},
-    ЄДРПОУ: {{(financialInstitutionService.getById(fi.financialInstitution) | async).edrpou}}
+    {{(financialInstitutionService.getById(fi.financialInstitutionId) | async).name}},
+    МФО: {{(financialInstitutionService.getById(fi.financialInstitutionId) | async).mfo}},
+    ЄДРПОУ: {{(financialInstitutionService.getById(fi.financialInstitutionId) | async).edrpou}}
   </h3>
 
   <mat-nav-list>

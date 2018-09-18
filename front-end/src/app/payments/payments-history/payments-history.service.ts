@@ -1,30 +1,17 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
-import { ApolloQueryResult } from 'apollo-client';
-import gql from 'graphql-tag';
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
-import { PaymentModel } from '../shared/payment.model';
-
-interface Payments {
-  payments: PaymentModel[]
-}
-
-const paymentsHistoryQuery = gql(require('webpack-graphql-loader!./payments-history.graphql'));
+import { Payment } from '../../../../../api-contracts/payment/payment';
+import { apiEndpoint } from '../../shared/constants/api-endpoint';
 
 @Injectable()
 export class PaymentsHistoryService {
+  private readonly requestUrl = `${apiEndpoint}/payments/`;
 
-  constructor(private apollo: Apollo) { }
+  constructor(private http: HttpClient) {}
 
-  public getPayments(): Observable<PaymentModel[]> {
-    return this.apollo.watchQuery<Payments>({
-      query: paymentsHistoryQuery
-    })
-      .valueChanges
-      .pipe(
-        map((r: ApolloQueryResult<Payments>) => r.data.payments)
-      );
+  public getPayments(): Observable<Payment[]> {
+    return this.http.get<Payment[]>(this.requestUrl);
   }
 
 }

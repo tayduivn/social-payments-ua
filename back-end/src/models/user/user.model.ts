@@ -3,6 +3,7 @@ import {
   model,
   Schema
 } from 'mongoose';
+import { User } from '../../../../api-contracts/user/user';
 import { addUserModelMiddleware } from './user.model.middleware';
 
 const userSchema = new Schema({
@@ -25,13 +26,9 @@ const userSchema = new Schema({
 
 addUserModelMiddleware(userSchema);
 
-export interface UserModel extends Document {
-  login: string;
-  fullName: string;
-  password: string;
-  token: string;
-  isAdmin: boolean;
-}
+export type UserModel = User & Document & {
+  token: string
+};
 
 export const UserModel = model<UserModel>('User', userSchema);
 

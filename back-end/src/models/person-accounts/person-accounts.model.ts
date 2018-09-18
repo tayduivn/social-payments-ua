@@ -1,17 +1,19 @@
 import {
+  Document,
   model,
   Schema
 } from 'mongoose';
+import { PersonAccounts } from '../../../../api-contracts/person-accounts/person-accounts';
 
 const personAccountsModel = new Schema({
-  person: {
+  personId: {
     type: Schema.Types.ObjectId,
     ref: 'Person',
     required: true
   },
   financialInstitutions: [
     {
-      financialInstitution: {
+      financialInstitutionId: {
         type: Schema.Types.ObjectId,
         ref: 'FinancialInstitution',
         required: true
@@ -28,4 +30,6 @@ const personAccountsModel = new Schema({
   ]
 });
 
-export const PersonAccountsModel = model('PersonAccounts', personAccountsModel, 'person_accounts');
+export type PersonAccountsModel = PersonAccounts & Document;
+
+export const PersonAccountsModel = model<PersonAccountsModel>('PersonAccounts', personAccountsModel, 'person_accounts');

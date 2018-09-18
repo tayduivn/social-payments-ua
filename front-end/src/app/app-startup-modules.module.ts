@@ -1,7 +1,22 @@
 import { NgModule } from '@angular/core';
-import { PersonAccountsModule } from './shared/components/person-accounts/person-accounts.module';
+import { FinancialInstitutionService } from './shared/components/financial-institution/financial-institution.service';
+import { PersonAccountsService } from './shared/components/person-accounts/person-accounts.service';
+import { PersonService } from './shared/components/person/person.service';
 
 @NgModule({
-  imports: [PersonAccountsModule]
 })
-export class AppStartupModulesModule { }
+export class AppStartupModulesModule {
+  constructor(
+    private fiService: FinancialInstitutionService,
+    private personService: PersonService,
+    private personAccountsService: PersonAccountsService
+  ) {
+    this.initCaches();
+  }
+
+  private initCaches() {
+    this.fiService.getData().subscribe();
+    this.personService.getData().subscribe();
+    this.personAccountsService.getData().subscribe();
+  }
+}

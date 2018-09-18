@@ -14,7 +14,5 @@ import { PersonAccountsService } from './person-accounts.service';
   exports: [PersonAccountsComponent]
 })
 export class PersonAccountsModule {
-  constructor(personAccountsService: PersonAccountsService) {
-    personAccountsService.getPersonAccounts().subscribe();
-  }
+  constructor() {}
 }

@@ -4,8 +4,8 @@ import {
   Inject
 } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
+import { PersonAccounts } from '../../../../../../api-contracts/person-accounts/person-accounts';
 import { PersonAccountSelectedModel } from '../../../shared/components/person-accounts/person-account-selected.model';
-import { PersonAccountsModel } from '../../../shared/components/person-accounts/person-accounts.model';
 import { SelectPersonAccountDialogService } from './select-person-account-dialog.service';
 
 @Component({
@@ -16,7 +16,7 @@ import { SelectPersonAccountDialogService } from './select-person-account-dialog
 })
 export class SelectPersonAccountDialogComponent {
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: PersonAccountsModel,
+    @Inject(MAT_DIALOG_DATA) public data: PersonAccounts,
     private selectPersonAccountDialogService: SelectPersonAccountDialogService
   ) { }
 

@@ -14,10 +14,10 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import * as moment from 'moment';
+import { PersonAccounts } from '../../../../../api-contracts/person-accounts/person-accounts';
 import { UnsubscribableComponent } from '../../shared/components/common/unsubscribable-component';
 import { FinancialInstitutionComponent } from '../../shared/components/financial-institution/financial-institution.component';
 import { PersonAccountSelectedModel } from '../../shared/components/person-accounts/person-account-selected.model';
-import { PersonAccountsModel } from '../../shared/components/person-accounts/person-accounts.model';
 import { PersonAccountsService } from '../../shared/components/person-accounts/person-accounts.service';
 import { PersonComponent } from '../../shared/components/person/person.component';
 import { PaymentService } from './payment.service';
@@ -84,15 +84,15 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
   }
 
   public onPersonIdChange(id: string) {
-    if (!id) {
-      this.financialInstitutionId = id;
-      this.updateAccountNumber('');
-    } else {
-      this.personAccountsService.getById(id).subscribe((personAccounts: PersonAccountsModel | undefined) => {
+    if (id) {
+      this.personAccountsService.getByUserId(id).subscribe((personAccounts: PersonAccounts) => {
         if (personAccounts) {
           this.processPersonAccounts(personAccounts);
         }
       });
+    } else {
+      this.financialInstitutionId = null;
+      this.updateAccountNumber('');
     }
   }
 
@@ -100,13 +100,13 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
     this.updateAccountNumber('');
   }
 
-  private processPersonAccounts(personAccounts: PersonAccountsModel) {
+  private processPersonAccounts(personAccounts: PersonAccounts) {
     const fiInfo = personAccounts.financialInstitutions;
     const fiItem = fiInfo[0];
 
     if (fiInfo.length === 1 && fiItem.accounts.length === 1) {
-      this.setFinancialInstitutionAndAccount(fiItem.financialInstitution, fiItem.accounts[0].account);
-    } else if (fiInfo.length > 1 && fiItem.accounts.length > 1) {
+      this.setFinancialInstitutionAndAccount(fiItem.financialInstitutionId, fiItem.accounts[0].account);
+    } else {
       this.selectPersonAccountDialogService.setDialogRef(this.dialog.open(SelectPersonAccountDialogComponent, {
         data: personAccounts
       }));
@@ -141,7 +141,7 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
   }
 
   private onPersonAccountSelected(accountSelected: PersonAccountSelectedModel) {
-    this.setFinancialInstitutionAndAccount(accountSelected.financialInstitution.financialInstitution, accountSelected.account.account);
+    this.setFinancialInstitutionAndAccount(accountSelected.financialInstitution.financialInstitutionId, accountSelected.account.account);
   }
 
   private setFinancialInstitutionAndAccount(fiId: string, account: string) {

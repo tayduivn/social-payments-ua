@@ -5,33 +5,32 @@ import {
   Output
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { FinancialInstitution } from '../../../../../../../api-contracts/financial-institution/financial.institution';
 import { FilterUtils } from '../../../utils/filter-utils';
-import { FinancialInstitutionModel } from '../../financial-institution/financial-institution.model';
-import { PersonModel } from '../../person/person.model';
 
 export abstract class MultifiedAutocompleteCommonComponent {
   @Input()
   public set id(val: string) {
-    this._id = val;
+    this.currId = val;
     this.updateFormOnIdChange();
   }
 
   public get id(): string {
-    return this._id;
+    return this.currId;
   }
 
   @Output() public idChange = new EventEmitter<string>();
 
   public allFieldsEmtpy: boolean = true;
 
-  private _id: string;
+  private currId: string;
 
   protected constructor(private cdRef: ChangeDetectorRef, public form: FormGroup) {
     this.initReset();
 
     this.form.valueChanges.subscribe(i => {
       this.consolidateId(null);
-      this.form.patchValue({id: this.id}, {emitEvent: false});
+      this.form.patchValue({_id: this.id}, {emitEvent: false});
     });
   }
 
@@ -43,18 +42,18 @@ export abstract class MultifiedAutocompleteCommonComponent {
 
   public onAutocompleteItemSelected({option: {value}}) {
     this.form.patchValue(value, {emitEvent: false});
-    this.consolidateId(value.id);
+    this.consolidateId(value._id);
   }
 
   protected abstract updateFormOnIdChange(): void;
 
   private consolidateId(id: string) {
-    this._id = id;
+    this.currId = id;
     this.idChange.next(id);
   }
 
   private initReset() {
-    this.form.valueChanges.subscribe((filter: FinancialInstitutionModel) => {
+    this.form.valueChanges.subscribe((filter: FinancialInstitution) => {
       this.allFieldsEmtpy = FilterUtils.isEmpty(filter);
       this.cdRef.markForCheck();
     });

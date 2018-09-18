@@ -1,19 +1,14 @@
 import {
   ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  Output
+  Component
 } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   Validators
 } from '@angular/forms';
-import { map } from 'rxjs/operators';
 import { lettersUA_CharsDiapason } from '../../constants/char-diapason-ua';
 import { MultifiedAutocompleteCommonComponent } from '../common/multifield-autocomplete/multified-autocomplete-common.component';
-import { PersonModel } from './person.model';
 import { PersonService } from './person.service';
 
 @Component({
@@ -46,7 +41,7 @@ export class PersonComponent extends MultifiedAutocompleteCommonComponent {
 
   private static createForm(fb: FormBuilder) {
     return fb.group({
-      id: null,
+      _id: null,
       fullName: ['', Validators.required],
       passportNumber: ['', Validators.required],
       identityCode: ['', Validators.required],

@@ -1,84 +1,50 @@
-import { Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
-import { DataProxy } from 'apollo-cache';
-import { ApolloQueryResult } from 'apollo-client';
-import gql from 'graphql-tag';
-import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
-import { UserResponseModel } from '../../../../../api-contracts/user/user-response.model';
-import { FetchResult } from 'apollo-link';
-import { UserDialogModel } from './user-dialog/user-dialog.model';
-
-interface Users {
-  users: UserResponseModel[]
-}
-
-const readAllUsersQuery = gql(require('webpack-graphql-loader!./users.graphql'));
-const submitMutation = gql(require('webpack-graphql-loader!./submit-user.graphql'));
-const removeMutation = gql(require('webpack-graphql-loader!./remove-user.graphql'));
+import {HttpClient} from '@angular/common/http';
+import {
+  Injectable,
+  OnDestroy
+} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import { tap } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
+import {User} from '../../../../../api-contracts/user/user';
+import {apiEndpoint} from '../../shared/constants/api-endpoint';
+import {UserDialogModel} from './user-dialog/user-dialog.model';
 
 @Injectable()
 export class UsersService {
-  constructor(private apollo: Apollo) {}
+  private readonly requestUrl = `${apiEndpoint}/users/`;
 
-  private static getUsersInStore(store: DataProxy) {
-    return store.readQuery<Users>({query: readAllUsersQuery});
+  private userListSubject: Subject<User[]>;
+
+  constructor(private http: HttpClient) {}
+
+  public getUsers(): Observable<User[]> {
+    if (!this.userListSubject) {
+      this.userListSubject = new Subject<User[]>();
+      this.updateUserList();
+    }
+    return this.userListSubject.asObservable();
   }
 
-  private static writeUsersStoreData(store, data) {
-    store.writeQuery({query: readAllUsersQuery, data});
+  public submitUser(userInfo: UserDialogModel): void {
+    const user: User = Object.assign(userInfo.user, {password: userInfo.password});
+    let req: Observable<null>;
+
+    if (!userInfo.user._id) {
+      req = this.http.post<null>(this.requestUrl, user);
+    } else {
+      req = this.http.put<null>(this.requestUrl + user._id, user);
+    }
+
+    req.subscribe(this.updateUserList.bind(this));
   }
 
-  public getUsers(): Observable<UserResponseModel[]> {
-    return this.apollo.watchQuery<Users>({
-      query: readAllUsersQuery
-    })
-      .valueChanges
-      .pipe(
-        map((r: ApolloQueryResult<Users>) => r.data.users)
-      );
+  public removeUser(id: string): void {
+    this.http.delete<null>(this.requestUrl + id)
+      .subscribe(this.updateUserList.bind(this));
   }
 
-  public submitUser(userInfo: UserDialogModel): Observable<UserResponseModel> {
-    const userFields = Object.assign({password: userInfo.password}, userInfo.user);
-
-    return this.apollo.mutate<UserResponseModel>({
-      mutation: submitMutation,
-      variables: {user: userFields},
-      optimisticResponse: {
-        __typename: 'Mutation',
-        submitUser: Object.assign({__typename: 'User'}, userFields)
-      },
-      update: (store: DataProxy, {data: {submitUser}}) => {
-        // skip this fn logic for edit action
-        if (userFields.id) { return; }
-
-        const data = UsersService.getUsersInStore(store);
-
-        data.users.push(submitUser);
-
-        UsersService.writeUsersStoreData(store, data);
-      }
-    })
-    .pipe(
-      map((res: FetchResult<UserResponseModel>) => res.data.submitUser)
-    );
-  }
-
-  public removeUser(id: string): Observable<any> {
-    return this.apollo.mutate({
-      mutation: removeMutation,
-      variables: {
-        id
-      },
-      update: (store: DataProxy, {data: {removeUser}}) => {
-        const data = UsersService.getUsersInStore(store);
-
-        _.remove(data.users, user => user.id === removeUser);
-
-        UsersService.writeUsersStoreData(store, data);
-      }
-    });
+  private updateUserList() {
+    this.http.get<User[]>(this.requestUrl).subscribe((users) => this.userListSubject.next(users));
   }
 }

@@ -1,7 +1,0 @@
-input UserInput {
-  id: ID
-  password: String!
-  login: String!
-  fullName: String!
-  isAdmin: Boolean!
-}

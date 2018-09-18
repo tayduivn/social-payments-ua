@@ -1,12 +1,13 @@
+import { PersonFinancialInstitutions } from '../../../../api-contracts/person-accounts/person-financial-institutions';
 import { PersonAccountInfo } from './person-account-info';
 import { PersonAccountsModel } from './person-accounts.model';
 
 function createPersonAccount(personAccount: PersonAccountInfo) {
   return PersonAccountsModel.create({
-    person: personAccount.person,
+    personId: personAccount.personId,
     financialInstitutions: [
       {
-        financialInstitution: personAccount.financialInstitution,
+        financialInstitutionId: personAccount.financialInstitutionId,
         accounts: [{
           account: personAccount.account
         }]
@@ -15,9 +16,9 @@ function createPersonAccount(personAccount: PersonAccountInfo) {
   });
 }
 
-function updatePersonAccount(personAccountModel: any, personAccount: PersonAccountInfo) {
-  const fiIndex = personAccountModel.financialInstitutions.findIndex((item: any) => {
-    return item.financialInstitution.toString() === personAccount.financialInstitution;
+function updatePersonAccount(personAccountModel: PersonAccountsModel, personAccount: PersonAccountInfo) {
+  const fiIndex = personAccountModel.financialInstitutions.findIndex((item: PersonFinancialInstitutions) => {
+    return item.financialInstitutionId.toString() === personAccount.financialInstitutionId;
   });
 
   if (fiIndex > -1) {
@@ -33,7 +34,7 @@ function updatePersonAccount(personAccountModel: any, personAccount: PersonAccou
     }
   } else {
     personAccountModel.financialInstitutions.push({
-      financialInstitution: personAccount.financialInstitution,
+      financialInstitutionId: personAccount.financialInstitutionId,
       accounts: [{
         account: personAccount.account
       }]
@@ -43,25 +44,15 @@ function updatePersonAccount(personAccountModel: any, personAccount: PersonAccou
   }
 }
 
-export function checkAndUpdate(personAccount: PersonAccountInfo) {
-  return new Promise((resolve, reject) => {
-    if (personAccount.id) {
-      resolve(); //todo return
-    } else {
-      delete personAccount.id; // null case
-
-      PersonAccountsModel.findOne({
-          person: personAccount.person
-        })
-        .exec(function (err, item: any) {
-          if (err) { reject(err); }
-
-          if (!item) {
-            resolve(createPersonAccount(personAccount))
-          } else {
-            resolve(updatePersonAccount(item, personAccount));
-          }
-        });
-    }
-  });
+export function checkAndUpdate(personAccountInfo: PersonAccountInfo) {
+  return PersonAccountsModel.findOne({
+    personId: personAccountInfo.personId
+  })
+    .then((personAccount: PersonAccountsModel) => {
+      if (personAccount) {
+        return updatePersonAccount(personAccount, personAccountInfo);
+      } else {
+        return createPersonAccount(personAccountInfo);
+      }
+    });
 }

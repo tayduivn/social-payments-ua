@@ -1,23 +1,24 @@
+import { FinancialInstitution } from '../../../../api-contracts/financial-institution/financial.institution';
 import { FinancialInstitutionModel } from './financial-institution.model';
 
-export function checkAndUpdate(financialInstitution: any) {
-  return new Promise((resolve, reject) => {
-    if (financialInstitution.id) {
-      resolve(financialInstitution);
-    } else {
-      FinancialInstitutionModel.count({
-        mfo: financialInstitution.mfo,
-        edrpou: financialInstitution.edrpou
-      }, function (err, count) {
-        if (err) { reject(err); }
+export function checkAndUpdate(financialInstitution: FinancialInstitution) {
+  if (financialInstitution._id) {
+    return Promise.resolve(financialInstitution);
+  }
 
-        if (!count) {
-          resolve(FinancialInstitutionModel.create(financialInstitution));
+  return FinancialInstitutionModel.find({
+    mfo: financialInstitution.mfo,
+    edrpou: financialInstitution.edrpou
+  })
+    .then(
+      (fi: FinancialInstitutionModel[]) => {
+        if (fi.length) {
+          return Promise.resolve(fi[0]);
         } else {
-          resolve(financialInstitution);
+          delete financialInstitution._id;
+          return FinancialInstitutionModel.create(financialInstitution);
         }
-      });
-    }
-  });
+      }
+    );
 }
 
