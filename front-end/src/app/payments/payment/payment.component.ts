@@ -84,15 +84,15 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
   }
 
   public onPersonIdChange(id: string) {
-    if (!id) {
-      this.financialInstitutionId = id;
-      this.updateAccountNumber('');
-    } else {
+    if (id) {
       this.personAccountsService.getByUserId(id).subscribe((personAccounts: PersonAccounts) => {
         if (personAccounts) {
           this.processPersonAccounts(personAccounts);
         }
       });
+    } else {
+      this.financialInstitutionId = null;
+      this.updateAccountNumber('');
     }
   }
 
@@ -105,7 +105,7 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
     const fiItem = fiInfo[0];
 
     if (fiInfo.length === 1 && fiItem.accounts.length === 1) {
-      this.setFinancialInstitutionAndAccount(fiItem.financialInstitution, fiItem.accounts[0].account);
+      this.setFinancialInstitutionAndAccount(fiItem.financialInstitutionId, fiItem.accounts[0].account);
     } else {
       this.selectPersonAccountDialogService.setDialogRef(this.dialog.open(SelectPersonAccountDialogComponent, {
         data: personAccounts
@@ -141,7 +141,7 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
   }
 
   private onPersonAccountSelected(accountSelected: PersonAccountSelectedModel) {
-    this.setFinancialInstitutionAndAccount(accountSelected.financialInstitution.financialInstitution, accountSelected.account.account);
+    this.setFinancialInstitutionAndAccount(accountSelected.financialInstitution.financialInstitutionId, accountSelected.account.account);
   }
 
   private setFinancialInstitutionAndAccount(fiId: string, account: string) {

@@ -24,8 +24,8 @@ export class PersonAccountsComponent {
 
   public onAccountSelected(fi: PersonFinancialInstitutions, account: PersonAccount) {
     this.accountSelected.emit({
-      id: this.personAccounts.id,
-      person: this.personAccounts.person,
+      id: this.personAccounts._id,
+      person: this.personAccounts.personId,
       financialInstitution: fi,
       account
     })

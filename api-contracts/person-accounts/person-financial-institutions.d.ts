@@ -1,7 +1,7 @@
 import { PersonAccount } from './person-account';
 
 export interface PersonFinancialInstitutions {
-  financialInstitution: string;
+  financialInstitutionId: string;
   accounts: PersonAccount[]
 }
 

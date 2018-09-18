@@ -20,9 +20,9 @@ export const financialInstitutionSchemaFields = {
   }
 };
 
-export interface FinancialInstitutionModel extends FinancialInstitution {}
+export type FinancialInstitutionModel = FinancialInstitution & Document;
 
-export const FinancialInstitutionModel = model<FinancialInstitutionModel & Document>(
+export const FinancialInstitutionModel = model<FinancialInstitutionModel>(
   'FinancialInstitution',
   new Schema(financialInstitutionSchemaFields),
   'financial_institutions'

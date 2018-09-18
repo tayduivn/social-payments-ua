@@ -26,9 +26,9 @@ const userSchema = new Schema({
 
 addUserModelMiddleware(userSchema);
 
-export interface UserModel extends User {
+export type UserModel = User & Document & {
   token: string
-}
+};
 
-export const UserModel = model<UserModel & Document>('User', userSchema);
+export const UserModel = model<UserModel>('User', userSchema);
 

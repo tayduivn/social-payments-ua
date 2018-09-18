@@ -37,24 +37,25 @@ router.post('/', (req: Request, res: Response, next: NextFunction) => {
     .then((prsn) => {
       person = prsn;
       return personAccountsCheckAndUpdate({
-        id: null,
-        person: person._id,
-        financialInstitution: financialInstitution._id,
+        personId: person._id,
+        financialInstitutionId: financialInstitution._id,
         account: payment.accountNumber
       });
     })
     .then(() => {
-      PaymentModel.create(Object.assign(payment, {_id: new Types.ObjectId()}))
+      delete payment._id;
+      PaymentModel.create(payment)
         .then(
           (payment: PaymentModel) => {
-            const responsePayment = (payment as any).toObject();
+            const responsePayment = payment.toObject();
             responsePayment.financialInstitution = financialInstitution;
             responsePayment.person = person;
 
             res.send(responsePayment);
           }
         );
-    });
+    },
+    (err: any) => next(err));
 });
 
 export const paymentsRouter = router;

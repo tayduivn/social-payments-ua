@@ -29,7 +29,7 @@ export const personSchemaFields = {
   }
 };
 
-export interface PersonModel extends Person {}
+export type PersonModel = Person & Document;
 
-export const PersonModel = model<PersonModel & Document>('Person', new Schema(personSchemaFields), 'persons');
+export const PersonModel = model<PersonModel>('Person', new Schema(personSchemaFields), 'persons');
 

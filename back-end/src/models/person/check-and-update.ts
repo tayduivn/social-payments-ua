@@ -1,6 +1,7 @@
+import { Person } from '../../../../api-contracts/person/person';
 import { PersonModel } from './person.model';
 
-export function checkAndUpdate(person: any) {
+export function checkAndUpdate(person: Person) {
   if (person._id) {
     return Promise.resolve(person);
   }
@@ -13,6 +14,7 @@ export function checkAndUpdate(person: any) {
       if (persons.length) {
         return Promise.resolve(persons[0]);
       } else {
+        delete person._id;
         return PersonModel.create(person);
       }
     });

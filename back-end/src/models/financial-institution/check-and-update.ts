@@ -1,6 +1,7 @@
+import { FinancialInstitution } from '../../../../api-contracts/financial-institution/financial.institution';
 import { FinancialInstitutionModel } from './financial-institution.model';
 
-export function checkAndUpdate(financialInstitution: any) {
+export function checkAndUpdate(financialInstitution: FinancialInstitution) {
   if (financialInstitution._id) {
     return Promise.resolve(financialInstitution);
   }
@@ -14,6 +15,7 @@ export function checkAndUpdate(financialInstitution: any) {
         if (fi.length) {
           return Promise.resolve(fi[0]);
         } else {
+          delete financialInstitution._id;
           return FinancialInstitutionModel.create(financialInstitution);
         }
       }

@@ -26,8 +26,6 @@ const paymentSchema = new Schema({
   person: personSchemaFields
 });
 
-export interface PaymentModel extends Payment {}
+export type PaymentModel = Payment & Document;
 
-export const PaymentModel = model<PaymentModel & Document>('Payment', paymentSchema);
-
-
+export const PaymentModel = model<PaymentModel>('Payment', paymentSchema);

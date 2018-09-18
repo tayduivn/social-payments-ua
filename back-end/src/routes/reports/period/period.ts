@@ -6,6 +6,7 @@ import express, {
 } from 'express';
 import moment from 'moment';
 import * as Excel from 'exceljs';
+import { start } from 'repl';
 import { PeriodReportQueryParams } from '../../../../../api-contracts/reports/period-report.query.params';
 import { PaymentModel } from '../../../models/payment/payment.model';
 
@@ -17,21 +18,23 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
   if (!startDate || !endDate) {
     const err: any = new Error('requires startDate and endDate query params');
     err.status = 400;
+    next(err);
+  }
 
-    throw err;
-  } else if (!moment(startDate).isValid() || !moment(endDate).isValid()) {
+  if (!moment(startDate).isValid() || !moment(endDate).isValid()) {
     const err: any = new Error('requires valid! startDate and endDate query params');
     err.status = 400;
 
-    throw err;
+    next(err);
   }
 
-  PaymentModel
+  return PaymentModel
     .find()
-    .where('date').gt(startDate as any).lt(endDate as any) // works with strings but type definition accepts only numbers... wtf
-    .exec(function (err: any, result: any[]) {
-      if (err) next(err);
-
+    .where('date')
+      // works with moment but needs type correction
+      .gte(moment(startDate).startOf('day') as any)
+      .lte(moment(endDate).endOf('day') as any)
+    .then((payments: PaymentModel[]) => {
       const workbook = new Excel.Workbook();
       const worksheet = workbook.addWorksheet('My Sheet');
 
@@ -99,19 +102,20 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
         bottom: {style: 'thin' as BorderStyle},
         right: {style: 'thin' as BorderStyle}
       };
-      result.forEach((res) => {
+
+      payments.forEach((payment: PaymentModel) => {
         const row = worksheet.addRow({
-          date: res.date,
-          account_number: res.accountNumber,
-          bank_name: res.financialInstitution.name,
-          mfo: res.financialInstitution.mfo,
-          edrpou: res.financialInstitution.edrpou,
-          sum: res.sum,
-          person: res.person.fullName,
-          ident_code: res.person.identityCode,
-          passport_code: res.person.passportNumber,
-          address: res.person.address.street,
-          description: res.description
+          date: moment(payment.date).format(dateFormat),
+          account_number: payment.accountNumber,
+          bank_name: payment.financialInstitution.name,
+          mfo: payment.financialInstitution.mfo,
+          edrpou: payment.financialInstitution.edrpou,
+          sum: payment.sum,
+          person: payment.person.fullName,
+          ident_code: payment.person.identityCode,
+          passport_code: payment.person.passportNumber,
+          address: payment.person.address.street,
+          description: payment.description
         });
 
         row.eachCell((cell) => {
@@ -119,9 +123,10 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
         });
       });
 
-      workbook.xlsx.write(res)
-        .then(() => res.end());
-    })
+      workbook.xlsx.write(res);
+      return res;
+    },
+    (err: any) => next(err));
 });
 
 export const periodRouter = router;

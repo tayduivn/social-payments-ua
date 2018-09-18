@@ -1,7 +1,6 @@
 export interface PersonAccountInfo {
-  id: string;
-  person: string;
-  financialInstitution: string;
+  personId: string;
+  financialInstitutionId: string;
   account: string;
 }
 

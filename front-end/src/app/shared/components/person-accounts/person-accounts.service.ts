@@ -14,7 +14,7 @@ export class PersonAccountsService extends CachedDataService<PersonAccounts> {
   }
 
   public getByUserId(id: string): Observable<PersonAccounts> {
-    return this.getData({person: id})
+    return this.getData({personId: id})
       .pipe(
         map((items) => items[0])
       );
