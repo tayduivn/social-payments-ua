@@ -15,6 +15,10 @@ import {
   TabbedItemsConfig
 } from './tabbed-items-config.model';
 
+export interface TabbedItemConfigInner extends TabbedItemConfig {
+  sticky?: boolean;
+}
+
 @Component({
   selector: 'sp-tabbed-items',
   templateUrl: './tabbed-items.component.html',
@@ -24,13 +28,15 @@ import {
 export class TabbedItemsComponent implements AfterViewInit {
   @Input() public set items(val: TabbedItemsConfig) {
     this._items = val;
+
+    val.pinnedTabs.forEach((item: TabbedItemConfigInner) => item.sticky = true);
     this.openedTabs = (val.pinnedTabs || []).concat();
   }
   public get items(): TabbedItemsConfig {
     return this._items;
   }
 
-  public openedTabs: TabbedItemConfig[] = [];
+  public openedTabs: TabbedItemConfigInner[] = [];
 
   @ViewChildren('tabContent', {
     read: ViewContainerRef
@@ -42,10 +48,6 @@ export class TabbedItemsComponent implements AfterViewInit {
     private componentFactoryResolver: ComponentFactoryResolver,
     private renderer: Renderer2
   ) { }
-
-  public listItemTrackFn = (item: TabbedItemConfig) => {
-    return item.title;
-  };
 
   public ngAfterViewInit() {
     // first round only pinned tabs have a container created by ngFor
@@ -62,6 +64,11 @@ export class TabbedItemsComponent implements AfterViewInit {
     setTimeout(() => {
       this.loadComponent(this.openedTabs[this.openedTabs.length - 1].component, this.tabContentRef.last)
     })
+  }
+
+  public onTabcloseClick(index: number) {
+    console.log(index);
+    this.openedTabs.splice(index, 1);
   }
 
   private loadComponent(component: any, container: ViewContainerRef) {
