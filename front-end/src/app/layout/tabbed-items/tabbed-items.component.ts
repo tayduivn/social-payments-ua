@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ComponentFactoryResolver,
   ComponentRef,
@@ -10,6 +11,7 @@ import {
   ViewChildren,
   ViewContainerRef
 } from '@angular/core';
+import * as _ from 'lodash';
 import {
   TabbedItemConfig,
   TabbedItemsConfig
@@ -27,27 +29,25 @@ export interface TabbedItemConfigInner extends TabbedItemConfig {
 })
 export class TabbedItemsComponent implements AfterViewInit {
   @Input() public set items(val: TabbedItemsConfig) {
-    this._items = val;
+    this.availableTabs = (val.list || []).concat();
 
-    val.pinnedTabs.forEach((item: TabbedItemConfigInner) => item.sticky = true);
-    this.openedTabs = (val.pinnedTabs || []).concat();
-  }
-  public get items(): TabbedItemsConfig {
-    return this._items;
+    this.openedTabs = (val.pinnedTabs || [])
+      .map((item: TabbedItemConfigInner) => Object.assign({sticky: true}, item));
   }
 
+  public availableTabs: TabbedItemConfig[] = [];
   public openedTabs: TabbedItemConfigInner[] = [];
+  public selectedIndex: number;
 
   @ViewChildren('tabContent', {
     read: ViewContainerRef
   }) private tabContentRef: QueryList<ViewContainerRef>;
 
-  private _items: TabbedItemsConfig;
-
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
-    private renderer: Renderer2
-  ) { }
+    private renderer: Renderer2,
+    private cdRef: ChangeDetectorRef
+  ) {}
 
   public ngAfterViewInit() {
     // first round only pinned tabs have a container created by ngFor
@@ -58,16 +58,15 @@ export class TabbedItemsComponent implements AfterViewInit {
     });
   }
 
-  public onItemClick(item: TabbedItemConfig) {
-    this.openedTabs.push(item);
+  public addTab(item: TabbedItemConfig) {
+    if (item.singleInstance && this.activateSingleTab(item)) {
+      return;
+    }
 
-    setTimeout(() => {
-      this.loadComponent(this.openedTabs[this.openedTabs.length - 1].component, this.tabContentRef.last)
-    })
+    this.createTab(item);
   }
 
-  public onTabcloseClick(index: number) {
-    console.log(index);
+  public closeTab(index: number) {
     this.openedTabs.splice(index, 1);
   }
 
@@ -77,10 +76,32 @@ export class TabbedItemsComponent implements AfterViewInit {
     const compRef = container.createComponent(componentFactory);
 
     this.addClass(compRef);
-    // compRef.instance.data = {};
   }
 
   private addClass(cmp: ComponentRef<any>) {
     this.renderer.addClass(cmp.location.nativeElement, 'sp-tabbed-item-inserted');
+  }
+
+  private createTab(item: TabbedItemConfig) {
+    // using new object is mandatory otherwise tabs are not working correctly
+    this.openedTabs.push(Object.assign({}, item));
+    this.selectedIndex = this.openedTabs.length - 1;
+
+    // let ngFor create new container from ng-template
+    this.cdRef.detectChanges();
+
+    // load component
+    this.loadComponent(this.openedTabs[this.openedTabs.length - 1].component, this.tabContentRef.last);
+  }
+
+  private activateSingleTab(item: TabbedItemConfig): boolean {
+    const tabIndex = _.findIndex(this.openedTabs, {component: item.component});
+    const isValid = tabIndex >= 0;
+
+    if (isValid) {
+      this.selectedIndex = tabIndex;
+    }
+
+    return isValid;
   }
 }

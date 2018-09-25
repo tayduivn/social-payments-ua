@@ -6,7 +6,8 @@ export const reportsConfig: TabbedItemsConfig = {
     {
       title: 'Платежі за період',
       icon: 'event_note',
-      component: PeriodReportComponent
+      component: PeriodReportComponent,
+      singleInstance: true
     }
   ]
 };
