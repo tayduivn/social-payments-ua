@@ -1,8 +1,8 @@
 <mat-sidenav-container class="sp-actions-menu">
   <mat-sidenav mode="side" opened="true" class="sp-mat-sidenav">
     <mat-nav-list>
-      <ng-template ngFor let-item [ngForOf]="items?.list" [ngForTrackBy]="listItemTrackFn">
-        <mat-list-item (click)="onItemClick(item)">
+      <ng-template ngFor let-item [ngForOf]="availableTabs">
+        <mat-list-item (click)="addTab(item)">
           <mat-icon matListIcon>{{item.icon}}</mat-icon>
           <h3 matLine>{{item.title}}</h3>
         </mat-list-item>
@@ -16,12 +16,15 @@
     <mat-card class="sp-container">
       <mat-tab-group *ngIf="openedTabs.length"
         class="sp-tab-group"
-        [selectedIndex]="openedTabs.length - 1">
-        <mat-tab *ngFor="let item of openedTabs; listItemTrackFn">
+        [(selectedIndex)]="selectedIndex">
+        <mat-tab *ngFor="let item of openedTabs; let index = index">
           <ng-template mat-tab-label>
             <div class="sp-tab-label">
               <mat-icon>{{item.icon}}</mat-icon>
               <span class="sp-tab-label-text">{{item.title}}</span>
+              <mat-icon *ngIf="!item.sticky"
+                class="sp-tab-close"
+                (click)="closeTab(index)">close</mat-icon>
             </div>
           </ng-template>
 

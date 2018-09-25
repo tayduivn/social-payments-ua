@@ -1,19 +1,28 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ComponentFactoryResolver,
   ComponentRef,
   Input,
+  OnInit,
   QueryList,
   Renderer2,
   ViewChildren,
   ViewContainerRef
 } from '@angular/core';
+import * as _ from 'lodash';
+import { UnsubscribableComponent } from '../../shared/components/common/unsubscribable-component';
 import {
   TabbedItemConfig,
   TabbedItemsConfig
 } from './tabbed-items-config.model';
+import { TabbedItemsService } from './tabbed-items.service';
+
+export interface TabbedItemConfigInner extends TabbedItemConfig {
+  sticky?: boolean;
+}
 
 @Component({
   selector: 'sp-tabbed-items',
@@ -21,31 +30,39 @@ import {
   styleUrls: ['./tabbed-items.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TabbedItemsComponent implements AfterViewInit {
+export class TabbedItemsComponent extends UnsubscribableComponent implements OnInit, AfterViewInit {
   @Input() public set items(val: TabbedItemsConfig) {
-    this._items = val;
-    this.openedTabs = (val.pinnedTabs || []).concat();
-  }
-  public get items(): TabbedItemsConfig {
-    return this._items;
+    this.availableTabs = (val.list || []).concat();
+
+    this.openedTabs = (val.pinnedTabs || [])
+      .map((item: TabbedItemConfigInner) => Object.assign({sticky: true}, item));
   }
 
-  public openedTabs: TabbedItemConfig[] = [];
+  public availableTabs: TabbedItemConfig[] = [];
+  public openedTabs: TabbedItemConfigInner[] = [];
+  public selectedIndex: number;
 
   @ViewChildren('tabContent', {
     read: ViewContainerRef
   }) private tabContentRef: QueryList<ViewContainerRef>;
 
-  private _items: TabbedItemsConfig;
-
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
-    private renderer: Renderer2
-  ) { }
+    private renderer: Renderer2,
+    private cdRef: ChangeDetectorRef,
+    private tabbedItemsService: TabbedItemsService
+  ) {
+    super();
+  }
 
-  public listItemTrackFn = (item: TabbedItemConfig) => {
-    return item.title;
-  };
+  public ngOnInit() {
+    this.componentSubscriptions = this.tabbedItemsService.closeActiveTab$
+      .subscribe(() => {
+        if (this.selectedIndex >= 0) {
+          this.closeTab(this.selectedIndex);
+        }
+      })
+  }
 
   public ngAfterViewInit() {
     // first round only pinned tabs have a container created by ngFor
@@ -56,12 +73,16 @@ export class TabbedItemsComponent implements AfterViewInit {
     });
   }
 
-  public onItemClick(item: TabbedItemConfig) {
-    this.openedTabs.push(item);
+  public addTab(item: TabbedItemConfig) {
+    if (item.singleInstance && this.activateSingleTab(item)) {
+      return;
+    }
 
-    setTimeout(() => {
-      this.loadComponent(this.openedTabs[this.openedTabs.length - 1].component, this.tabContentRef.last)
-    })
+    this.createTab(item);
+  }
+
+  public closeTab(index: number) {
+    this.openedTabs.splice(index, 1);
   }
 
   private loadComponent(component: any, container: ViewContainerRef) {
@@ -70,10 +91,32 @@ export class TabbedItemsComponent implements AfterViewInit {
     const compRef = container.createComponent(componentFactory);
 
     this.addClass(compRef);
-    // compRef.instance.data = {};
   }
 
   private addClass(cmp: ComponentRef<any>) {
     this.renderer.addClass(cmp.location.nativeElement, 'sp-tabbed-item-inserted');
+  }
+
+  private createTab(item: TabbedItemConfig) {
+    // using new object is mandatory otherwise tabs are not working correctly
+    this.openedTabs.push(Object.assign({}, item));
+    this.selectedIndex = this.openedTabs.length - 1;
+
+    // let ngFor create new container from ng-template
+    this.cdRef.detectChanges();
+
+    // load component
+    this.loadComponent(this.openedTabs[this.openedTabs.length - 1].component, this.tabContentRef.last);
+  }
+
+  private activateSingleTab(item: TabbedItemConfig): boolean {
+    const tabIndex = _.findIndex(this.openedTabs, {component: item.component});
+    const isValid = tabIndex >= 0;
+
+    if (isValid) {
+      this.selectedIndex = tabIndex;
+    }
+
+    return isValid;
   }
 }

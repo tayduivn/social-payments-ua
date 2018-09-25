@@ -54,6 +54,15 @@
   align-items: center;
 
   .sp-tab-label-text {
-    margin-left: 1em;
+    margin: 0 1em;
+  }
+
+  .sp-tab-close {
+    border-radius: 50%;
+
+    &:hover {
+      background-color: mat-color($mat-grey, 300);
+      cursor: default;
+    }
   }
 }

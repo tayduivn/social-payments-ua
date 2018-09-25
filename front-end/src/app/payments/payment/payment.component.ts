@@ -15,6 +15,7 @@ import {
 import { MatDialog } from '@angular/material';
 import * as moment from 'moment';
 import { PersonAccounts } from '../../../../../api-contracts/person-accounts/person-accounts';
+import { TabbedItemsService } from '../../layout/tabbed-items/tabbed-items.service';
 import { UnsubscribableComponent } from '../../shared/components/common/unsubscribable-component';
 import { FinancialInstitutionComponent } from '../../shared/components/financial-institution/financial-institution.component';
 import { PersonAccountSelectedModel } from '../../shared/components/person-accounts/person-account-selected.model';
@@ -58,7 +59,8 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
     private fb: FormBuilder,
     private paymentService: PaymentService,
     private personAccountsService: PersonAccountsService,
-    private selectPersonAccountDialogService: SelectPersonAccountDialogService
+    private selectPersonAccountDialogService: SelectPersonAccountDialogService,
+    private tabbedItemsService: TabbedItemsService
   ) {
     super();
     this.createForm();
@@ -81,6 +83,10 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
 
   public onSaveClick() {
     this.paymentService.submitPayment(this.form.value).subscribe();
+  }
+
+  public onCancelClick() {
+    this.tabbedItemsService.closeActiveTab();
   }
 
   public onPersonIdChange(id: string) {
