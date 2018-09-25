@@ -16,7 +16,7 @@
     <mat-card class="sp-container">
       <mat-tab-group *ngIf="openedTabs.length"
         class="sp-tab-group"
-        [selectedIndex]="selectedIndex">
+        [(selectedIndex)]="selectedIndex">
         <mat-tab *ngFor="let item of openedTabs; let index = index">
           <ng-template mat-tab-label>
             <div class="sp-tab-label">

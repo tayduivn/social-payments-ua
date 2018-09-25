@@ -80,7 +80,8 @@
         [disabled]="saveButtonDisabled"
         (click)="onSaveClick()">Зберегти
       </button>
-      <button mat-raised-button>Відміна</button>
+      <button mat-raised-button
+        (click)="onCancelClick()">Відміна</button>
     </mat-card-actions>
   </div>
 </mat-card>

@@ -6,16 +6,19 @@ import {
   ComponentFactoryResolver,
   ComponentRef,
   Input,
+  OnInit,
   QueryList,
   Renderer2,
   ViewChildren,
   ViewContainerRef
 } from '@angular/core';
 import * as _ from 'lodash';
+import { UnsubscribableComponent } from '../../shared/components/common/unsubscribable-component';
 import {
   TabbedItemConfig,
   TabbedItemsConfig
 } from './tabbed-items-config.model';
+import { TabbedItemsService } from './tabbed-items.service';
 
 export interface TabbedItemConfigInner extends TabbedItemConfig {
   sticky?: boolean;
@@ -27,7 +30,7 @@ export interface TabbedItemConfigInner extends TabbedItemConfig {
   styleUrls: ['./tabbed-items.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TabbedItemsComponent implements AfterViewInit {
+export class TabbedItemsComponent extends UnsubscribableComponent implements OnInit, AfterViewInit {
   @Input() public set items(val: TabbedItemsConfig) {
     this.availableTabs = (val.list || []).concat();
 
@@ -46,8 +49,20 @@ export class TabbedItemsComponent implements AfterViewInit {
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
     private renderer: Renderer2,
-    private cdRef: ChangeDetectorRef
-  ) {}
+    private cdRef: ChangeDetectorRef,
+    private tabbedItemsService: TabbedItemsService
+  ) {
+    super();
+  }
+
+  public ngOnInit() {
+    this.componentSubscriptions = this.tabbedItemsService.closeActiveTab$
+      .subscribe(() => {
+        if (this.selectedIndex >= 0) {
+          this.closeTab(this.selectedIndex);
+        }
+      })
+  }
 
   public ngAfterViewInit() {
     // first round only pinned tabs have a container created by ngFor
