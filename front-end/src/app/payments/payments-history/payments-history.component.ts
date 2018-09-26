@@ -2,9 +2,14 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnInit
+  OnInit,
+  ViewChild
 } from '@angular/core';
-import { MatTableDataSource } from '@angular/material';
+import {
+  MatPaginator,
+  MatSort,
+  MatTableDataSource
+} from '@angular/material';
 import * as moment from 'moment';
 import { map } from 'rxjs/operators';
 import { Payment } from '../../../../../api-contracts/payment/payment';
@@ -33,7 +38,10 @@ export class PaymentsHistoryComponent extends UnsubscribableComponent implements
     'description'
   ];
 
-  public paymentsDataSource = new MatTableDataSource();
+  public dataSource = new MatTableDataSource();
+
+  @ViewChild(MatSort) private sort: MatSort;
+  @ViewChild(MatPaginator) private paginator: MatPaginator;
 
   constructor(
     private cdRef: ChangeDetectorRef,
@@ -42,7 +50,10 @@ export class PaymentsHistoryComponent extends UnsubscribableComponent implements
     super();
   }
 
-  ngOnInit() {
+  public ngOnInit() {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator= this.paginator;
+
     this.componentSubscriptions = this.paymentsHistoryService.getPayments()
       .pipe(
         map((payments: Payment[]) => payments.map((item) => Object.assign(
@@ -54,7 +65,7 @@ export class PaymentsHistoryComponent extends UnsubscribableComponent implements
         )))
       )
       .subscribe((payments: Payment[]) => {
-        this.paymentsDataSource.data = payments;
+        this.dataSource.data = payments;
         this.cdRef.markForCheck();
       });
   }
@@ -62,4 +73,5 @@ export class PaymentsHistoryComponent extends UnsubscribableComponent implements
   public paymentsTrackFn(index: number, payment: Payment): string {
     return payment._id;
   }
+
 }
