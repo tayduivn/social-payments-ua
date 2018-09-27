@@ -1,0 +1,64 @@
+<section class="sp-search-inputs">
+  <section class="sp-search-section">
+    <div class="sp-search-container sp-period-select-container">
+      <span class="sp-search-container-label">Дата:</span>
+      <mat-form-field class="sp-date-period-from">
+        <input matInput
+          autocomplete="off"
+          placeholder="з"
+          [matDatepicker]="fromDateCmp">
+        <mat-datepicker-toggle matSuffix
+          [for]="fromDateCmp"></mat-datepicker-toggle>
+        <mat-datepicker #fromDateCmp></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="sp-date-period-to">
+        <input matInput
+          name="date"
+          autocomplete="off"
+          placeholder="по"
+          [matDatepicker]="toDateCmp">
+        <mat-datepicker-toggle matSuffix
+          [for]="toDateCmp"></mat-datepicker-toggle>
+        <mat-datepicker #toDateCmp></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="sp-search-container sp-sum-diapason-container">
+      <span class="sp-search-container-label">Сума:</span>
+
+      <mat-form-field>
+        <input #sumInput
+          matInput
+          type="number"
+          autocomplete="off"
+          placeholder="від">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input #sumInput
+          matInput
+          type="number"
+          autocomplete="off"
+          placeholder="до">
+      </mat-form-field>
+    </div>
+  </section>
+
+  <div class="sp-search-container sp-search-phrase-container">
+    <span class="sp-search-container-label">Текст:</span>
+
+    <mat-form-field>
+      <input matInput
+        formControlName="accountNumber"
+        autocomplete="off"
+        placeholder="Введіть фразу для пошуку">
+    </mat-form-field>
+  </div>
+</section>
+
+<section class="sp-search-action">
+  <button mat-fab color="primary">
+    <mat-icon aria-label="Search history icon">search</mat-icon>
+  </button>
+</section>
