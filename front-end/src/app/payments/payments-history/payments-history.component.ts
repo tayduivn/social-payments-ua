@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component
 } from '@angular/core';
+import { PaymentsHistoryService } from './payments-history.service';
 
 @Component({
   selector: 'sp-payments-history',
@@ -10,5 +11,5 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaymentsHistoryComponent {
-  constructor() {}
+  constructor(public paymentsHistoryService: PaymentsHistoryService) {}
 }

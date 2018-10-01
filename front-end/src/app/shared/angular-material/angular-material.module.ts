@@ -15,7 +15,8 @@ import {
   MatSortModule,
   MatTableModule,
   MatTabsModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatTooltipModule
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
@@ -30,17 +31,18 @@ const importedExports = [
   MatDatepickerModule,
   MatDialogModule,
   MatDividerModule,
-  MatMomentDateModule,
   MatInputModule,
   MatIconModule,
   MatListModule,
+  MatMomentDateModule,
   MatPaginatorModule,
   MatRadioModule,
   MatSidenavModule,
   MatSortModule,
   MatTableModule,
   MatTabsModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatTooltipModule
 ];
 
 @NgModule({

@@ -1,11 +1,14 @@
-<section class="sp-search-inputs">
+<section class="sp-search-inputs" [formGroup]="searchForm">
   <section class="sp-search-section">
     <div class="sp-search-container sp-period-select-container">
       <span class="sp-search-container-label">Дата:</span>
+
       <mat-form-field class="sp-date-period-from">
         <input matInput
+          formControlName="dateFrom"
           autocomplete="off"
           placeholder="з"
+          [max]="searchForm.get('dateTo').value"
           [matDatepicker]="fromDateCmp">
         <mat-datepicker-toggle matSuffix
           [for]="fromDateCmp"></mat-datepicker-toggle>
@@ -14,9 +17,10 @@
 
       <mat-form-field class="sp-date-period-to">
         <input matInput
-          name="date"
+          formControlName="dateTo"
           autocomplete="off"
           placeholder="по"
+          [min]="searchForm.get('dateFrom').value"
           [matDatepicker]="toDateCmp">
         <mat-datepicker-toggle matSuffix
           [for]="toDateCmp"></mat-datepicker-toggle>
@@ -29,6 +33,7 @@
 
       <mat-form-field>
         <input #sumInput
+          formControlName="sumFrom"
           matInput
           type="number"
           autocomplete="off"
@@ -37,6 +42,7 @@
 
       <mat-form-field>
         <input #sumInput
+          formControlName="sumTo"
           matInput
           type="number"
           autocomplete="off"
@@ -50,7 +56,7 @@
 
     <mat-form-field>
       <input matInput
-        formControlName="accountNumber"
+        formControlName="searchPhrase"
         autocomplete="off"
         placeholder="Введіть фразу для пошуку">
     </mat-form-field>
@@ -58,7 +64,13 @@
 </section>
 
 <section class="sp-search-action">
-  <button mat-fab color="primary">
+  <button
+    matTooltip="Пошук"
+    mat-fab
+    color="primary"
+    [disabled]="searchForm.invalid"
+    (click)="paymentsHistoryService.requestPayments(searchForm.value)">
     <mat-icon aria-label="Search history icon">search</mat-icon>
   </button>
 </section>
+

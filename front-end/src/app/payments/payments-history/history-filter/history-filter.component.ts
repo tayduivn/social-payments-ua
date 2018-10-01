@@ -1,8 +1,14 @@
 import {
   ChangeDetectionStrategy,
-  Component,
-  OnInit
+  Component
 } from '@angular/core';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup
+} from '@angular/forms';
+import * as _ from 'lodash/fp';
+import { PaymentsHistoryService } from '../payments-history.service';
 
 @Component({
   selector: 'sp-history-filter',
@@ -10,11 +16,20 @@ import {
   styleUrls: ['./history-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HistoryFilterComponent implements OnInit {
+export class HistoryFilterComponent {
+  public readonly searchForm = new FormGroup({
+    dateFrom: new FormControl(),
+    dateTo: new FormControl(),
+    sumFrom: new FormControl(),
+    sumTo: new FormControl(),
+    searchPhrase: new FormControl()
+  }, [
+    (form: AbstractControl): {[key: string]: any} | null => {
+      const searchFormEmpty = _.compact(Object.values(form.value)).length === 0;
 
-  constructor() { }
+      return searchFormEmpty ? {searchFormEmpty} : null;
+    }
+  ]);
 
-  ngOnInit() {
-  }
-
+  constructor(public paymentsHistoryService: PaymentsHistoryService) {}
 }

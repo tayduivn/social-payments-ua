@@ -54,7 +54,7 @@ export class HistoryTableComponent extends UnsubscribableComponent implements On
     this.dataSource.sort = this.sort;
     this.dataSource.paginator= this.paginator;
 
-    this.componentSubscriptions = this.paymentsHistoryService.getPayments()
+    this.componentSubscriptions = this.paymentsHistoryService.paymentsData$
       .pipe(
         map((payments: Payment[]) => payments.map((item) => Object.assign(
           {},

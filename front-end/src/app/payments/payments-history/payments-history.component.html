@@ -1,4 +1,9 @@
 <mat-card>
   <sp-history-filter class="sp-payments-history-filter"></sp-history-filter>
-  <sp-history-table class="sp-payments-history-table"></sp-history-table>
+
+  <sp-history-table *ngIf="(paymentsHistoryService.paymentsData$ | async).length" class="sp-payments-history-table"></sp-history-table>
+
+  <section *ngIf="paymentsHistoryService.paymentsHistoryStatusDescription$ | async" class="sp-payments-history-message">
+    <h1>{{paymentsHistoryService.paymentsHistoryStatusDescription$ | async}}</h1>
+  </section>
 </mat-card>

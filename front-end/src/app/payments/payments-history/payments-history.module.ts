@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { AngularMaterialModule } from '../../shared/angular-material/angular-material.module';
 import { PaymentsHistoryComponent } from './payments-history.component';
@@ -11,6 +12,7 @@ import { HistoryFilterComponent } from './history-filter/history-filter.componen
   imports: [
     CommonModule,
     AngularMaterialModule,
+    ReactiveFormsModule,
     PerfectScrollbarModule
   ],
   entryComponents: [PaymentsHistoryComponent],
