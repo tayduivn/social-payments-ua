@@ -52,8 +52,8 @@ export const PaymentModel = model<PaymentModel>('Payment', paymentSchema);
 
 PaymentModel.on('index', function (err) {
   if (err) {
-    console.log('User index error: %s', err);
+    console.log('PaymentModel index error: %s', err);
   } else {
-    console.log('User indexing complete');
+    console.log('PaymentModel indexing complete');
   }
 });

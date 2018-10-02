@@ -44,7 +44,9 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
     };
   }
 
-  return PaymentModel.find(_.omitBy(conditions, (item) => _.isEmpty(item)))
+  return PaymentModel
+    .find(_.omitBy(conditions, (item) => _.isEmpty(item)))
+    .sort('-date')
     .then(
       (payments: Payment[]) => res.send(payments),
       (err) => next(err)

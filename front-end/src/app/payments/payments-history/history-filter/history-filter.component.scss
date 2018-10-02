@@ -9,7 +9,7 @@
   display: flex;
   justify-content: space-between;
   border-bottom: $divider-border;
-  padding-bottom: 1em;
+  padding: $card-indent;
 }
 
 .sp-search-inputs {
