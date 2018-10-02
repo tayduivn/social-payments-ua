@@ -1,6 +1,5 @@
-@import '../../../../node_modules/@angular/material/theming';
-
-$nav-shadow-size: 10px;
+@import '~@angular/material/theming';
+@import '../../shared/styles/general.variables';
 
 :host {
   display: flex;
@@ -9,7 +8,7 @@ $nav-shadow-size: 10px;
 }
 
 .sp-top-panel {
-  box-shadow: 0 0 $nav-shadow-size mat-color($mat-gray, 900);
+  box-shadow: 0 0 $shadow-size mat-color($mat-gray, 900);
 
   .sp-nav {
     .sp-nav-link {
@@ -21,7 +20,7 @@ $nav-shadow-size: 10px;
 .sp-body {
   flex: 1;
   display: flex;
-  margin-top: $nav-shadow-size;
+  margin-top: 6px;
 
   ::ng-deep > {
     * {

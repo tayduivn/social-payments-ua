@@ -142,7 +142,7 @@ describe('Utils', () => {
         a: '2'
       };
       expect(FilterUtils.includes(source, filter)).toBe(true);
-    })
+    });
 
     it('should work with nested objects', () => {
       source = {

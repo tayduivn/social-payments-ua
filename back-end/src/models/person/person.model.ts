@@ -8,21 +8,21 @@ import { Person } from '../../../../api-contracts/person/person';
 export const personSchemaFields = {
   fullName: {
     type: String,
-    required: [true, 'Прізвище, ім\'я, по батькові одержувача обов\'язкове поле']
+    required: [true]
   },
   passportNumber: {
     type: String,
-    required: [true, 'Серія та номер паспорта обов\'язкове поле']
+    required: [true]
   },
   identityCode: String,
   address: {
     street: {
       type: String,
-      required: [true, 'Вулиця обов\'язкове поле']
+      required: [true]
     },
     house: {
       type: String,
-      required: [true, 'Номер будинку обов\'язкове поле']
+      required: [true]
     },
     houseSection: String,
     apartment: String

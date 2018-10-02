@@ -1,65 +1,12 @@
-<mat-card>
-  <perfect-scrollbar>
-    <mat-table [dataSource]="paymentsDataSource"
-      [trackBy]="paymentsTrackFn">
-      <ng-container matColumnDef="date">
-        <mat-header-cell *matHeaderCellDef>Дата платежу</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.date}}</mat-cell>
-      </ng-container>
+<mat-card class="sp-zero-indent">
+  <sp-history-filter class="sp-payments-history-filter"
+    (filterChange)="onFilterChange($event)"></sp-history-filter>
 
-      <ng-container matColumnDef="account">
-        <mat-header-cell *matHeaderCellDef>Особовий рахунок</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.accountNumber}}</mat-cell>
-      </ng-container>
+  <sp-history-table *ngIf="!statusTextDescription"
+    class="sp-payments-history-table"
+    [payments]="payments"></sp-history-table>
 
-      <ng-container matColumnDef="bankName">
-        <mat-header-cell *matHeaderCellDef>Найменування банку</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.financialInstitution.name}}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="mfo">
-        <mat-header-cell *matHeaderCellDef>Код МФО</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.financialInstitution.mfo}}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="edrpou">
-        <mat-header-cell *matHeaderCellDef>Код ЄДРПОУ</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.financialInstitution.edrpou}}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="sum">
-        <mat-header-cell *matHeaderCellDef>Сума виплат</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.sum}}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="fullName">
-        <mat-header-cell *matHeaderCellDef>Прізвище, ім'я, по батькові</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.person.fullName}}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="identityCode">
-        <mat-header-cell *matHeaderCellDef>Ідентифікаціний код</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.person.identityCode}}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="passport">
-        <mat-header-cell *matHeaderCellDef>Серія та № паспорта</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.person.passportNumber}}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="address">
-        <mat-header-cell *matHeaderCellDef>Адреса реєстрації</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.person.address.street}}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="description">
-        <mat-header-cell *matHeaderCellDef>Призначення платежу</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.description}}</mat-cell>
-      </ng-container>
-
-      <mat-header-row #tableHeader
-        *matHeaderRowDef="displayedColumns;"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
-  </perfect-scrollbar>
+  <section *ngIf="statusTextDescription" class="sp-payments-history-message">
+    <h1>{{statusTextDescription}}</h1>
+  </section>
 </mat-card>

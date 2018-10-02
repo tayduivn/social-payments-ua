@@ -1,15 +1,11 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
-  OnInit
+  Component
 } from '@angular/core';
-import { MatTableDataSource } from '@angular/material';
-import * as moment from 'moment';
-import { map } from 'rxjs/operators';
+import * as _ from 'lodash/fp';
 import { Payment } from '../../../../../api-contracts/payment/payment';
-import { UnsubscribableComponent } from '../../shared/components/common/unsubscribable-component';
-import { dateFormat } from '../../shared/constants/date-format';
+import { PaymentsFilter } from '../../../../../api-contracts/payment/payments-filter';
 import { PaymentsHistoryService } from './payments-history.service';
 
 @Component({
@@ -18,48 +14,25 @@ import { PaymentsHistoryService } from './payments-history.service';
   styleUrls: ['./payments-history.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PaymentsHistoryComponent extends UnsubscribableComponent implements OnInit {
-  public readonly displayedColumns = [
-    'date',
-    'account',
-    'bankName',
-    'mfo',
-    'edrpou',
-    'sum',
-    'fullName',
-    'identityCode',
-    'passport',
-    'address',
-    'description'
-  ];
+export class PaymentsHistoryComponent {
+  public statusTextDescription = 'Вкажіть параметри пошуку';
 
-  public paymentsDataSource = new MatTableDataSource();
+  public payments: Payment[];
 
-  constructor(
-    private cdRef: ChangeDetectorRef,
-    private paymentsHistoryService: PaymentsHistoryService
-  ) {
-    super();
-  }
+  constructor(private cdRef: ChangeDetectorRef, private paymentsHistoryService: PaymentsHistoryService) {}
 
-  ngOnInit() {
-    this.componentSubscriptions = this.paymentsHistoryService.getPayments()
-      .pipe(
-        map((payments: Payment[]) => payments.map((item) => Object.assign(
-          {},
-          item,
-          {
-            date: moment(item.date).format(dateFormat)
-          }
-        )))
-      )
+  public onFilterChange(filter: PaymentsFilter) {
+    this.paymentsHistoryService.requestPayments(filter)
       .subscribe((payments: Payment[]) => {
-        this.paymentsDataSource.data = payments;
+        if (_.isEmpty(payments)) {
+          this.statusTextDescription = 'Не знайдено';
+        } else {
+          this.statusTextDescription = null;
+        }
+
+        this.payments = payments;
+
         this.cdRef.markForCheck();
       });
-  }
-
-  public paymentsTrackFn(index: number, payment: Payment): string {
-    return payment._id;
   }
 }

@@ -8,15 +8,15 @@ import { FinancialInstitution } from '../../../../api-contracts/financial-instit
 export const financialInstitutionSchemaFields = {
   name: {
     type: String,
-    required: [true, 'Ім\'я фінансової установи обов\'язкове поле']
+    required: [true]
   },
   mfo: {
     type: String,
-    required: [true, 'МФО обов\'язкове поле']
+    required: [true]
   },
   edrpou: {
     type: String,
-    required: [true, 'Код ЄДРПОУ обов\'язкове поле']
+    required: [true]
   }
 };
 
