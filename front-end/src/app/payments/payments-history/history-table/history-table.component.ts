@@ -1,7 +1,7 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  Input,
   OnInit,
   ViewChild
 } from '@angular/core';
@@ -11,11 +11,8 @@ import {
   MatTableDataSource
 } from '@angular/material';
 import * as moment from 'moment';
-import { map } from 'rxjs/operators';
 import { Payment } from '../../../../../../api-contracts/payment/payment';
-import { UnsubscribableComponent } from '../../../shared/components/common/unsubscribable-component';
 import { dateFormat } from '../../../shared/constants/date-format';
-import { PaymentsHistoryService } from '../payments-history.service';
 
 @Component({
   selector: 'sp-history-table',
@@ -23,7 +20,18 @@ import { PaymentsHistoryService } from '../payments-history.service';
   styleUrls: ['./history-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HistoryTableComponent extends UnsubscribableComponent implements OnInit {
+export class HistoryTableComponent implements OnInit {
+  @Input() public set payments(payments: Payment[]) {
+    // transform date to correct format
+    this.dataSource.data = payments.map((item) => Object.assign(
+      {},
+      item,
+      {
+        date: moment(item.date).format(dateFormat)
+      }
+    ));
+  }
+
   public readonly displayedColumns = [
     'date',
     'account',
@@ -43,31 +51,11 @@ export class HistoryTableComponent extends UnsubscribableComponent implements On
   @ViewChild(MatSort) private sort: MatSort;
   @ViewChild(MatPaginator) private paginator: MatPaginator;
 
-  constructor(
-    private cdRef: ChangeDetectorRef,
-    private paymentsHistoryService: PaymentsHistoryService
-  ) {
-    super();
-  }
+  constructor() {}
 
   public ngOnInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator= this.paginator;
-
-    this.componentSubscriptions = this.paymentsHistoryService.paymentsData$
-      .pipe(
-        map((payments: Payment[]) => payments.map((item) => Object.assign(
-          {},
-          item,
-          {
-            date: moment(item.date).format(dateFormat)
-          }
-        )))
-      )
-      .subscribe((payments: Payment[]) => {
-        this.dataSource.data = payments;
-        this.cdRef.markForCheck();
-      });
   }
 
   public paymentsTrackFn(index: number, payment: Payment): string {

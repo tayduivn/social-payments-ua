@@ -1,3 +1,4 @@
+import * as Excel from 'exceljs';
 import { BorderStyle } from 'exceljs';
 import express, {
   NextFunction,
@@ -5,24 +6,16 @@ import express, {
   Response
 } from 'express';
 import moment from 'moment';
-import * as Excel from 'exceljs';
-import { start } from 'repl';
 import { PeriodReportQueryParams } from '../../../../../api-contracts/reports/period-report.query.params';
 import { PaymentModel } from '../../../models/payment/payment.model';
 
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
-  const {startDate, endDate} = req.query as PeriodReportQueryParams;
-
-  if (!startDate || !endDate) {
-    const err: any = new Error('requires startDate and endDate query params');
-    err.status = 400;
-    next(err);
-  }
+  let {startDate, endDate} = req.query as PeriodReportQueryParams;
 
   if (!moment(startDate).isValid() || !moment(endDate).isValid()) {
-    const err: any = new Error('requires valid! startDate and endDate query params');
+    const err: any = new Error('Missed or invalid startDate and/or endDate');
     err.status = 400;
 
     next(err);
@@ -31,7 +24,8 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
   return PaymentModel
     .find()
     .where('date')
-      // works with moment but needs type correction
+      // apply time unit correction for provided dates
+      // works with moment but needs type correction "as any"
       .gte(moment(startDate).startOf('day') as any)
       .lte(moment(endDate).endOf('day') as any)
     .then((payments: PaymentModel[]) => {

@@ -9,16 +9,16 @@ import { addUserModelMiddleware } from './user.model.middleware';
 const userSchema = new Schema({
   login: {
     type: String,
-    required: [true, 'Логін обов\'язкове поле'],
+    required: [true],
     unique: true
   },
   fullName: {
     type: String,
-    required: [true, 'Повне ім\'я обов\'язкове поле']
+    required: [true]
   },
   password: {
     type: String,
-    required: [true, 'Пароль обов\'язкове поле']
+    required: [true]
   },
   token: String,
   isAdmin: Boolean

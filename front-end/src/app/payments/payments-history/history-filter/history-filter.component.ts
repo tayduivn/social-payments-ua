@@ -1,14 +1,19 @@
 import {
   ChangeDetectionStrategy,
-  Component
+  Component,
+  EventEmitter,
+  HostListener,
+  Output
 } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
   FormGroup
 } from '@angular/forms';
-import * as _ from 'lodash/fp';
-import { PaymentsHistoryService } from '../payments-history.service';
+import * as _ from 'lodash';
+import * as moment from 'moment';
+import { Moment } from 'moment';
+import { PaymentsFilter } from '../../../../../../api-contracts/payment/payments-filter';
 
 @Component({
   selector: 'sp-history-filter',
@@ -17,6 +22,8 @@ import { PaymentsHistoryService } from '../payments-history.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HistoryFilterComponent {
+  @Output() public filterChange = new EventEmitter<PaymentsFilter>();
+
   public readonly searchForm = new FormGroup({
     dateFrom: new FormControl(),
     dateTo: new FormControl(),
@@ -31,5 +38,17 @@ export class HistoryFilterComponent {
     }
   ]);
 
-  constructor(public paymentsHistoryService: PaymentsHistoryService) {}
+  @HostListener('keyup.enter') private onEnter() {
+    if (this.searchForm.valid) {
+      this.onSearchClick();
+    }
+  }
+
+  constructor() {}
+
+  public onSearchClick() {
+    this.filterChange.emit(
+      _.mapValues(this.searchForm.value, (val: Moment) => moment.isMoment(val) ? val.toISOString() : val)
+    );
+  }
 }

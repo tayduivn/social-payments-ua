@@ -4,7 +4,6 @@ import express, {
   Response
 } from 'express';
 import { PersonAccounts } from '../../../../../api-contracts/person-accounts/person-accounts';
-import { PaymentModel } from '../../../models/payment/payment.model';
 import { PersonAccountsModel } from '../../../models/person-accounts/person-accounts.model';
 
 const router = express.Router();

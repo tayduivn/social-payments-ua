@@ -7,10 +7,7 @@ import express, {
   Response
 } from 'express';
 import morgan from 'morgan';
-import {
-  AppRequest,
-  appRequestProcessor
-} from './app-request';
+import { appRequestProcessor } from './app-request';
 import { connectDb } from './core/db/db-connection';
 import { initRoutes } from './routes/init-routes';
 

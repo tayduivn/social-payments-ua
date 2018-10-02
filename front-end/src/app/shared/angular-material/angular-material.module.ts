@@ -67,7 +67,7 @@ export class AngularMaterialModule {
     this.matPaginatorIntl.firstPageLabel = 'Перша сторінка';
     this.matPaginatorIntl.lastPageLabel = 'Остання сторінка';
     this.matPaginatorIntl.nextPageLabel = 'Наступна сторінка';
-    this.matPaginatorIntl.lastPageLabel = 'Попередня сторінка';
+    this.matPaginatorIntl.previousPageLabel= 'Попередня сторінка';
 
     // copied from lib documentation
     this.matPaginatorIntl.getRangeLabel = (page: number, pageSize: number, length: number) => {

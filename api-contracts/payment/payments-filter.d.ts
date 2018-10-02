@@ -1,7 +1,7 @@
 export interface PaymentsFilter {
   dateFrom?: string;
   dateTo?: string;
-  sumForm?: number;
+  sumFrom?: number;
   sumTo?: number;
   searchPhrase?: string;
 }

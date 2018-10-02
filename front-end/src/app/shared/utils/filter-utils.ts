@@ -1,22 +1,16 @@
-import { Utils } from './utils';
+import * as _ from 'lodash';
 
 export class FilterUtils {
   public static equals(prev: Object, curr: Object): boolean {
-    return Object.keys(prev).every(key => {
-      if (Utils.isObject(prev[key]) && Utils.isObject(curr[key])) {
-        return FilterUtils.equals(prev[key], curr[key])
-      } else {
-        return prev[key] === curr[key];
-      }
-    });
+    return _.isEqual(prev, curr);
   }
 
   public static isEmpty(obj: Object): boolean {
     return Object.values(obj).every(val => {
-      if (Utils.isObject(val)) {
+      if (_.isObject(val)) {
         return FilterUtils.isEmpty(val);
       } else {
-        return !val
+        return !val;
       }
     });
   }
@@ -25,7 +19,7 @@ export class FilterUtils {
     return Object.keys(filter).every((key) => {
       if (!source[key] || !filter[key]) { return true; }
 
-      if (Utils.isObject(source[key]) && Utils.isObject(filter[key])) {
+      if (_.isObject(source[key]) && _.isObject(filter[key])) {
         return FilterUtils.includes(source[key], filter[key]);
       } else {
         return source[key].toString().toLowerCase().includes(filter[key].toString().toLowerCase());

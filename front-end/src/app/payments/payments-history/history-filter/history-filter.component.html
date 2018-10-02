@@ -69,7 +69,7 @@
     mat-fab
     color="primary"
     [disabled]="searchForm.invalid"
-    (click)="paymentsHistoryService.requestPayments(searchForm.value)">
+    (click)="onSearchClick()">
     <mat-icon aria-label="Search history icon">search</mat-icon>
   </button>
 </section>

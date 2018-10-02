@@ -3,11 +3,10 @@ import express, {
   Request,
   Response
 } from 'express';
-import {
-  Document,
-  Types
-} from 'mongoose';
+import * as _ from 'lodash';
+import moment from 'moment';
 import { Payment } from '../../../../../api-contracts/payment/payment';
+import { PaymentsFilter } from '../../../../../api-contracts/payment/payments-filter';
 import { checkAndUpdate as fiCheckAndUpdate } from '../../../models/financial-institution/check-and-update';
 import { PaymentModel } from '../../../models/payment/payment.model';
 import { checkAndUpdate as personAccountsCheckAndUpdate } from '../../../models/person-accounts/check-and-update';
@@ -16,8 +15,36 @@ import { checkAndUpdate as personCheckAndUpdate } from '../../../models/person/c
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
-  return PaymentModel
-    .find()
+  const {dateFrom, dateTo, sumFrom, sumTo, searchPhrase} = req.query as PaymentsFilter;
+  const conditions: any = {
+    date: {},
+    sum: {}
+  };
+
+  if (moment(dateFrom).isValid) {
+    Object.assign(conditions.date, {$gte: moment(dateFrom).startOf('day') as any});
+  }
+
+  if (moment(dateTo).isValid) {
+    Object.assign(conditions.date, {$lte: moment(dateTo).endOf('day') as any});
+  }
+
+  if(sumFrom) {
+    Object.assign(conditions.sum, {$gte: sumFrom});
+  }
+
+  if(sumTo) {
+    Object.assign(conditions.sum, {$lte: sumTo});
+  }
+
+  if (searchPhrase) {
+    conditions.$text = {
+      $search: searchPhrase,
+      $language: 'none'
+    };
+  }
+
+  return PaymentModel.find(_.omitBy(conditions, (item) => _.isEmpty(item)))
     .then(
       (payments: Payment[]) => res.send(payments),
       (err) => next(err)

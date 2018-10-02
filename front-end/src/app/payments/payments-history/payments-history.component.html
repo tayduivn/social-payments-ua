@@ -1,9 +1,12 @@
 <mat-card>
-  <sp-history-filter class="sp-payments-history-filter"></sp-history-filter>
+  <sp-history-filter class="sp-payments-history-filter"
+    (filterChange)="onFilterChange($event)"></sp-history-filter>
 
-  <sp-history-table *ngIf="(paymentsHistoryService.paymentsData$ | async).length" class="sp-payments-history-table"></sp-history-table>
+  <sp-history-table *ngIf="!statusTextDescription"
+    class="sp-payments-history-table"
+    [payments]="payments"></sp-history-table>
 
-  <section *ngIf="paymentsHistoryService.paymentsHistoryStatusDescription$ | async" class="sp-payments-history-message">
-    <h1>{{paymentsHistoryService.paymentsHistoryStatusDescription$ | async}}</h1>
+  <section *ngIf="statusTextDescription" class="sp-payments-history-message">
+    <h1>{{statusTextDescription}}</h1>
   </section>
 </mat-card>
