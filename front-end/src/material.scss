@@ -1,0 +1,116 @@
+@import '~@angular/material/theming';
+
+@mixin mat-icon-size($size) {
+  font-size: $size;
+  height: $size;
+  width: $size;
+}
+
+.material-icons {
+  //&.md-18 {
+  //  @include mat-icon-size(18px);
+  //}
+  //&.md-24 {
+  //  @include mat-icon-size(24px);
+  //}
+  //&.md-36 {
+  //  @include mat-icon-size(36px);
+  //}
+  //&.md-48 {
+  //  @include mat-icon-size(48px);
+  //}
+}
+
+// ***
+// ***
+// ***
+// typography
+
+//  display-4, display-3, display-2 and display-1 - Large, one-off headers, usually at the top of the page (e.g. a hero header).
+// headline - Section heading corresponding to the <h1> tag.
+// title - Section heading corresponding to the <h2> tag.
+// subheading-2 - Section heading corresponding to the <h3> tag.
+// subheading-1 - Section heading corresponding to the <h4> tag.
+// body-1 - Base body text.
+// body-2 - Bolder body text.
+// caption - Smaller body and hint text.
+// button - Buttons and anchors.
+// input - Form input fields.
+$custom-typography: mat-typography-config(
+  $font-family:   'Roboto, "Helvetica Neue", sans-serif',
+  $display-4:     mat-typography-level(48px, 48px, 300),
+  $display-3:     mat-typography-level(36px, 36px, 400),
+  $display-2:     mat-typography-level(28px, 30px, 400),
+  $display-1:     mat-typography-level(22px, 24px, 400),
+  $headline:      mat-typography-level(20px, 22px, 400),
+  $title:         mat-typography-level(18px, 20px, 500),
+  $subheading-2:  mat-typography-level(14px, 16px, 400),
+  $subheading-1:  mat-typography-level(14px, 16px, 400),
+  $body-2:        mat-typography-level(12px, 12px, 500),
+  $body-1:        mat-typography-level(12px, 12px, 400),
+  $caption:       mat-typography-level(12px, 12px, 400),
+  $button:        mat-typography-level(12px, 18px, 500),
+    // Line-height must be unit-less fraction of the font-size.
+  $input:         mat-typography-level(inherit, 1.125, 400)
+);
+
+// Override typography for all Angular Material, including mat-base-typography and all components.
+@include angular-material-typography($custom-typography);
+
+// ***
+// ***
+// ***
+// layout
+
+.sp-app-body {
+  // general
+  .sp-zero-indent {
+    padding: 0;
+  }
+
+  // autocomplete active item
+  .mat-option.mat-active {
+    background: rgba(0,0,0,.08);
+  }
+
+  // toolbar
+  .mat-toolbar-row, .mat-toolbar-single-row {
+    $toolbar-height: 30px;
+
+    height: $toolbar-height;
+
+    .mat-button {
+      line-height: $toolbar-height;
+    }
+  }
+
+  //sidenav
+  .mat-sidenav {
+    .mat-nav-list {
+      .mat-list-item {
+        height: 36px;
+      }
+    }
+  }
+
+  // tabs
+  .mat-tab-group {
+    .mat-tab-label {
+      height: 36px;
+    }
+  }
+
+  // table
+  mat-header-row {
+    min-height: 26px;
+  }
+
+  mat-row {
+    min-height: 16px;
+  }
+
+  mat-cell {
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+}

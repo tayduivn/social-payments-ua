@@ -1,4 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@import './material';
+
 html, body {
   margin: 0;
   padding: 0;
@@ -10,40 +12,5 @@ body {
 
   * {
     user-select: none;
-  }
-}
-
-@mixin mat-icon-size($size) {
-  font-size: $size;
-  height: $size;
-  width: $size;
-}
-
-.material-icons {
-  &.md-18 {
-    @include mat-icon-size(18px);
-  }
-  &.md-24 {
-    @include mat-icon-size(24px);
-  }
-  &.md-36 {
-    @include mat-icon-size(36px);
-  }
-  &.md-48 {
-    @include mat-icon-size(48px);
-  }
-}
-
-mat-datepicker-toggle {
-  font-size: 2em;
-}
-
-.sp-app-body {
-  .mat-option.mat-active {
-    background: rgba(0,0,0,.08);
-  }
-
-  .sp-zero-indent {
-    padding: 0;
   }
 }
