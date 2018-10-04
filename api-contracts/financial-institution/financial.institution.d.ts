@@ -1,5 +1,5 @@
 export interface FinancialInstitution {
-  _id?: string;
+  _id: string;
   name: string;
   mfo: string;
   edrpou: string;

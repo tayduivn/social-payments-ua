@@ -7,6 +7,7 @@ import { SharedModule } from '../../shared.module';
 import { MultifieldAutocompleteModule } from '../common/multifield-autocomplete/multifield-autocomplete.module';
 import { PersonComponent } from './person.component';
 import { PersonService } from './person.service';
+import { StreetService } from './street.service';
 
 @NgModule({
   imports: [
@@ -18,7 +19,7 @@ import { PersonService } from './person.service';
     SharedModule
   ],
   declarations: [PersonComponent],
-  providers: [PersonService],
+  providers: [PersonService, StreetService],
   exports: [PersonComponent]
 })
 export class PersonModule { }

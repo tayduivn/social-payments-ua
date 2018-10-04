@@ -4,8 +4,8 @@ import {
   Schema
 } from 'mongoose';
 import { Payment } from '../../../../api-contracts/payment/payment';
-import { financialInstitutionSchemaFields } from '../financial-institution/financial-institution.model';
-import { personSchemaFields } from '../person/person.model';
+import { financialInstitutionSchema } from '../financial-institution/financial-institution.model';
+import { personSchema } from '../person/person.model';
 
 const paymentSchema = new Schema({
   date: {
@@ -22,27 +22,16 @@ const paymentSchema = new Schema({
     type: String,
     required: [true]
   },
-  financialInstitution: financialInstitutionSchemaFields,
-  person: personSchemaFields
+  financialInstitution: financialInstitutionSchema,
+  person: personSchema
 });
 
 paymentSchema.index(
   {
-    accountNumber: 'text',
-    description: 'text',
-    'financialInstitution.name': 'text',
-    'financialInstitution.mfo': 'text',
-    'financialInstitution.edrpou': 'text',
-    'person.fullName': 'text',
-    'person.passportNumber': 'text',
-    'person.identityCode': 'text',
-    'person.address.street': 'text',
-    'person.address.house': 'text',
-    'person.address.houseSection': 'text',
-    'person.address.apartment': 'text'
+    description: 'text'
   },
   {
-    name: 'accountsTextSearchIndex'
+    name: 'paymentDescriptionIndex'
   }
 );
 

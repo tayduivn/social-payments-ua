@@ -5,7 +5,7 @@ import {
 } from 'mongoose';
 import { Person } from '../../../../api-contracts/person/person';
 
-export const personSchemaFields = {
+export const personSchema = new Schema({
   fullName: {
     type: String,
     required: [true]
@@ -17,8 +17,9 @@ export const personSchemaFields = {
   identityCode: String,
   address: {
     street: {
-      type: String,
-      required: [true]
+      type: Schema.Types.ObjectId,
+      ref: 'Street',
+      required: true
     },
     house: {
       type: String,
@@ -27,9 +28,9 @@ export const personSchemaFields = {
     houseSection: String,
     apartment: String
   }
-};
+});
 
 export type PersonModel = Person & Document;
 
-export const PersonModel = model<PersonModel>('Person', new Schema(personSchemaFields), 'persons');
+export const PersonModel = model<PersonModel>('Person', personSchema, 'persons');
 

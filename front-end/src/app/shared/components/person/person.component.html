@@ -48,7 +48,15 @@
           autocomplete="off"
           formControlName="street"
           placeholder="Вулиця"
-          [spProxyAutocompleteCommands]="autocomplete">
+          [matAutocomplete]="streetsAutocomplete">
+        <mat-autocomplete autoActiveFirstOption
+          #streetsAutocomplete="matAutocomplete">
+          <perfect-scrollbar [config]="{minScrollbarLength: 60}" >
+            <mat-option *ngFor="let street of steetsFiltered$ | async" [value]="street.name">
+              {{street.name}}
+            </mat-option>
+          </perfect-scrollbar>
+        </mat-autocomplete>
         <mat-error *ngIf="street.invalid && street.hasError('required')">Введіть назву вулиці</mat-error>
       </mat-form-field>
 
@@ -56,8 +64,7 @@
         <input matInput
           autocomplete="off"
           formControlName="house"
-          placeholder="Будинок"
-          [spProxyAutocompleteCommands]="autocomplete">
+          placeholder="Будинок">
         <mat-error *ngIf="house.invalid && house.hasError('required')">Введіть номер будинку</mat-error>
       </mat-form-field>
 
@@ -65,21 +72,19 @@
         <input matInput
           autocomplete="off"
           formControlName="houseSection"
-          placeholder="Корпус"
-          [spProxyAutocompleteCommands]="autocomplete">
+          placeholder="Корпус">
       </mat-form-field>
 
       <mat-form-field class="sp-apartment">
         <input matInput
           formControlName="apartment"
-          placeholder="Квартира"
-          [spProxyAutocompleteCommands]="autocomplete">
+          placeholder="Квартира">
       </mat-form-field>
     </div>
 
     <sp-multifield-autocomplete #autocomplete
       [items]="personService.getData() | async"
-      [filter$]="form.valueChanges"
+      [filter$]="personAutocompleteFilter$"
       (itemSelected)="onAutocompleteItemSelected($event)">
       <ng-template let-item>
         {{item.fullName}},

@@ -1,7 +1,8 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component
+  Component,
+  OnInit
 } from '@angular/core';
 import {
   FormBuilder,
@@ -19,7 +20,7 @@ import { FinancialInstitutionService } from './financial-institution.service';
   styleUrls: ['./financial-institution.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonComponent {
+export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonComponent implements OnInit {
   public name: FormControl;
   public mfo: FormControl;
   public edrpou: FormControl;
@@ -30,7 +31,9 @@ export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonCo
     public financialInstitutionService: FinancialInstitutionService
   ) {
     super(cdRef, FinancialInstitutionComponent.createForm(fb));
+  }
 
+  public ngOnInit() {
     this.initControls();
   }
 

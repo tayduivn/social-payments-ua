@@ -73,18 +73,18 @@ router.post('/', (req: Request, res: Response, next: NextFunction) => {
     })
     .then(() => {
       delete payment._id;
-      PaymentModel.create(payment)
-        .then(
-          (payment: PaymentModel) => {
-            const responsePayment = payment.toObject();
-            responsePayment.financialInstitution = financialInstitution;
-            responsePayment.person = person;
+      return PaymentModel.create(payment);
+    })
+    .then(
+      (payment: PaymentModel) => {
+        const responsePayment = payment.toObject();
+        responsePayment.financialInstitution = financialInstitution;
+        responsePayment.person = person;
 
-            res.send(responsePayment);
-          }
-        );
-    },
-    (err: any) => next(err));
+        res.send(responsePayment);
+      },
+      (err: any) => next(err)
+    );
 });
 
 export const paymentsRouter = router;
