@@ -8,12 +8,14 @@ import {
   FormControl,
   Validators
 } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import {
   filter,
   map,
-  startWith
+  startWith,
+  tap
 } from 'rxjs/operators';
 import { Person } from '../../../../../../api-contracts/person/person';
 import { Street } from '../../../../../../api-contracts/street/street';
@@ -34,13 +36,15 @@ export class PersonComponent extends MultifiedAutocompleteCommonComponent implem
   public fullName: FormControl;
   public passportNumber: FormControl;
   public identityCode: FormControl;
-  public street: FormControl;
+  public streetName: FormControl;
   public house: FormControl;
+
 
   public personAutocompleteFilter$: Observable<Person>;
   public steetsFiltered$: Observable<Street[]>;
 
   private streets: Street[] = [];
+  private selectedStreetId: FormControl;
 
   constructor(
     cdRef: ChangeDetectorRef,
@@ -57,6 +61,11 @@ export class PersonComponent extends MultifiedAutocompleteCommonComponent implem
     this.initStreetAutocompleteFilter();
   }
 
+  public streetSelected(streetOption: MatAutocompleteSelectedEvent) {
+    this.streetName.setValue(streetOption.option.value.name);
+    this.selectedStreetId.setValue(streetOption.option.value._id, {emitEvent: false});
+  }
+
   protected updateFormOnIdChange() {
     console.log('Person id change cb called');
   }
@@ -68,7 +77,10 @@ export class PersonComponent extends MultifiedAutocompleteCommonComponent implem
       passportNumber: ['', Validators.required],
       identityCode: ['', Validators.required],
       address: fb.group({
-        street: ['', Validators.required],
+        street: fb.group({
+          _id: [''],
+          name: ['', Validators.required],
+        }),
         house: ['', Validators.required],
         houseSection: '',
         apartment: ''
@@ -80,7 +92,8 @@ export class PersonComponent extends MultifiedAutocompleteCommonComponent implem
     this.fullName = <FormControl> this.form.get('fullName');
     this.passportNumber = <FormControl> this.form.get('passportNumber');
     this.identityCode = <FormControl> this.form.get('identityCode');
-    this.street = <FormControl> this.form.get('address.street');
+    this.streetName = <FormControl> this.form.get('address.street.name');
+    this.selectedStreetId = <FormControl> this.form.get('address.street._id');
     this.house = <FormControl> this.form.get('address.house');
   }
 
@@ -96,10 +109,12 @@ export class PersonComponent extends MultifiedAutocompleteCommonComponent implem
     this.streetService.getData()
       .subscribe((streets: Street[]) => this.streets = streets);
 
-    this.steetsFiltered$ = this.street.valueChanges
+    this.steetsFiltered$ = this.streetName.valueChanges
       .pipe(
         startWith(''),
-        map((streetInput: string) => this.streets.filter((street: Street) => street.name.toLowerCase().includes(streetInput.toLowerCase())))
+        tap(() => this.selectedStreetId.setValue(null)),
+        map((value: string | Street) => _.isString(value) ? value : value.name),
+        map((streetInput: string) => this.streets.filter((street: Street) => street.name.toLowerCase().includes(streetInput)))
       );
   }
 }

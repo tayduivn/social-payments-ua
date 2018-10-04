@@ -43,21 +43,23 @@
 
     <div class="sp-address"
       formGroupName="address">
-      <mat-form-field class="sp-street">
+      <mat-form-field class="sp-street"
+        formGroupName="street">
         <input matInput
           autocomplete="off"
-          formControlName="street"
+          formControlName="name"
           placeholder="Вулиця"
           [matAutocomplete]="streetsAutocomplete">
         <mat-autocomplete autoActiveFirstOption
-          #streetsAutocomplete="matAutocomplete">
+          #streetsAutocomplete="matAutocomplete"
+          (optionSelected)="streetSelected($event)">
           <perfect-scrollbar [config]="{minScrollbarLength: 60}" >
-            <mat-option *ngFor="let street of steetsFiltered$ | async" [value]="street.name">
+            <mat-option *ngFor="let street of steetsFiltered$ | async" [value]="street">
               {{street.name}}
             </mat-option>
           </perfect-scrollbar>
         </mat-autocomplete>
-        <mat-error *ngIf="street.invalid && street.hasError('required')">Введіть назву вулиці</mat-error>
+        <mat-error *ngIf="streetName.invalid && streetName.hasError('required')">Введіть назву вулиці</mat-error>
       </mat-form-field>
 
       <mat-form-field class="sp-house">
