@@ -21,11 +21,11 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
     sum: {}
   };
 
-  if (moment(dateFrom).isValid) {
+  if (dateFrom && moment(dateFrom).isValid()) {
     Object.assign(conditions.date, {$gte: moment(dateFrom).startOf('day') as any});
   }
 
-  if (moment(dateTo).isValid) {
+  if (dateTo && moment(dateTo).isValid()) {
     Object.assign(conditions.date, {$lte: moment(dateTo).endOf('day') as any});
   }
 

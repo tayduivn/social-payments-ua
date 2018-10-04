@@ -14,7 +14,7 @@ const router = express.Router();
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
   let {startDate, endDate} = req.query as PeriodReportQueryParams;
 
-  if (!moment(startDate).isValid() || !moment(endDate).isValid()) {
+  if (!startDate || !endDate || !moment(startDate).isValid() || !moment(endDate).isValid()) {
     const err: any = new Error('Missed or invalid startDate and/or endDate');
     err.status = 400;
 

@@ -66,8 +66,9 @@
 <section class="sp-search-action">
   <button
     matTooltip="Пошук (Enter)"
-    mat-fab
+    mat-raised-button
     color="primary"
+    isRoundButton="true"
     [disabled]="searchForm.invalid"
     (click)="onSearchClick()">
     <mat-icon aria-label="Search history icon">search</mat-icon>
