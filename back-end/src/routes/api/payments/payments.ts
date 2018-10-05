@@ -5,8 +5,10 @@ import express, {
 } from 'express';
 import * as _ from 'lodash';
 import moment from 'moment';
+import { FinancialInstitution } from '../../../../../api-contracts/financial-institution/financial.institution';
 import { Payment } from '../../../../../api-contracts/payment/payment';
 import { PaymentsFilter } from '../../../../../api-contracts/payment/payments-filter';
+import { Person } from '../../../../../api-contracts/person/person';
 import { checkAndUpdate as fiCheckAndUpdate } from '../../../models/financial-institution/check-and-update';
 import { PaymentModel } from '../../../models/payment/payment.model';
 import { checkAndUpdate as personAccountsCheckAndUpdate } from '../../../models/person-accounts/check-and-update';
@@ -55,16 +57,16 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
 
 router.post('/', (req: Request, res: Response, next: NextFunction) => {
   const payment: Payment = req.body;
-  let financialInstitution: any;
-  let person: any;
+  let financialInstitution: FinancialInstitution;
+  let person: Person;
 
   fiCheckAndUpdate(payment.financialInstitution)
-    .then((fi) => {
-      financialInstitution = fi;
+    .then((financialInstitutionResponse) => {
+      financialInstitution = financialInstitutionResponse;
       return personCheckAndUpdate(payment.person)
     })
-    .then((prsn) => {
-      person = prsn;
+    .then((personResponse) => {
+      person = personResponse;
       return personAccountsCheckAndUpdate({
         personId: person._id,
         financialInstitutionId: financialInstitution._id,

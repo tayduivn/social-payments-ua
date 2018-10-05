@@ -4,9 +4,8 @@ import {
   Schema
 } from 'mongoose';
 import { Street } from '../../../../api-contracts/street/street';
-import { personSchema } from '../person/person.model';
 
-export const userSchema = new Schema({
+export const streetSchema = new Schema({
   name: {
     type: String,
     required: [true]
@@ -16,4 +15,4 @@ export const userSchema = new Schema({
 
 export type StreetModel = Street & Document;
 
-export const StreetModel = model<StreetModel>('Street', personSchema);
+export const StreetModel = model<StreetModel>('Street', streetSchema);

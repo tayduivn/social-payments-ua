@@ -8,8 +8,21 @@
 :host {
   display: flex;
   justify-content: space-between;
-  border-bottom: $divider-border;
-  padding: $card-indent;
+}
+
+.sp-filter-toggle {
+  width: 100%;
+
+  ::ng-deep {
+    .mat-expansion-panel-header-title {
+      align-items: center;
+      flex: 0 0 auto;
+    }
+
+    .mat-expansion-panel-body {
+      display: flex;
+    }
+  }
 }
 
 .sp-search-inputs {

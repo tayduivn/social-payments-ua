@@ -1,7 +1,7 @@
 import { Person } from '../../../../api-contracts/person/person';
 import { PersonModel } from './person.model';
 
-export function checkAndUpdate(person: Person) {
+export function checkAndUpdate(person: Person): Promise<Person> {
   if (person._id) {
     return Promise.resolve(person);
   }

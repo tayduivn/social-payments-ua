@@ -3,7 +3,7 @@ import { FinancialInstitutionModel } from './financial-institution.model';
 
 export function checkAndUpdate(financialInstitution: FinancialInstitution): Promise<FinancialInstitution> {
   if (financialInstitution._id) {
-    return FinancialInstitutionModel.findById(financialInstitution._id);
+    return Promise.resolve(financialInstitution)
   }
 
   return FinancialInstitutionModel.find({

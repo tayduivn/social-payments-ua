@@ -70,3 +70,12 @@
     }
   }
 }
+
+.sp-tab-close {
+  $size: 18px;
+
+  font-weight: 600;
+  font-size: $size;
+  width: $size;
+  height: $size;
+}

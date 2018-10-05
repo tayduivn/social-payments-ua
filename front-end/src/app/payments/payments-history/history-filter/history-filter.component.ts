@@ -24,6 +24,8 @@ import { PaymentsFilter } from '../../../../../../api-contracts/payment/payments
 export class HistoryFilterComponent {
   @Output() public filterChange = new EventEmitter<PaymentsFilter>();
 
+  public toggleExpanded: boolean = true;
+
   public readonly searchForm = new FormGroup({
     dateFrom: new FormControl(),
     dateTo: new FormControl(),

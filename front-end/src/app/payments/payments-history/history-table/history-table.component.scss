@@ -1,6 +1,9 @@
+@import "../../../shared/styles/general.variables";
+
 :host {
   display: flex;
   flex-direction: column;
+  border-top: $divider-border;
 }
 
 perfect-scrollbar {

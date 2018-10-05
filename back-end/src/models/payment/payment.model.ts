@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import {
   Document,
   model,
@@ -5,7 +6,8 @@ import {
 } from 'mongoose';
 import { Payment } from '../../../../api-contracts/payment/payment';
 import { financialInstitutionSchema } from '../financial-institution/financial-institution.model';
-import { personSchema } from '../person/person.model';
+import { personSchemaFields } from '../person/person.model';
+import { streetSchema } from '../street/street.model';
 
 const paymentSchema = new Schema({
   date: {
@@ -23,7 +25,11 @@ const paymentSchema = new Schema({
     required: [true]
   },
   financialInstitution: financialInstitutionSchema,
-  person: personSchema
+  person: new Schema(Object.assign({}, personSchemaFields, {
+    address: {
+      street: streetSchema
+    }
+  }))
 });
 
 paymentSchema.index(

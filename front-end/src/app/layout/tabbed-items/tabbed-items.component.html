@@ -20,7 +20,7 @@
         <mat-tab *ngFor="let item of openedTabs; let index = index">
           <ng-template mat-tab-label>
             <div class="sp-tab-label">
-              <mat-icon>{{item.icon}}</mat-icon>
+              <mat-icon color="primary">{{item.icon}}</mat-icon>
               <span class="sp-tab-label-text">{{item.title}}</span>
               <mat-icon *ngIf="!item.sticky"
                 class="sp-tab-close"
