@@ -16,8 +16,7 @@ import {
   MatSortModule,
   MatTableModule,
   MatTabsModule,
-  MatToolbarModule,
-  MatTooltipModule
+  MatToolbarModule
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
@@ -43,8 +42,7 @@ const importedExports = [
   MatSortModule,
   MatTableModule,
   MatTabsModule,
-  MatToolbarModule,
-  MatTooltipModule
+  MatToolbarModule
 ];
 
 @NgModule({

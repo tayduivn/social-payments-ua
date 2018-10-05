@@ -1,8 +1,9 @@
 <section class="sp-financial-institution-container"
   [formGroup]="form">
 
-  <div class="sp-financial-field sp-financial-fields-reset">
+  <div *ngIf="renderClearButton" class="sp-financial-field sp-financial-fields-reset">
     <button mat-button
+      title="Очисти всі поля"
       [disabled]="allFieldsEmtpy"
       (click)="reset()">
       <mat-icon>delete</mat-icon>

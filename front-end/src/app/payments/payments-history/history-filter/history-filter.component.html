@@ -3,42 +3,52 @@
     <mat-expansion-panel-header>
       <mat-panel-title>Фільтр:</mat-panel-title>
 
-      <mat-action-row>
-          <span color="primary" selected>з 22/10/20018 по 24/10/20018 <mat-icon matChipRemove>cancel</mat-icon></span>
-          <span color="primary">від 1грн до 5000грн <mat-icon  matChipRemove>cancel</mat-icon></span>
-      </mat-action-row>
+      <mat-panel-description>
+          <sp-filter-chip [text]="'з 22/10/20018 по 24/10/20018'"></sp-filter-chip>
+          <sp-filter-chip [text]="'від 1грн до 5000грн'"></sp-filter-chip>
+      </mat-panel-description>
     </mat-expansion-panel-header>
 
     <section class="sp-search-inputs" [formGroup]="searchForm">
+      <div class="sp-search-container sp-period-select-container">
+        <span class="sp-search-container-label">Дата:</span>
+
+        <mat-form-field class="sp-date-period-from">
+          <input matInput
+            formControlName="dateFrom"
+            autocomplete="off"
+            placeholder="з"
+            [max]="searchForm.get('dateTo').value"
+            [matDatepicker]="fromDateCmp">
+          <mat-datepicker-toggle matSuffix
+            [for]="fromDateCmp"></mat-datepicker-toggle>
+          <mat-datepicker #fromDateCmp></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="sp-date-period-to">
+          <input matInput
+            formControlName="dateTo"
+            autocomplete="off"
+            placeholder="по"
+            [min]="searchForm.get('dateFrom').value"
+            [matDatepicker]="toDateCmp">
+          <mat-datepicker-toggle matSuffix
+            [for]="toDateCmp"></mat-datepicker-toggle>
+          <mat-datepicker #toDateCmp></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="sp-search-container">
+        <span class="sp-search-container-label">Фінансова установа:</span>
+        <sp-financial-institution [renderClearButton]="false"></sp-financial-institution>
+      </div>
+
+      <div class="sp-search-container">
+        <span class="sp-search-container-label">Одержувач:</span>
+        <sp-person [renderClearButton]="false" [renderAddressFields]="false"></sp-person>
+      </div>
+
       <section class="sp-search-section">
-        <div class="sp-search-container sp-period-select-container">
-          <span class="sp-search-container-label">Дата:</span>
-
-          <mat-form-field class="sp-date-period-from">
-            <input matInput
-              formControlName="dateFrom"
-              autocomplete="off"
-              placeholder="з"
-              [max]="searchForm.get('dateTo').value"
-              [matDatepicker]="fromDateCmp">
-            <mat-datepicker-toggle matSuffix
-              [for]="fromDateCmp"></mat-datepicker-toggle>
-            <mat-datepicker #fromDateCmp></mat-datepicker>
-          </mat-form-field>
-
-          <mat-form-field class="sp-date-period-to">
-            <input matInput
-              formControlName="dateTo"
-              autocomplete="off"
-              placeholder="по"
-              [min]="searchForm.get('dateFrom').value"
-              [matDatepicker]="toDateCmp">
-            <mat-datepicker-toggle matSuffix
-              [for]="toDateCmp"></mat-datepicker-toggle>
-            <mat-datepicker #toDateCmp></mat-datepicker>
-          </mat-form-field>
-        </div>
-
         <div class="sp-search-container sp-sum-diapason-container">
           <span class="sp-search-container-label">Сума:</span>
 
@@ -60,23 +70,23 @@
               placeholder="до">
           </mat-form-field>
         </div>
+
+        <div class="sp-search-container sp-search-phrase-container">
+          <span class="sp-search-container-label">Призначення платежу:</span>
+
+          <mat-form-field>
+            <input matInput
+              formControlName="searchPhrase"
+              autocomplete="off"
+              placeholder="Введіть фразу для пошуку">
+          </mat-form-field>
+        </div>
       </section>
-
-      <div class="sp-search-container sp-search-phrase-container">
-        <span class="sp-search-container-label">Призначення платежу:</span>
-
-        <mat-form-field>
-          <input matInput
-            formControlName="searchPhrase"
-            autocomplete="off"
-            placeholder="Введіть фразу для пошуку">
-        </mat-form-field>
-      </div>
     </section>
 
     <section class="sp-search-action">
       <button
-        matTooltip="Пошук (Enter)"
+        title="Пошук (Enter)"
         mat-raised-button
         color="primary"
         isRoundButton="true"

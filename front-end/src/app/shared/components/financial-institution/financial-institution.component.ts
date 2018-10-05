@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Input,
   OnInit
 } from '@angular/core';
 import {
@@ -21,6 +22,8 @@ import { FinancialInstitutionService } from './financial-institution.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonComponent implements OnInit {
+  @Input() public renderClearButton: boolean = true;
+
   public name: FormControl;
   public mfo: FormControl;
   public edrpou: FormControl;

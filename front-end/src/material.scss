@@ -47,6 +47,17 @@ $custom-typography: mat-typography-config(
     padding: 0;
   }
 
+  // icons
+  .sp-small-icon {
+    $size: 18px;
+
+    font-weight: 600;
+    font-size: $size;
+    width: $size;
+    height: $size;
+  }
+
+
   // autocomplete active item
   .mat-option.mat-active {
     background: rgba(0,0,0,.08);

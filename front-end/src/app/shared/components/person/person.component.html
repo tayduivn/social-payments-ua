@@ -1,8 +1,9 @@
 <section class="sp-person-container"
   [formGroup]="form">
 
-  <div class="sp-person-reset">
+  <div *ngIf="renderClearButton" class="sp-person-reset">
     <button mat-button
+      title="Очисти всі поля"
       [disabled]="allFieldsEmtpy"
       (click)="reset()">
       <mat-icon>delete</mat-icon>
@@ -41,7 +42,8 @@
       </mat-form-field>
     </div>
 
-    <div class="sp-address"
+    <div *ngIf="renderAddressFields"
+      class="sp-address"
       formGroupName="address">
       <mat-form-field class="sp-street"
         formGroupName="street">

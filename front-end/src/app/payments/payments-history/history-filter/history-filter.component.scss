@@ -47,19 +47,80 @@
 
   align-items: center;
 
-  mat-form-field {
-    margin-left: $input-inline-indent;
+  > mat-form-field:not(:last-child) {
+    margin-right: $input-inline-indent;
+  }
+
+  .sp-search-container-label {
+    flex: 0 0 auto;
+    margin-right: $input-inline-indent;
   }
 }
 
-.sp-period-select-container {
-  margin-right: $input-inline-indent * 2;
+sp-financial-institution {
+  flex: 1;
+
+  ::ng-deep {
+    .sp-financial-institution-container {
+      display: flex;
+    }
+
+    .sp-financial-field:not(:last-of-type) {
+      margin-right: $input-inline-indent;
+      flex: 0 0 auto;
+    }
+
+    .sp-financial-mfo .mat-form-field-infix {
+      width: 113px;
+    }
+
+    .sp-financial-name {
+      flex: 1;
+    }
+  }
+}
+
+sp-person {
+  flex: 1;
+
+  ::ng-deep {
+    .sp-person-inputs {
+      position: static;
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .sp-person-documents-info {
+      flex: 0 0 auto;
+      order: 2;
+      margin-left: $input-inline-indent;
+    }
+
+    .sp-passport-number .mat-form-field-infix {
+      width: 163px;
+    }
+
+    .sp-person-full-name {
+      flex: 1;
+      order: 1;
+    }
+  }
+;
+}
+
+.sp-sum-diapason-container {
+  flex: 0 0 auto;
+  margin-right: $input-inline-indent;
+
+  ::ng-deep .mat-form-field-infix {
+    width: 89px;
+  }
 }
 
 .sp-search-phrase-container {
-  .sp-search-container-label {
-    flex: 0 0 auto;
-  }
+  flex: 1;
+  flex-wrap: nowrap;
 
   mat-form-field {
     flex: 1;

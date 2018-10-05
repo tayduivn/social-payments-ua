@@ -1,6 +1,7 @@
 import {
   ChangeDetectorRef,
   Component,
+  Input,
   OnInit
 } from '@angular/core';
 import {
@@ -31,6 +32,9 @@ import { StreetService } from './street.service';
   styleUrls: ['./person.component.scss']
 })
 export class PersonComponent extends MultifiedAutocompleteCommonComponent implements OnInit {
+  @Input() public renderAddressFields: boolean = true;
+  @Input() public renderClearButton: boolean = true;
+
   public readonly passportNumberLetter = new RegExp(`[0-9a-zA-Z${lettersUA_CharsDiapason}]`);
 
   public fullName: FormControl;
