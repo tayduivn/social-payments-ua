@@ -76,11 +76,14 @@ export class PersonComponent extends MultifiedAutocompleteCommonComponent implem
   }
 
   protected createForm(): void {
-    this.form = this.fb.group({
+    const mandatoryFields = {
       _id: null,
       fullName: ['', this.getConditionalValidator()],
       passportNumber: ['', this.getConditionalValidator()],
-      identityCode: ['', this.getConditionalValidator()],
+      identityCode: ['', this.getConditionalValidator()]
+    };
+
+    const optionalFields = this.renderAddressFields ? {
       address: this.fb.group({
         street: this.fb.group({
           _id: [''],
@@ -90,7 +93,9 @@ export class PersonComponent extends MultifiedAutocompleteCommonComponent implem
         houseSection: '',
         apartment: ''
       })
-    });
+    } : null;
+
+    this.form = this.fb.group(Object.assign(mandatoryFields, optionalFields));
   }
 
   protected initControls() {
@@ -105,12 +110,16 @@ export class PersonComponent extends MultifiedAutocompleteCommonComponent implem
   private initPersonAutocompleteFilter() {
     this.personAutocompleteFilter$ = this.form.valueChanges
       .pipe(
-        // disable person autocomplete for address section inputs
-        filter((person: Person) => FilterUtils.isEmpty(person.address))
+        // disable person autocomplete for address section inputs that are not empty
+        filter((person: Person) => !person.address || FilterUtils.isEmpty(person.address))
       )
   }
 
   private initStreetAutocompleteFilter() {
+    if (!this.renderAddressFields) {
+      return;
+    }
+
     this.streetService.getData()
       .subscribe((streets: Street[]) => this.streets = streets);
 

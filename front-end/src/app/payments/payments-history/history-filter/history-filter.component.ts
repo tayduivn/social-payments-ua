@@ -1,9 +1,11 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
   HostListener,
-  Output
+  Output,
+  ViewChild
 } from '@angular/core';
 import {
   AbstractControl,
@@ -14,6 +16,8 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Moment } from 'moment';
 import { PaymentsFilter } from '../../../../../../api-contracts/payment/payments-filter';
+import { FinancialInstitutionComponent } from '../../../shared/components/financial-institution/financial-institution.component';
+import { PersonComponent } from '../../../shared/components/person/person.component';
 
 @Component({
   selector: 'sp-history-filter',
@@ -21,8 +25,13 @@ import { PaymentsFilter } from '../../../../../../api-contracts/payment/payments
   styleUrls: ['./history-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HistoryFilterComponent {
+export class HistoryFilterComponent implements AfterViewInit {
   @Output() public filterChange = new EventEmitter<PaymentsFilter>();
+
+  @ViewChild(FinancialInstitutionComponent)
+  private financialInstitutionComponent: FinancialInstitutionComponent;
+  @ViewChild(PersonComponent)
+  private personComponent: PersonComponent;
 
   public toggleExpanded: boolean = true;
 
@@ -47,6 +56,11 @@ export class HistoryFilterComponent {
   }
 
   constructor() {}
+
+  public ngAfterViewInit() {
+    this.searchForm.setControl('person', this.personComponent.form);
+    this.searchForm.setControl('financialInstitution', this.financialInstitutionComponent.form);
+  }
 
   public onSearchClick() {
     this.filterChange.emit(

@@ -59,8 +59,10 @@ $custom-typography: mat-typography-config(
 
 
   // autocomplete active item
-  .mat-option.mat-active {
-    background: rgba(0,0,0,.08);
+  .mat-option {
+    &.mat-active, &:hover {
+      background: rgba(0,0,0,.08);
+    }
   }
 
   // toolbar
