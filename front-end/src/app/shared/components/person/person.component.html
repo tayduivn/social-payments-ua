@@ -17,7 +17,7 @@
         formControlName="fullName"
         placeholder="Прізвище, ім'я, по батькові"
         [spProxyAutocompleteCommands]="autocomplete">
-      <mat-error *ngIf="fullName.invalid && fullName.hasError('required')">Введіть прізвище, ім'я, по батькові</mat-error>
+      <mat-error *ngIf="renderValidationErrors && fullName.invalid && fullName.hasError('required')">Введіть прізвище, ім'я, по батькові</mat-error>
     </mat-form-field>
 
     <div class="sp-person-documents-info">
@@ -28,7 +28,7 @@
           placeholder="Серія та номер паспорта"
           [spInputFilter]="passportNumberLetter"
           [spProxyAutocompleteCommands]="autocomplete">
-        <mat-error *ngIf="passportNumber.invalid && passportNumber.hasError('required')">Введіть cерію та номер паспорта</mat-error>
+        <mat-error *ngIf="renderValidationErrors && passportNumber.invalid && passportNumber.hasError('required')">Введіть cерію та номер паспорта</mat-error>
       </mat-form-field>
 
       <mat-form-field class="sp-identity-code">
@@ -38,7 +38,7 @@
           placeholder="Ідентифікаційний код"
           spInputFilter="[0-9]"
           [spProxyAutocompleteCommands]="autocomplete">
-        <mat-error *ngIf="identityCode.invalid && identityCode.hasError('required')">Введіть ідентифікаційний код</mat-error>
+        <mat-error *ngIf="renderValidationErrors && identityCode.invalid && identityCode.hasError('required')">Введіть ідентифікаційний код</mat-error>
       </mat-form-field>
     </div>
 
@@ -61,7 +61,7 @@
             </mat-option>
           </perfect-scrollbar>
         </mat-autocomplete>
-        <mat-error *ngIf="streetName.invalid && streetName.hasError('required')">Введіть назву вулиці</mat-error>
+        <mat-error *ngIf="renderValidationErrors && streetName.invalid && streetName.hasError('required')">Введіть назву вулиці</mat-error>
       </mat-form-field>
 
       <mat-form-field class="sp-house">
@@ -69,7 +69,7 @@
           autocomplete="off"
           formControlName="house"
           placeholder="Будинок">
-        <mat-error *ngIf="house.invalid && house.hasError('required')">Введіть номер будинку</mat-error>
+        <mat-error *ngIf="renderValidationErrors && house.invalid && house.hasError('required')">Введіть номер будинку</mat-error>
       </mat-form-field>
 
       <mat-form-field class="sp-house-section">

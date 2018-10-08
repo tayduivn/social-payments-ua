@@ -7,6 +7,7 @@ import {
 import {
   FormBuilder,
   FormControl,
+  FormGroup,
   Validators
 } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
@@ -33,7 +34,6 @@ import { StreetService } from './street.service';
 })
 export class PersonComponent extends MultifiedAutocompleteCommonComponent implements OnInit {
   @Input() public renderAddressFields: boolean = true;
-  @Input() public renderClearButton: boolean = true;
 
   public readonly passportNumberLetter = new RegExp(`[0-9a-zA-Z${lettersUA_CharsDiapason}]`);
 
@@ -56,11 +56,12 @@ export class PersonComponent extends MultifiedAutocompleteCommonComponent implem
     public personService: PersonService,
     private streetService: StreetService
   ) {
-    super(cdRef, PersonComponent.createForm(fb));
+    super(cdRef, fb);
   }
 
   public ngOnInit() {
-    this.initControls();
+    super.ngOnInit();
+
     this.initPersonAutocompleteFilter();
     this.initStreetAutocompleteFilter();
   }
@@ -74,25 +75,25 @@ export class PersonComponent extends MultifiedAutocompleteCommonComponent implem
     console.log('Person id change cb called');
   }
 
-  private static createForm(fb: FormBuilder) {
-    return fb.group({
+  protected createForm(): void {
+    this.form = this.fb.group({
       _id: null,
-      fullName: ['', Validators.required],
-      passportNumber: ['', Validators.required],
-      identityCode: ['', Validators.required],
-      address: fb.group({
-        street: fb.group({
+      fullName: ['', this.getConditionalValidator()],
+      passportNumber: ['', this.getConditionalValidator()],
+      identityCode: ['', this.getConditionalValidator()],
+      address: this.fb.group({
+        street: this.fb.group({
           _id: [''],
-          name: ['', Validators.required],
+          name: ['', this.getConditionalValidator()],
         }),
-        house: ['', Validators.required],
+        house: ['', this.getConditionalValidator()],
         houseSection: '',
         apartment: ''
       })
     });
   }
 
-  private initControls() {
+  protected initControls() {
     this.fullName = <FormControl> this.form.get('fullName');
     this.passportNumber = <FormControl> this.form.get('passportNumber');
     this.identityCode = <FormControl> this.form.get('identityCode');
@@ -117,7 +118,7 @@ export class PersonComponent extends MultifiedAutocompleteCommonComponent implem
       .pipe(
         startWith(''),
         tap(() => this.selectedStreetId.setValue(null)),
-        map((value: string | Street) => _.isString(value) ? value : value.name),
+        map((value: string | Street) => _.isString(value) ? value : value && value.name || ''),
         map((streetInput: string) => this.streets.filter((street: Street) => street.name.toLowerCase().includes(streetInput)))
       );
   }

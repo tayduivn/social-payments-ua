@@ -1,5 +1,8 @@
 <mat-sidenav-container class="sp-actions-menu">
-  <mat-sidenav mode="side" opened="true" class="sp-mat-sidenav">
+  <mat-sidenav mode="side"
+    opened="true"
+    class="sp-mat-sidenav"
+    [disableClose]="true">
     <mat-nav-list>
       <ng-template ngFor let-item [ngForOf]="availableTabs">
         <mat-list-item (click)="addTab(item)">

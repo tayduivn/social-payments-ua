@@ -40,12 +40,15 @@
 
       <div class="sp-search-container">
         <span class="sp-search-container-label">Фінансова установа:</span>
-        <sp-financial-institution [renderClearButton]="false"></sp-financial-institution>
+        <sp-financial-institution [renderClearButton]="false"
+          [renderValidationErrors]="false"></sp-financial-institution>
       </div>
 
       <div class="sp-search-container">
         <span class="sp-search-container-label">Одержувач:</span>
-        <sp-person [renderClearButton]="false" [renderAddressFields]="false"></sp-person>
+        <sp-person [renderClearButton]="false"
+          [renderAddressFields]="false"
+          [renderValidationErrors]="false"></sp-person>
       </div>
 
       <section class="sp-search-section">
