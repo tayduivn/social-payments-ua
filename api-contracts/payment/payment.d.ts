@@ -4,7 +4,7 @@ import { Person } from '../person/person';
 export interface Payment {
   _id: string;
   date: string;
-  accountNumber: string;
+  accountNumber?: string;
   sum: number;
   description: string;
   person: Person;

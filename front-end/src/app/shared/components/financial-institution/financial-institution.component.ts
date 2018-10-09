@@ -40,6 +40,10 @@ export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonCo
   }
 
   protected updateFormOnIdChange() {
+    if (!this.form) {
+      return;
+    }
+
     this.financialInstitutionService.getById(this.id).subscribe((fiItem: FinancialInstitution) => {
       if (fiItem) {
         this.form.patchValue(Object.assign({id: this.id}, fiItem), {emitEvent: false});

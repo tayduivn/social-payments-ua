@@ -5,12 +5,16 @@ import {
   Output
 } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
   ValidationErrors,
   Validators
 } from '@angular/forms';
-import { tap } from 'rxjs/operators';
+import {
+  skip,
+  tap
+} from 'rxjs/operators';
 import { FinancialInstitution } from '../../../../../../../api-contracts/financial-institution/financial.institution';
 import { FilterUtils } from '../../../utils/filter-utils';
 
@@ -19,9 +23,7 @@ export abstract class MultifiedAutocompleteCommonComponent {
   public set id(val: string) {
     this.currId = val;
 
-    if (this.form) {
-      this.updateFormOnIdChange();
-    }
+    this.updateFormOnIdChange();
   }
 
   public get id(): string {
@@ -37,7 +39,7 @@ export abstract class MultifiedAutocompleteCommonComponent {
 
   public allFieldsEmtpy: boolean = true;
 
-  private currId: string;
+  private currId: string = null;
 
   protected constructor(private cdRef: ChangeDetectorRef, protected fb: FormBuilder) {}
 
@@ -49,6 +51,7 @@ export abstract class MultifiedAutocompleteCommonComponent {
     this.allFieldsEmtpy = true;
     this.consolidateId(null);
     this.form.reset();
+    this.setFieldsValidationStatus();
   }
 
   public onAutocompleteItemSelected({option: {value}}): void {
@@ -69,6 +72,7 @@ export abstract class MultifiedAutocompleteCommonComponent {
   protected initReset(): void {
     this.form.valueChanges
       .pipe(
+        skip(1),
         tap(() => {
           this.consolidateId(null);
           this.form.patchValue({_id: this.id}, {emitEvent: false});
@@ -81,7 +85,27 @@ export abstract class MultifiedAutocompleteCommonComponent {
   }
 
   private consolidateId(id: string): void {
+    if (this.currId === id) {
+      return;
+    }
+
     this.currId = id;
     this.idChange.next(id);
+  }
+
+  private setFieldsValidationStatus(ctrl?: FormGroup) {
+    if (this.currId === undefined) {
+      return;
+    }
+
+    const controls = (ctrl || this.form).controls;
+
+    Object.values(controls).forEach((ctrl: AbstractControl) => {
+      if((ctrl as FormGroup).controls) {
+        this.setFieldsValidationStatus(ctrl as FormGroup);
+      } else {
+        ctrl.markAsTouched();
+      }
+    });
   }
 }
