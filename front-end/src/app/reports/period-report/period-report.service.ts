@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { Moment } from 'moment';
 import { TabbedItemsService } from '../../layout/tabbed-items/tabbed-items.service';
-import { dateFormat } from '../../shared/constants/date-format';
+import { requestDateFormat } from '../../shared/constants/date-formats';
 import { WindowProvider } from '../../shared/providers/window-provider';
 import { PeriodReportRange } from './period-report-range.enum';
 
@@ -34,6 +34,6 @@ export class PeriodReportService {
     }
 
     this.tabbedItemsService.closeActiveTab();
-    this.window.open(`${this.requestUrl}?startDate=${startDate.format(dateFormat)}&endDate=${endDate.format(dateFormat)}`, '_blank');
+    this.window.open(`${this.requestUrl}?startDate=${startDate.format(requestDateFormat)}&endDate=${endDate.format(requestDateFormat)}`, '_blank');
   }
 }

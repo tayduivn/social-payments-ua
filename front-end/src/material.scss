@@ -48,13 +48,18 @@ $custom-typography: mat-typography-config(
   }
 
   // icons
+  $small-icons-size: 18px;
   .sp-small-icon {
-    $size: 18px;
+    $size: $small-icons-size;
 
     font-weight: 600;
     font-size: $size;
     width: $size;
     height: $size;
+  }
+
+  .mat-datepicker-toggle {
+    font-size: $small-icons-size;
   }
 
 

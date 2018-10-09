@@ -4,8 +4,9 @@
       <mat-panel-title>Фільтр:</mat-panel-title>
 
       <mat-panel-description>
-          <sp-filter-chip [text]="'з 22/10/20018 по 24/10/20018'"></sp-filter-chip>
-          <sp-filter-chip [text]="'від 1грн до 5000грн'"></sp-filter-chip>
+          <sp-filter-chip *ngFor="let chip of filterChips"
+            [text]="chip.text"
+            [filterType]="chip.type"></sp-filter-chip>
       </mat-panel-description>
     </mat-expansion-panel-header>
 

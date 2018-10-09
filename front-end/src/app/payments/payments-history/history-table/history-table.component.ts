@@ -12,7 +12,7 @@ import {
 } from '@angular/material';
 import * as moment from 'moment';
 import { Payment } from '../../../../../../api-contracts/payment/payment';
-import { dateFormat } from '../../../shared/constants/date-format';
+import { displayDateFormat } from '../../../shared/constants/date-formats';
 
 @Component({
   selector: 'sp-history-table',
@@ -27,7 +27,7 @@ export class HistoryTableComponent implements OnInit {
       {},
       item,
       {
-        date: moment(item.date).format(dateFormat)
+        date: moment(item.date).format(displayDateFormat)
       }
     ));
   }

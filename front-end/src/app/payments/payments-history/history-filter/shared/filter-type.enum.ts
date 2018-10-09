@@ -3,5 +3,5 @@ export enum FilterType {
   Person,
   FinancialInstitution,
   SumRange,
-  DEscription
+  Description
 }
