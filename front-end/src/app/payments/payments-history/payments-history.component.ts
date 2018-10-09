@@ -5,8 +5,8 @@ import {
 } from '@angular/core';
 import * as _ from 'lodash/fp';
 import { Payment } from '../../../../../api-contracts/payment/payment';
-import { PaymentsFilter } from '../../../../../api-contracts/payment/payments-filter';
 import { PaymentsHistoryService } from './payments-history.service';
+import { HistoryFilterModel } from './shared/history-filter.model';
 
 @Component({
   selector: 'sp-payments-history',
@@ -21,7 +21,7 @@ export class PaymentsHistoryComponent {
 
   constructor(private cdRef: ChangeDetectorRef, private paymentsHistoryService: PaymentsHistoryService) {}
 
-  public onFilterChange(filter: PaymentsFilter) {
+  public onFilterChange(filter: HistoryFilterModel) {
     this.paymentsHistoryService.requestPayments(filter)
       .subscribe((payments: Payment[]) => {
         if (_.isEmpty(payments)) {

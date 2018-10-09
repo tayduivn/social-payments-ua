@@ -14,10 +14,9 @@ import {
 } from '@angular/forms';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { Moment } from 'moment';
-import { PaymentsFilter } from '../../../../../../api-contracts/payment/payments-filter';
 import { FinancialInstitutionComponent } from '../../../shared/components/financial-institution/financial-institution.component';
 import { PersonComponent } from '../../../shared/components/person/person.component';
+import { HistoryFilterModel } from '../shared/history-filter.model';
 
 @Component({
   selector: 'sp-history-filter',
@@ -26,7 +25,7 @@ import { PersonComponent } from '../../../shared/components/person/person.compon
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HistoryFilterComponent implements AfterViewInit {
-  @Output() public filterChange = new EventEmitter<PaymentsFilter>();
+  @Output() public filterChange = new EventEmitter<HistoryFilterModel>();
 
   @ViewChild(FinancialInstitutionComponent)
   private financialInstitutionComponent: FinancialInstitutionComponent;
@@ -63,8 +62,12 @@ export class HistoryFilterComponent implements AfterViewInit {
   }
 
   public onSearchClick() {
-    this.filterChange.emit(
-      _.mapValues(this.searchForm.value, (val: Moment) => moment.isMoment(val) ? val.toISOString() : val)
+    const normalizedInputs = _.mapValues(
+      this.searchForm.value,
+      (val: any) => moment.isMoment(val) ? val.toISOString() : val
     );
+
+    // as any since failed to assert correct type for lodash mapValues
+    this.filterChange.emit(normalizedInputs as any);
   }
 }
