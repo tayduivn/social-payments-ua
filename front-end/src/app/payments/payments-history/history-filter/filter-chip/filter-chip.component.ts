@@ -3,6 +3,7 @@ import {
   HostListener,
   Input
 } from '@angular/core';
+import { FilterType } from '../shared/filter-type.enum';
 
 @Component({
   selector: 'sp-filter-chip',
@@ -11,6 +12,7 @@ import {
 })
 export class FilterChipComponent {
   @Input() public text: string;
+  @Input() public filterType: FilterType;
 
   constructor() { }
 

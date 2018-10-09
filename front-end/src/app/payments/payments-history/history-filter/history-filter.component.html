@@ -10,7 +10,7 @@
     </mat-expansion-panel-header>
 
     <section class="sp-search-inputs" [formGroup]="searchForm">
-      <div class="sp-search-container sp-period-select-container">
+      <div class="sp-search-container sp-period-select-container" formGroupName="datesRange">
         <span class="sp-search-container-label">Дата:</span>
 
         <mat-form-field class="sp-date-period-from">
@@ -18,7 +18,7 @@
             formControlName="dateFrom"
             autocomplete="off"
             placeholder="з"
-            [max]="searchForm.get('dateTo').value"
+            [max]="searchForm.get('datesRange.dateTo').value"
             [matDatepicker]="fromDateCmp">
           <mat-datepicker-toggle matSuffix
             [for]="fromDateCmp"></mat-datepicker-toggle>
@@ -30,7 +30,7 @@
             formControlName="dateTo"
             autocomplete="off"
             placeholder="по"
-            [min]="searchForm.get('dateFrom').value"
+            [min]="searchForm.get('datesRange.dateFrom').value"
             [matDatepicker]="toDateCmp">
           <mat-datepicker-toggle matSuffix
             [for]="toDateCmp"></mat-datepicker-toggle>
@@ -52,7 +52,7 @@
       </div>
 
       <section class="sp-search-section">
-        <div class="sp-search-container sp-sum-diapason-container">
+        <div class="sp-search-container sp-sum-diapason-container" formGroupName="sumRange">
           <span class="sp-search-container-label">Сума:</span>
 
           <mat-form-field>

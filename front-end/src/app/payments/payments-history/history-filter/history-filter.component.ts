@@ -35,10 +35,14 @@ export class HistoryFilterComponent implements AfterViewInit {
   public toggleExpanded: boolean = true;
 
   public readonly searchForm = new FormGroup({
-    dateFrom: new FormControl(),
-    dateTo: new FormControl(),
-    sumFrom: new FormControl(),
-    sumTo: new FormControl(),
+    datesRange: new FormGroup({
+      dateFrom: new FormControl(),
+      dateTo: new FormControl(),
+    }),
+    sumRange: new FormGroup({
+      sumFrom: new FormControl(),
+      sumTo: new FormControl(),
+    }),
     searchPhrase: new FormControl()
   }, [
     (form: AbstractControl): {[key: string]: any} | null => {
