@@ -1,12 +1,14 @@
 <mat-accordion class="sp-filter-toggle">
-  <mat-expansion-panel [(expanded)]="toggleExpanded">
+  <mat-expansion-panel [(expanded)]="filterPanelExpanded">
     <mat-expansion-panel-header>
       <mat-panel-title>Фільтр:</mat-panel-title>
 
       <mat-panel-description>
           <sp-filter-chip *ngFor="let chip of filterChips"
             [text]="chip.text"
-            [filterType]="chip.type"></sp-filter-chip>
+            [title]="chip.title"
+            [filterType]="chip.type"
+            (close)="onChipClose($event)"></sp-filter-chip>
       </mat-panel-description>
     </mat-expansion-panel-header>
 
@@ -57,8 +59,7 @@
           <span class="sp-search-container-label">Сума:</span>
 
           <mat-form-field>
-            <input #sumInput
-              formControlName="sumFrom"
+            <input formControlName="sumFrom"
               matInput
               type="number"
               autocomplete="off"
@@ -66,8 +67,7 @@
           </mat-form-field>
 
           <mat-form-field>
-            <input #sumInput
-              formControlName="sumTo"
+            <input formControlName="sumTo"
               matInput
               type="number"
               autocomplete="off"
@@ -80,7 +80,7 @@
 
           <mat-form-field>
             <input matInput
-              formControlName="searchPhrase"
+              formControlName="description"
               autocomplete="off"
               placeholder="Введіть фразу для пошуку">
           </mat-form-field>

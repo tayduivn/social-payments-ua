@@ -3,7 +3,7 @@ export interface PaymentsFilter {
   dateTo?: string;
   sumFrom?: number;
   sumTo?: number;
-  searchPhrase?: string;
+  description?: string;
   financialInstitutionId?: string;
   financialInstitutionMfo?: string;
   financialInstitutionEdrpou?: string;

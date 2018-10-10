@@ -8,6 +8,8 @@ import { Payment } from '../../../../../api-contracts/payment/payment';
 import { PaymentsHistoryService } from './payments-history.service';
 import { HistoryFilterModel } from './shared/history-filter.model';
 
+const filterEmptyMessage = 'Вкажіть параметри пошуку';
+
 @Component({
   selector: 'sp-payments-history',
   templateUrl: './payments-history.component.html',
@@ -15,7 +17,7 @@ import { HistoryFilterModel } from './shared/history-filter.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaymentsHistoryComponent {
-  public statusTextDescription = 'Вкажіть параметри пошуку';
+  public statusTextDescription = filterEmptyMessage;
 
   public payments: Payment[];
 
@@ -34,5 +36,9 @@ export class PaymentsHistoryComponent {
 
         this.cdRef.markForCheck();
       });
+  }
+
+  public onFilterEmpty() {
+    this.statusTextDescription = filterEmptyMessage;
   }
 }

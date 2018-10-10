@@ -17,7 +17,7 @@ import { checkAndUpdate as personCheckAndUpdate } from '../../../models/person/c
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
-  const {dateFrom, dateTo, sumFrom, sumTo, searchPhrase} = req.query as PaymentsFilter;
+  const {dateFrom, dateTo, sumFrom, sumTo, description} = req.query as PaymentsFilter;
   const conditions: any = {
     date: {},
     sum: {}
@@ -39,9 +39,9 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
     Object.assign(conditions.sum, {$lte: sumTo});
   }
 
-  if (searchPhrase) {
+  if (description) {
     conditions.$text = {
-      $search: searchPhrase,
+      $search: description,
       $language: 'none'
     };
   }
