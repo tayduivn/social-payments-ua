@@ -18,6 +18,8 @@ appConfig.use(morgan('dev'));
 appConfig.use(bodyParser.json());
 appConfig.use(bodyParser.urlencoded({extended: false}));
 appConfig.use(cookieParser());
+
+// adding promise resolver helpers
 appConfig.use(appRequestProcessor);
 
 connectDb();

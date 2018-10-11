@@ -155,31 +155,44 @@ export class HistoryFilterComponent implements AfterViewInit {
   }
 
   private getPersonChip(): FilterChipConfigModel {
-    const chipPartial = this.getComponentChip('person', ['fullName', 'passportNumber', 'identityCode'], ['', 'паспорт', 'ід.№']);
+    const chipPartial = this.getComponentChip('person', new Map([
+      ['fullName', ''],
+      ['passportNumber', 'паспорт'],
+      ['identityCode', 'ід.№']
+    ]));
 
     return chipPartial ? Object.assign(chipPartial, {type: FilterType.Person}) : null;
   }
 
   private getFinancialInstitutionChip(): FilterChipConfigModel {
-    const chipPartial = this.getComponentChip('financialInstitution', ['name', 'mfo', 'edrpou'], ['', 'МФО', 'ЄДРПОУ']);
+    const chipPartial = this.getComponentChip('financialInstitution', new Map([
+      ['name', ''],
+      ['mfo', 'МФО'],
+      ['edrpou', 'ЄДРПОУ']
+    ]));
 
     return chipPartial ? Object.assign(chipPartial, {type: FilterType.FinancialInstitution}) : null;
   }
 
-  private getComponentChip(groupName: string, fieldNames: string[], prefixes: string[]): { text: string, title: string } {
+  private getComponentChip(groupName: string, fieldPrefixes: Map<string, string>): { text: string, title: string } {
     const group = this.searchForm.get(groupName).value;
 
     if (FilterUtils.isEmpty(group)) {
       return null;
     }
 
-    const fields: string[] = fieldNames.map((field, i) => group[field] ?
-      prefixes[i] ? `${prefixes[i]}: ${group[field]}` : group[field]
-    : null);
+    const fields: string[] = [];
+    fieldPrefixes.forEach((prefix, field) => {
+      const fieldVal = group[field];
+
+      if (fieldVal) {
+        fields.push(prefix ? `${prefix}: ${fieldVal}` : `${fieldVal}`)
+      }
+    });
 
     return {
-      text: group._id ? fields[0] : _.compact(fields).join(', '),
-      title: _.compact(fields).join(', ')
+      text: group._id ? fields[0] : fields.join(', '),
+      title: fields.join(', ')
     };
   }
 
