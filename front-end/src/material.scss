@@ -70,6 +70,11 @@ $custom-typography: mat-typography-config(
     }
   }
 
+  .sp-autocomplete-option {
+    padding: 0 5px;
+  }
+
+
   // toolbar
   .mat-toolbar-row, .mat-toolbar-single-row {
     $toolbar-height: 30px;

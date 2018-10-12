@@ -41,6 +41,7 @@
   </mat-form-field>
 
   <sp-multifield-autocomplete #autocomplete
+    [autocompleteClasses]="autocompleteClasses"
     [items]="financialInstitutionService.getData() | async"
     [filter$]="form.valueChanges"
     (itemSelected)="onAutocompleteItemSelected($event)">

@@ -33,10 +33,12 @@ export class HistoryFilterComponent implements AfterViewInit {
   @Output() public filterChange = new EventEmitter<HistoryFilterModel>();
   @Output() public filterEmpty = new EventEmitter<void>();
 
+  public readonly autocompleteClasses = 'sp-payments-history-autocomplete';
+
   @ViewChild(FinancialInstitutionComponent)
-  private financialInstitutionComponent: FinancialInstitutionComponent;
+  public financialInstitutionComponent: FinancialInstitutionComponent;
   @ViewChild(PersonComponent)
-  private personComponent: PersonComponent;
+  public personComponent: PersonComponent;
 
   public filterPanelExpanded: boolean = true;
 

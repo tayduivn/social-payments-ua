@@ -87,6 +87,7 @@
     </div>
 
     <sp-multifield-autocomplete #autocomplete
+      [autocompleteClasses]="autocompleteClasses"
       [items]="personService.getData() | async"
       [filter$]="personAutocompleteFilter$"
       (itemSelected)="onAutocompleteItemSelected($event)">
@@ -94,7 +95,7 @@
         {{item.fullName}},
         {{item.passportNumber}},
         {{item.identityCode}},
-        {{item.address.street}} {{item.address.house}} {{item.address.houseSection}}, {{item.address.apartment}}
+        {{getPersonAddress(item.address)}}
       </ng-template>
     </sp-multifield-autocomplete>
   </div>

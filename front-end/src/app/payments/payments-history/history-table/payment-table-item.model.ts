@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Payment } from '../../../../../../api-contracts/payment/payment';
 import { displayDateFormat } from '../../../shared/constants/date-formats';
+import { PersonHelper } from '../../../shared/utils/person.helper';
 
 export class PaymentTableItemModel {
   public date: string;
@@ -35,31 +36,8 @@ export class PaymentTableItemModel {
     this.fullName = item.person.fullName;
     this.identityCode = item.person.identityCode;
     this.passport = item.person.passportNumber;
-    this.address = this.getPersonAddress();
+    this.address = PersonHelper.getPersonAddress(this.payment.person.address);
 
     this.description = item.description;
-  }
-
-  private getPersonAddress(): string {
-    const address = this.payment.person.address;
-
-    if (!address) {
-      return '';
-    }
-
-    const result: string[] = [];
-
-    result.push(address.street ? address.street.name : null);
-    result.push(address.house);
-
-    if (address.houseSection) {
-      result.push(`корп. ${address.houseSection}`)
-    }
-
-    if (address.apartment) {
-      result.push(`кв. ${address.apartment}`);
-    }
-
-    return _.compact(result).join(', ');
   }
 }

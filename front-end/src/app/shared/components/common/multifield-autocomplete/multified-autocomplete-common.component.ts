@@ -19,8 +19,7 @@ import { FinancialInstitution } from '../../../../../../../api-contracts/financi
 import { FilterUtils } from '../../../utils/filter-utils';
 
 export abstract class MultifiedAutocompleteCommonComponent {
-  @Input()
-  public set id(val: string) {
+  @Input() public set id(val: string) {
     this.currId = val;
 
     this.updateFormOnIdChange();
@@ -32,6 +31,7 @@ export abstract class MultifiedAutocompleteCommonComponent {
 
   @Input() public renderClearButton: boolean = true;
   @Input() public renderValidationErrors: boolean = true;
+  @Input() public autocompleteClasses: string;
 
   @Output() public idChange = new EventEmitter<string>();
 

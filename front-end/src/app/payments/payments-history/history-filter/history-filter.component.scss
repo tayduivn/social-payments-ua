@@ -1,4 +1,5 @@
 @import "../../../shared/styles/general.variables";
+@import "../../../shared/styles/mixins";
 
 @mixin flex-wrap {
   display: flex;
@@ -21,6 +22,22 @@
 
     .mat-expansion-panel-body {
       display: flex;
+    }
+  }
+}
+
+::ng-deep {
+  .sp-payments-history-autocomplete {
+    .mat-option-text {
+      display: flex;
+    }
+
+    .sp-fi-mfo {
+      @include flex-width(128px);
+    }
+
+    .sp-fi-edrpou {
+      @include flex-width(200px);
     }
   }
 }

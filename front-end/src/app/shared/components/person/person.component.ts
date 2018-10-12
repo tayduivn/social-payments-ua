@@ -6,9 +6,7 @@ import {
 } from '@angular/core';
 import {
   FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators
+  FormControl
 } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 import * as _ from 'lodash';
@@ -23,6 +21,7 @@ import { Person } from '../../../../../../api-contracts/person/person';
 import { Street } from '../../../../../../api-contracts/street/street';
 import { lettersUA_CharsDiapason } from '../../constants/char-diapason-ua';
 import { FilterUtils } from '../../utils/filter-utils';
+import { PersonHelper } from '../../utils/person.helper';
 import { MultifiedAutocompleteCommonComponent } from '../common/multifield-autocomplete/multified-autocomplete-common.component';
 import { PersonService } from './person.service';
 import { StreetService } from './street.service';
@@ -42,7 +41,7 @@ export class PersonComponent extends MultifiedAutocompleteCommonComponent implem
   public identityCode: FormControl;
   public streetName: FormControl;
   public house: FormControl;
-
+  public readonly getPersonAddress = PersonHelper.getPersonAddress;
 
   public personAutocompleteFilter$: Observable<Person>;
   public steetsFiltered$: Observable<Street[]>;
