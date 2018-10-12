@@ -3,6 +3,7 @@ import express, {
   Request,
   Response
 } from 'express';
+import * as _ from 'lodash';
 import { Payment } from '../../../../../api-contracts/payment/payment';
 import { PaymentsFilter } from '../../../../../api-contracts/payment/payments-filter';
 import { PaymentsController } from './payments.controller';
@@ -10,6 +11,10 @@ import { PaymentsController } from './payments.controller';
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
+  if (_.isEmpty(req.query)) {
+    return next(new Error('Missed request params'));
+  }
+
   PaymentsController.getList(req.query as PaymentsFilter)
     .then(
       (payments: Payment[]) => res.send(payments),

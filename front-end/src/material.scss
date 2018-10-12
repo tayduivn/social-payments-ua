@@ -111,8 +111,24 @@ $custom-typography: mat-typography-config(
     min-height: 16px;
   }
 
+  $table-cell-padding: 3px;
+
   mat-cell {
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding-top: $table-cell-padding;
+    padding-bottom: $table-cell-padding;
+  }
+
+  $table-indent: 10px;
+
+  mat-cell:first-of-type,
+  mat-footer-cell:first-of-type,
+  mat-header-cell:first-of-type {
+    padding-left: $table-indent;
+  }
+
+  mat-cell:last-of-type,
+  mat-footer-cell:last-of-type,
+  mat-header-cell:last-of-type {
+    padding-right: $table-indent;
   }
 }

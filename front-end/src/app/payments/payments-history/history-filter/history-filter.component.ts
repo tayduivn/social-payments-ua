@@ -54,7 +54,7 @@ export class HistoryFilterComponent implements AfterViewInit {
     description: new FormControl(),
   }, [
     (form: AbstractControl): { [key: string]: any } | null => {
-      const searchFormEmpty = _.compact(Object.values(form.value)).length === 0;
+      const searchFormEmpty = FilterUtils.isEmpty(form.value);
 
       return searchFormEmpty ? {searchFormEmpty} : null;
     }

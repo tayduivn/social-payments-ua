@@ -93,8 +93,7 @@
         title="Пошук (Enter)"
         mat-raised-button
         color="primary"
-        isRoundButton="true"
-        [disabled]="searchForm.invalid"
+        [disabled]="searchForm.errors && searchForm.errors['searchFormEmpty']"
         (click)="onSearchClick()">
         <mat-icon aria-label="Search history icon">search</mat-icon>
       </button>
