@@ -11,6 +11,7 @@ const router = express.Router();
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
   return StreetModel
     .find()
+    .sort('name')
     .then(
       (streets: Street[]) => res.send(streets),
       (err) => next(err)

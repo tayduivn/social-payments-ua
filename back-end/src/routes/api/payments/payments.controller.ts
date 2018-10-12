@@ -5,11 +5,13 @@ import { FinancialInstitution } from '../../../../../api-contracts/financial-ins
 import { Payment } from '../../../../../api-contracts/payment/payment';
 import { PaymentsFilter } from '../../../../../api-contracts/payment/payments-filter';
 import { Person } from '../../../../../api-contracts/person/person';
+import { Street } from '../../../../../api-contracts/street/street';
 import { checkAndUpdate as fiCheckAndUpdate } from '../../../models/financial-institution/check-and-update';
 import { PaymentModel } from '../../../models/payment/payment.model';
 import { checkAndUpdate as personAccountsCheckAndUpdate } from '../../../models/person-accounts/check-and-update';
 import { checkAndUpdate as personCheckAndUpdate } from '../../../models/person/check-and-update';
 import { MongoosePromise } from '../../mongoose-promise';
+import { checkAndUpdate as streetCheckAndUpdate } from '../../../models/street/check-and-update';
 
 export class PaymentsController {
   public static getList(filter: PaymentsFilter): MongoosePromise<Payment[]> {
@@ -25,6 +27,10 @@ export class PaymentsController {
     return fiCheckAndUpdate(payment.financialInstitution)
       .then((financialInstitutionResponse) => {
         financialInstitution = financialInstitutionResponse;
+        return streetCheckAndUpdate(payment.person.address.street);
+      })
+      .then((str: Street) => {
+        payment.person.address.street = str;
         return personCheckAndUpdate(payment.person)
       })
       .then((personResponse) => {
@@ -36,7 +42,6 @@ export class PaymentsController {
         });
       })
       .then(() => {
-        // todo: add street auto creation like fi or person
         payment.financialInstitution = financialInstitution;
         payment.person._id = person._id;
         delete payment._id;

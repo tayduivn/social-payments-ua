@@ -83,7 +83,11 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
   }
 
   public onSaveClick() {
-    this.paymentService.submitPayment(this.form.value).subscribe();
+    this.paymentService.submitPayment(this.form.value)
+      .subscribe(() => {
+        this.tabbedItemsService.closeActiveTab();
+        this.cdRef.markForCheck();
+      });
   }
 
   public onCancelClick() {

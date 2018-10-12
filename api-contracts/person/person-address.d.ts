@@ -1,8 +1,7 @@
+import { Street } from '../street/street';
+
 export interface PersonAddress {
-  street: {
-    _id: string;
-    name: string;
-  };
+  street: Street;
   house: string;
   houseSection?: string;
   apartment?: string;
