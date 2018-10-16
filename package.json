@@ -1,5 +1,8 @@
 {
   "name": "social-payments-ua",
   "version": "0.0.1",
+  "scripts": {
+    "start": "cd ./back-end && npm install"
+  },
   "dependencies": {}
 }
