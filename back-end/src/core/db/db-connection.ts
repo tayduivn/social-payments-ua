@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
 
 export function connectDb() {
-  mongoose.connect('mongodb://localhost/social-payments-ua', {
+  const dbPath = process.env.MONGODB_URI || 'mongodb://localhost/social-payments-ua';
+
+  mongoose.connect(dbPath, {
     useNewUrlParser: true
   });
   mongoose.set('useCreateIndex', true);

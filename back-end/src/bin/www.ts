@@ -28,7 +28,7 @@ const normalizePort = (val: number | string): number | string | boolean => {
   }
 
   return false;
-}
+};
 
 /**
  * Event listener for HTTP server "error" event.
