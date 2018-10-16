@@ -10,9 +10,8 @@ import {
   MatSort,
   MatTableDataSource
 } from '@angular/material';
-import * as moment from 'moment';
 import { Payment } from '../../../../../../api-contracts/payment/payment';
-import { dateFormat } from '../../../shared/constants/date-format';
+import { PaymentTableItemModel } from './payment-table-item.model';
 
 @Component({
   selector: 'sp-history-table',
@@ -23,13 +22,7 @@ import { dateFormat } from '../../../shared/constants/date-format';
 export class HistoryTableComponent implements OnInit {
   @Input() public set payments(payments: Payment[]) {
     // transform date to correct format
-    this.dataSource.data = payments.map((item) => Object.assign(
-      {},
-      item,
-      {
-        date: moment(item.date).format(dateFormat)
-      }
-    ));
+    this.dataSource.data = payments.map((item) => new PaymentTableItemModel(item));
   }
 
   public readonly displayedColumns = [

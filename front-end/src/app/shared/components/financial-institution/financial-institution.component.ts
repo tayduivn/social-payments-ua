@@ -1,11 +1,14 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component
+  Component,
+  Input,
+  OnInit
 } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
+  FormGroup,
   Validators
 } from '@angular/forms';
 import 'rxjs/add/operator/finally';
@@ -19,7 +22,7 @@ import { FinancialInstitutionService } from './financial-institution.service';
   styleUrls: ['./financial-institution.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonComponent {
+export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonComponent implements OnInit {
   public name: FormControl;
   public mfo: FormControl;
   public edrpou: FormControl;
@@ -29,12 +32,18 @@ export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonCo
     fb: FormBuilder,
     public financialInstitutionService: FinancialInstitutionService
   ) {
-    super(cdRef, FinancialInstitutionComponent.createForm(fb));
+    super(cdRef, fb);
+  }
 
-    this.initControls();
+  public ngOnInit() {
+    super.ngOnInit();
   }
 
   protected updateFormOnIdChange() {
+    if (!this.form) {
+      return;
+    }
+
     this.financialInstitutionService.getById(this.id).subscribe((fiItem: FinancialInstitution) => {
       if (fiItem) {
         this.form.patchValue(Object.assign({id: this.id}, fiItem), {emitEvent: false});
@@ -45,16 +54,16 @@ export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonCo
     });
   }
 
-  private static createForm(fb: FormBuilder) {
-    return fb.group({
+  protected createForm(): void {
+    this.form = this.fb.group({
       _id: null,
-      name: ['', Validators.required],
-      mfo: ['', Validators.required],
-      edrpou: ['', Validators.required]
+      name: ['', this.getConditionalValidator()],
+      mfo: ['', this.getConditionalValidator()],
+      edrpou: ['', this.getConditionalValidator()]
     });
   }
 
-  private initControls() {
+  protected initControls(): void {
     this.name = <FormControl> this.form.get('name');
     this.mfo = <FormControl> this.form.get('mfo');
     this.edrpou = <FormControl> this.form.get('edrpou');

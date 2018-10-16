@@ -33,8 +33,9 @@ import { SelectPersonAccountDialogService } from './select-person-account-dialog
   providers: [PaymentService]
 })
 export class PaymentComponent extends UnsubscribableComponent implements OnInit, AfterViewInit {
-  public form: FormGroup;
+  public readonly autocompleteClasses = 'sp-new-payment-autocomplete';
 
+  public form: FormGroup;
   public date: FormControl;
   public accountNumber: FormControl;
   public sum: FormControl;
@@ -82,7 +83,11 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
   }
 
   public onSaveClick() {
-    this.paymentService.submitPayment(this.form.value).subscribe();
+    this.paymentService.submitPayment(this.form.value)
+      .subscribe(() => {
+        this.tabbedItemsService.closeActiveTab();
+        this.cdRef.markForCheck();
+      });
   }
 
   public onCancelClick() {
@@ -130,7 +135,7 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
   private createForm() {
     this.form = this.fb.group({
       date: [moment(Date.now()), Validators.required],
-      accountNumber: ['', Validators.required],
+      accountNumber: [''],
       sum: ['', [Validators.required, Validators.min(0.01)]],
       description: ['', Validators.required],
       person: this.fb.group({}),

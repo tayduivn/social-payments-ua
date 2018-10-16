@@ -21,8 +21,7 @@ const personAccountsModel = new Schema({
       accounts: [
         {
           account: {
-            type: String,
-            required: true
+            type: String
           }
         }
       ]

@@ -1,9 +1,9 @@
 import { FinancialInstitution } from '../../../../api-contracts/financial-institution/financial.institution';
 import { FinancialInstitutionModel } from './financial-institution.model';
 
-export function checkAndUpdate(financialInstitution: FinancialInstitution) {
+export function checkAndUpdate(financialInstitution: FinancialInstitution): Promise<FinancialInstitution> {
   if (financialInstitution._id) {
-    return Promise.resolve(financialInstitution);
+    return Promise.resolve(financialInstitution)
   }
 
   return FinancialInstitutionModel.find({

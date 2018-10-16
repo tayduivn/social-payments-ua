@@ -1,64 +1,133 @@
 import {
   ChangeDetectorRef,
-  Component
+  Component,
+  Input,
+  OnInit
 } from '@angular/core';
 import {
   FormBuilder,
-  FormControl,
-  Validators
+  FormControl
 } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
+import * as _ from 'lodash';
+import { Observable } from 'rxjs/Observable';
+import {
+  filter,
+  map,
+  startWith,
+  tap
+} from 'rxjs/operators';
+import { Person } from '../../../../../../api-contracts/person/person';
+import { Street } from '../../../../../../api-contracts/street/street';
 import { lettersUA_CharsDiapason } from '../../constants/char-diapason-ua';
+import { FilterUtils } from '../../utils/filter-utils';
+import { PersonHelper } from '../../utils/person.helper';
 import { MultifiedAutocompleteCommonComponent } from '../common/multifield-autocomplete/multified-autocomplete-common.component';
 import { PersonService } from './person.service';
+import { StreetService } from './street.service';
 
 @Component({
   selector: 'sp-person',
   templateUrl: './person.component.html',
   styleUrls: ['./person.component.scss']
 })
-export class PersonComponent extends MultifiedAutocompleteCommonComponent {
+export class PersonComponent extends MultifiedAutocompleteCommonComponent implements OnInit {
+  @Input() public renderAddressFields: boolean = true;
+
   public readonly passportNumberLetter = new RegExp(`[0-9a-zA-Z${lettersUA_CharsDiapason}]`);
 
   public fullName: FormControl;
   public passportNumber: FormControl;
   public identityCode: FormControl;
-  public street: FormControl;
+  public streetName: FormControl;
   public house: FormControl;
+  public readonly getPersonAddress = PersonHelper.getPersonAddress;
+
+  public personAutocompleteFilter$: Observable<Person>;
+  public steetsFiltered$: Observable<Street[]>;
+
+  private streets: Street[] = [];
+  private selectedStreetId: FormControl;
 
   constructor(
     cdRef: ChangeDetectorRef,
     fb: FormBuilder,
-    public personService: PersonService
+    public personService: PersonService,
+    private streetService: StreetService
   ) {
-    super(cdRef, PersonComponent.createForm(fb));
+    super(cdRef, fb);
+  }
 
-    this.initControls();
+  public ngOnInit() {
+    super.ngOnInit();
+
+    this.initPersonAutocompleteFilter();
+    this.initStreetAutocompleteFilter();
+  }
+
+  public streetSelected(streetOption: MatAutocompleteSelectedEvent) {
+    this.streetName.setValue(streetOption.option.value.name);
+    this.selectedStreetId.setValue(streetOption.option.value._id, {emitEvent: false});
   }
 
   protected updateFormOnIdChange() {
     console.log('Person id change cb called');
   }
 
-  private static createForm(fb: FormBuilder) {
-    return fb.group({
+  protected createForm(): void {
+    const mandatoryFields = {
       _id: null,
-      fullName: ['', Validators.required],
-      passportNumber: ['', Validators.required],
-      identityCode: ['', Validators.required],
-      address: fb.group({
-        street: ['', Validators.required],
-        house: ['', Validators.required],
+      fullName: ['', this.getConditionalValidator()],
+      passportNumber: ['', this.getConditionalValidator()],
+      identityCode: ['', this.getConditionalValidator()]
+    };
+
+    const optionalFields = this.renderAddressFields ? {
+      address: this.fb.group({
+        street: this.fb.group({
+          _id: [''],
+          name: ['', this.getConditionalValidator()],
+        }),
+        house: ['', this.getConditionalValidator()],
         houseSection: '',
         apartment: ''
       })
-    });
+    } : null;
+
+    this.form = this.fb.group(Object.assign(mandatoryFields, optionalFields));
   }
 
-  private initControls() {
+  protected initControls() {
     this.fullName = <FormControl> this.form.get('fullName');
     this.passportNumber = <FormControl> this.form.get('passportNumber');
     this.identityCode = <FormControl> this.form.get('identityCode');
-    this.street = <FormControl> this.form.get('address.street');
+    this.streetName = <FormControl> this.form.get('address.street.name');
+    this.selectedStreetId = <FormControl> this.form.get('address.street._id');
     this.house = <FormControl> this.form.get('address.house');
+  }
+
+  private initPersonAutocompleteFilter() {
+    this.personAutocompleteFilter$ = this.form.valueChanges
+      .pipe(
+        // disable person autocomplete for address section inputs that are not empty
+        filter((person: Person) => !person.address || FilterUtils.isEmpty(person.address))
+      )
+  }
+
+  private initStreetAutocompleteFilter() {
+    if (!this.renderAddressFields) {
+      return;
+    }
+
+    this.streetService.getData()
+      .subscribe((streets: Street[]) => this.streets = streets);
+
+    this.steetsFiltered$ = this.streetName.valueChanges
+      .pipe(
+        startWith(''),
+        tap(() => this.selectedStreetId.setValue(null)),
+        map((value: string | Street) => _.isString(value) ? value : value && value.name || ''),
+        map((streetInput: string) => this.streets.filter((street: Street) => street.name.toLowerCase().includes(streetInput)))
+      );
   }
 }

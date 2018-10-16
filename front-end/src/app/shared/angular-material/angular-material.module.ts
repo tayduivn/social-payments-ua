@@ -6,6 +6,7 @@ import {
   MatDatepickerModule,
   MatDialogModule,
   MatDividerModule,
+  MatExpansionModule,
   MatIconModule,
   MatListModule,
   MatPaginatorIntl,
@@ -15,8 +16,7 @@ import {
   MatSortModule,
   MatTableModule,
   MatTabsModule,
-  MatToolbarModule,
-  MatTooltipModule
+  MatToolbarModule
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
@@ -31,6 +31,7 @@ const importedExports = [
   MatDatepickerModule,
   MatDialogModule,
   MatDividerModule,
+  MatExpansionModule,
   MatInputModule,
   MatIconModule,
   MatListModule,
@@ -41,8 +42,7 @@ const importedExports = [
   MatSortModule,
   MatTableModule,
   MatTabsModule,
-  MatToolbarModule,
-  MatTooltipModule
+  MatToolbarModule
 ];
 
 @NgModule({

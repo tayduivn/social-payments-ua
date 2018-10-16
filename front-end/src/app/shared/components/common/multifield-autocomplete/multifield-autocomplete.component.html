@@ -3,7 +3,7 @@
   [matAutocomplete]>
 
 <mat-autocomplete autoActiveFirstOption
-  class="sp-autocomplete-panel"
+  [class]="'sp-autocomplete-panel ' + (autocompleteClasses || '')"
   (optionSelected)="itemSelected.emit($event)">
 
   <perfect-scrollbar [config]="{minScrollbarLength: 60}" >

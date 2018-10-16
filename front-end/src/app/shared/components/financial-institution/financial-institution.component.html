@@ -1,8 +1,9 @@
 <section class="sp-financial-institution-container"
   [formGroup]="form">
 
-  <div class="sp-financial-field sp-financial-fields-reset">
+  <div *ngIf="renderClearButton" class="sp-financial-field sp-financial-fields-reset">
     <button mat-button
+      title="Очисти всі поля"
       [disabled]="allFieldsEmtpy"
       (click)="reset()">
       <mat-icon>delete</mat-icon>
@@ -17,7 +18,7 @@
       placeholder="Код МФО"
       spInputFilter="[0-9]"
       [spProxyAutocompleteCommands]="autocomplete">
-    <mat-error *ngIf="mfo.invalid && mfo.hasError('required')">Введіть код МФО</mat-error>
+    <mat-error *ngIf="renderValidationErrors && mfo.invalid && mfo.hasError('required')">Введіть код МФО</mat-error>
   </mat-form-field>
 
   <mat-form-field class="sp-financial-field sp-financial-edrpou">
@@ -27,7 +28,7 @@
       placeholder="Код ЄДРПОУ"
       spInputFilter="[0-9]"
       [spProxyAutocompleteCommands]="autocomplete">
-    <mat-error *ngIf="edrpou.invalid && edrpou.hasError('required')">Введіть код ЄДРПОУ</mat-error>
+    <mat-error *ngIf="renderValidationErrors && edrpou.invalid && edrpou.hasError('required')">Введіть код ЄДРПОУ</mat-error>
   </mat-form-field>
 
   <mat-form-field class="sp-financial-field sp-financial-name">
@@ -36,10 +37,11 @@
       formControlName="name"
       placeholder="Назва"
       [spProxyAutocompleteCommands]="autocomplete">
-    <mat-error *ngIf="name.invalid && name.hasError('required')">Введіть назву</mat-error>
+    <mat-error *ngIf="renderValidationErrors && name.invalid && name.hasError('required')">Введіть назву</mat-error>
   </mat-form-field>
 
   <sp-multifield-autocomplete #autocomplete
+    [autocompleteClasses]="autocompleteClasses"
     [items]="financialInstitutionService.getData() | async"
     [filter$]="form.valueChanges"
     (itemSelected)="onAutocompleteItemSelected($event)">

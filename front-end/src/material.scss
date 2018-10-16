@@ -1,26 +1,5 @@
 @import '~@angular/material/theming';
 
-@mixin mat-icon-size($size) {
-  font-size: $size;
-  height: $size;
-  width: $size;
-}
-
-.material-icons {
-  //&.md-18 {
-  //  @include mat-icon-size(18px);
-  //}
-  //&.md-24 {
-  //  @include mat-icon-size(24px);
-  //}
-  //&.md-36 {
-  //  @include mat-icon-size(36px);
-  //}
-  //&.md-48 {
-  //  @include mat-icon-size(48px);
-  //}
-}
-
 // ***
 // ***
 // ***
@@ -68,10 +47,33 @@ $custom-typography: mat-typography-config(
     padding: 0;
   }
 
-  // autocomplete active item
-  .mat-option.mat-active {
-    background: rgba(0,0,0,.08);
+  // icons
+  $small-icons-size: 18px;
+  .sp-small-icon {
+    $size: $small-icons-size;
+
+    font-weight: 600;
+    font-size: $size;
+    width: $size;
+    height: $size;
   }
+
+  .mat-datepicker-toggle {
+    font-size: $small-icons-size;
+  }
+
+
+  // autocomplete active item
+  .mat-option {
+    &.mat-active, &:hover {
+      background: rgba(0,0,0,.08);
+    }
+  }
+
+  .sp-autocomplete-option {
+    padding: 0 5px;
+  }
+
 
   // toolbar
   .mat-toolbar-row, .mat-toolbar-single-row {
@@ -97,6 +99,11 @@ $custom-typography: mat-typography-config(
   .mat-tab-group {
     .mat-tab-label {
       height: 36px;
+
+      &.mat-tab-label-active {
+        // icons bold only on focus, fix to be bold for activated tabs
+        opacity: 1;
+      }
     }
   }
 
@@ -109,8 +116,24 @@ $custom-typography: mat-typography-config(
     min-height: 16px;
   }
 
+  $table-cell-padding: 3px;
+
   mat-cell {
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding-top: $table-cell-padding;
+    padding-bottom: $table-cell-padding;
+  }
+
+  $table-indent: 10px;
+
+  mat-cell:first-of-type,
+  mat-footer-cell:first-of-type,
+  mat-header-cell:first-of-type {
+    padding-left: $table-indent;
+  }
+
+  mat-cell:last-of-type,
+  mat-footer-cell:last-of-type,
+  mat-header-cell:last-of-type {
+    padding-right: $table-indent;
   }
 }

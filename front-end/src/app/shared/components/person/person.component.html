@@ -1,8 +1,9 @@
 <section class="sp-person-container"
   [formGroup]="form">
 
-  <div class="sp-person-reset">
+  <div *ngIf="renderClearButton" class="sp-person-reset">
     <button mat-button
+      title="Очисти всі поля"
       [disabled]="allFieldsEmtpy"
       (click)="reset()">
       <mat-icon>delete</mat-icon>
@@ -16,7 +17,7 @@
         formControlName="fullName"
         placeholder="Прізвище, ім'я, по батькові"
         [spProxyAutocompleteCommands]="autocomplete">
-      <mat-error *ngIf="fullName.invalid && fullName.hasError('required')">Введіть прізвище, ім'я, по батькові</mat-error>
+      <mat-error *ngIf="renderValidationErrors && fullName.invalid && fullName.hasError('required')">Введіть прізвище, ім'я, по батькові</mat-error>
     </mat-form-field>
 
     <div class="sp-person-documents-info">
@@ -27,7 +28,7 @@
           placeholder="Серія та номер паспорта"
           [spInputFilter]="passportNumberLetter"
           [spProxyAutocompleteCommands]="autocomplete">
-        <mat-error *ngIf="passportNumber.invalid && passportNumber.hasError('required')">Введіть cерію та номер паспорта</mat-error>
+        <mat-error *ngIf="renderValidationErrors && passportNumber.invalid && passportNumber.hasError('required')">Введіть cерію та номер паспорта</mat-error>
       </mat-form-field>
 
       <mat-form-field class="sp-identity-code">
@@ -37,55 +38,64 @@
           placeholder="Ідентифікаційний код"
           spInputFilter="[0-9]"
           [spProxyAutocompleteCommands]="autocomplete">
-        <mat-error *ngIf="identityCode.invalid && identityCode.hasError('required')">Введіть ідентифікаційний код</mat-error>
+        <mat-error *ngIf="renderValidationErrors && identityCode.invalid && identityCode.hasError('required')">Введіть ідентифікаційний код</mat-error>
       </mat-form-field>
     </div>
 
-    <div class="sp-address"
+    <div *ngIf="renderAddressFields"
+      class="sp-address"
       formGroupName="address">
-      <mat-form-field class="sp-street">
+      <mat-form-field class="sp-street"
+        formGroupName="street">
         <input matInput
           autocomplete="off"
-          formControlName="street"
+          formControlName="name"
           placeholder="Вулиця"
-          [spProxyAutocompleteCommands]="autocomplete">
-        <mat-error *ngIf="street.invalid && street.hasError('required')">Введіть назву вулиці</mat-error>
+          [matAutocomplete]="streetsAutocomplete">
+        <mat-autocomplete autoActiveFirstOption
+          #streetsAutocomplete="matAutocomplete"
+          (optionSelected)="streetSelected($event)">
+          <perfect-scrollbar [config]="{minScrollbarLength: 60}" >
+            <mat-option *ngFor="let street of steetsFiltered$ | async" [value]="street">
+              {{street.name}}
+            </mat-option>
+          </perfect-scrollbar>
+        </mat-autocomplete>
+        <mat-error *ngIf="renderValidationErrors && streetName.invalid && streetName.hasError('required')">Введіть назву вулиці</mat-error>
       </mat-form-field>
 
       <mat-form-field class="sp-house">
         <input matInput
           autocomplete="off"
           formControlName="house"
-          placeholder="Будинок"
-          [spProxyAutocompleteCommands]="autocomplete">
-        <mat-error *ngIf="house.invalid && house.hasError('required')">Введіть номер будинку</mat-error>
+          placeholder="Будинок">
+        <mat-error *ngIf="renderValidationErrors && house.invalid && house.hasError('required')">Введіть номер будинку</mat-error>
       </mat-form-field>
 
       <mat-form-field class="sp-house-section">
         <input matInput
           autocomplete="off"
           formControlName="houseSection"
-          placeholder="Корпус"
-          [spProxyAutocompleteCommands]="autocomplete">
+          placeholder="Корпус">
       </mat-form-field>
 
       <mat-form-field class="sp-apartment">
         <input matInput
           formControlName="apartment"
-          placeholder="Квартира"
-          [spProxyAutocompleteCommands]="autocomplete">
+          placeholder="Квартира">
       </mat-form-field>
     </div>
 
     <sp-multifield-autocomplete #autocomplete
+      [autocompleteClasses]="autocompleteClasses"
       [items]="personService.getData() | async"
-      [filter$]="form.valueChanges"
+      [filter$]="personAutocompleteFilter$"
       (itemSelected)="onAutocompleteItemSelected($event)">
       <ng-template let-item>
         {{item.fullName}},
         {{item.passportNumber}},
         {{item.identityCode}},
-        {{item.address.street}} {{item.address.house}} {{item.address.houseSection}}, {{item.address.apartment}}
+        {{getPersonAddress(item.address)}}
       </ng-template>
     </sp-multifield-autocomplete>
   </div>

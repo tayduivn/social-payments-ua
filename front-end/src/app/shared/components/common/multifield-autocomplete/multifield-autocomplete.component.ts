@@ -12,10 +12,8 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import {
   MatAutocomplete,
-  MatAutocompleteSelectedEvent,
   MatAutocompleteTrigger
 } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
@@ -39,6 +37,7 @@ import { ProxyAutocompleteCommands } from './proxy-autocomplete-commands.enum';
 export class MultifieldAutocompleteComponent implements OnInit, AfterViewInit {
   @Input() public items: Object[];
   @Input() public filter$: Observable<Object>;
+  @Input() public autocompleteClasses: string;
 
   @Output() public itemSelected = new EventEmitter();
 

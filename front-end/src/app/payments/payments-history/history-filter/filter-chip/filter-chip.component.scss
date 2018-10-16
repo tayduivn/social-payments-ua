@@ -1,0 +1,23 @@
+@import '~@angular/material/theming';
+
+:host {
+  display: inline-flex;
+  align-items: center;
+  color: white;
+  background-color: mat-color($mat-indigo, 500);
+  padding: 5px 10px;
+  border-radius: 24px;
+  font-size: 12px;
+  line-height: 1;
+  cursor: default;
+  margin: 4px;
+
+  mat-icon {
+    margin-left: 10px;
+    cursor: pointer;
+
+    &:hover {
+      color: mat-color($mat-grey, 300);
+    }
+  }
+}

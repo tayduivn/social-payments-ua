@@ -14,24 +14,28 @@ describe('Utils', () => {
       prev = {
         a: '2',
         b: {
-          a: '1'}
+          a: '1'
+        }
       };
       curr = {
         a: '2',
         b: {
-          a: '2'}
+          a: '2'
+        }
       };
       expect(FilterUtils.equals(prev, curr)).toBe(false);
 
       prev = {
         a: '2',
         b: {
-          a: '1'}
+          a: '1'
+        }
       };
       curr = {
         a: '2',
         b: {
-          a: '1'}
+          a: '1'
+        }
       };
       expect(FilterUtils.equals(prev, curr)).toBe(true);
     });
@@ -50,12 +54,16 @@ describe('Utils', () => {
     it('should work with nested objects', () => {
       expect(FilterUtils.isEmpty({
         a: '2',
-        b: {a: '1'}
+        b: {
+          a: '1'
+        }
       })).toBe(false);
 
       expect(FilterUtils.isEmpty({
         a: '',
-        b: {a: ''}
+        b: {
+          a: ''
+        }
       })).toBe(true);
     });
   });

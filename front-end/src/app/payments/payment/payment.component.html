@@ -25,12 +25,14 @@
 
       <div class="sp-payment-section">
         <h4 class="sp-caption">Одержувач</h4>
-        <sp-person (idChange)="onPersonIdChange($event)"></sp-person>
+        <sp-person [autocompleteClasses]="autocompleteClasses"
+          (idChange)="onPersonIdChange($event)"></sp-person>
       </div>
 
       <div class="sp-payment-section sp-financial-institution">
         <h4 class="sp-caption">Фінансова установа</h4>
-        <sp-financial-institution [id]="financialInstitutionId"
+        <sp-financial-institution [autocompleteClasses]="autocompleteClasses"
+          [id]="financialInstitutionId"
           (idChange)="onFinancialInstitutionIdChange($event)"
           class="sp-financial-institution"></sp-financial-institution>
       </div>

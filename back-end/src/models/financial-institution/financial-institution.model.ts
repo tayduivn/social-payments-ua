@@ -5,7 +5,7 @@ import {
 } from 'mongoose';
 import { FinancialInstitution } from '../../../../api-contracts/financial-institution/financial.institution';
 
-export const financialInstitutionSchemaFields = {
+export const financialInstitutionSchema = new Schema({
   name: {
     type: String,
     required: [true]
@@ -18,12 +18,12 @@ export const financialInstitutionSchemaFields = {
     type: String,
     required: [true]
   }
-};
+});
 
 export type FinancialInstitutionModel = FinancialInstitution & Document;
 
 export const FinancialInstitutionModel = model<FinancialInstitutionModel>(
   'FinancialInstitution',
-  new Schema(financialInstitutionSchemaFields),
+  financialInstitutionSchema,
   'financial_institutions'
 );

@@ -1,6 +1,7 @@
 <mat-card class="sp-zero-indent">
   <sp-history-filter class="sp-payments-history-filter"
-    (filterChange)="onFilterChange($event)"></sp-history-filter>
+    (filterChange)="onFilterChange($event)"
+    (filterEmpty)="onFilterEmpty()"></sp-history-filter>
 
   <sp-history-table *ngIf="!statusTextDescription"
     class="sp-payments-history-table"

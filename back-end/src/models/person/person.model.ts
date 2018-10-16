@@ -17,8 +17,9 @@ export const personSchemaFields = {
   identityCode: String,
   address: {
     street: {
-      type: String,
-      required: [true]
+      type: Schema.Types.ObjectId,
+      ref: 'Street',
+      required: true
     },
     house: {
       type: String,
