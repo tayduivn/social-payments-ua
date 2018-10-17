@@ -1,7 +1,10 @@
 {
   "name": "social-payments-ua",
   "version": "0.0.1",
+  "engines": {
+    "node": "8.11.x"
+  },
   "scripts": {
-    "start": "cd ./back-end && npm install"
+    "postinstall": "npm install --prefix back-end && npm install --prefix front-end"
   }
 }
