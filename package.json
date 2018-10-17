@@ -6,7 +6,7 @@
     "node": "8.11.x"
   },
   "scripts": {
-    "postinstall": "npm run build:back-end",
+    "postinstall": "npm run build:back-end && npm run build:front-end",
     "build:back-end": "npm run install:back-end && npm run build --prefix back-end",
     "install:back-end": "npm install --prefix back-end && npm install --prefix back-end --only=dev",
     "build:fron-end": "npm run install:front-end && npm run build --prefix front-end",
