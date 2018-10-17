@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { Payment } from '../../../../../api-contracts/payment/payment';
 import { PaymentsFilter } from '../../../../../api-contracts/payment/payments-filter';
-import { apiEndpoint } from '../../shared/constants/api-endpoint';
+import { apiEndpoint } from '../../shared/constants/endpoints';
 import { HistoryFilterModel } from './shared/history-filter.model';
 
 @Injectable()

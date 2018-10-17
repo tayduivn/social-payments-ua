@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { filter } from 'rxjs/operators';
+import { AuthService } from './core/auth.service';
 import { FinancialInstitutionService } from './shared/components/financial-institution/financial-institution.service';
 import { PersonAccountsService } from './shared/components/person-accounts/person-accounts.service';
 import { PersonService } from './shared/components/person/person.service';
@@ -8,6 +10,7 @@ import { StreetService } from './shared/components/person/street.service';
 })
 export class AppStartupModulesModule {
   constructor(
+    private authService: AuthService,
     private fiService: FinancialInstitutionService,
     private personService: PersonService,
     private personAccountsService: PersonAccountsService,
@@ -17,9 +20,15 @@ export class AppStartupModulesModule {
   }
 
   private initCaches() {
-    this.fiService.getData().subscribe();
-    this.personService.getData().subscribe();
-    this.personAccountsService.getData().subscribe();
-    this.streetService.getData();
+    this.authService.loggedIn$
+      .pipe(
+        filter((loggedIn) => loggedIn)
+      )
+      .subscribe(() => {
+        this.fiService.getData().subscribe();
+        this.personService.getData().subscribe();
+        this.personAccountsService.getData().subscribe();
+        this.streetService.getData();
+      });
   }
 }

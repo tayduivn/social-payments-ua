@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { Moment } from 'moment';
 import { TabbedItemsService } from '../../layout/tabbed-items/tabbed-items.service';
+import { reportsEndpoint } from '../../shared/constants/endpoints';
 import { requestDateFormat } from '../../shared/constants/date-formats';
 import { WindowProvider } from '../../shared/providers/window-provider';
 import { PeriodReportRange } from './period-report-range.enum';
@@ -9,7 +10,7 @@ import { PeriodReportRange } from './period-report-range.enum';
 @Injectable()
 export class PeriodReportService {
   // todo: change to flexible solution
-  private readonly requestUrl = 'https://localhost/reports/period';
+  private readonly requestUrl = `${reportsEndpoint}/period`;
 
   constructor(
     private tabbedItemsService: TabbedItemsService,
@@ -34,6 +35,6 @@ export class PeriodReportService {
     }
 
     this.tabbedItemsService.closeActiveTab();
-    this.window.open(`${this.requestUrl}?startDate=${startDate.format(requestDateFormat)}&endDate=${endDate.format(requestDateFormat)}`, '_blank');
+    this.window.open(`${this.requestUrl}?startDate=${startDate.format(requestDateFormat)}&endDate=${endDate.format(requestDateFormat)}`, '_self');
   }
 }

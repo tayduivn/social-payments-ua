@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Payment } from '../../../../../api-contracts/payment/payment';
-import { apiEndpoint } from '../../shared/constants/api-endpoint';
+import { apiEndpoint } from '../../shared/constants/endpoints';
 
 @Injectable()
 export class PaymentService {

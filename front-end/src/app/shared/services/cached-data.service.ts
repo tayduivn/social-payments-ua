@@ -6,7 +6,7 @@ import {
   take
 } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { apiEndpoint } from '../constants/api-endpoint';
+import { apiEndpoint } from '../constants/endpoints';
 
 export abstract class CachedDataService<T> {
   protected abstract readonly requestUrl: string;

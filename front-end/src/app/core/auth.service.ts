@@ -1,11 +1,20 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 import { WindowProvider } from '../shared/providers/window-provider';
 
 const tokenKeyName = 'token';
 
 @Injectable()
 export class AuthService {
-  constructor(private window: WindowProvider) { }
+  public readonly loggedIn$: Observable<boolean>;
+
+  private readonly loggedInSubject: BehaviorSubject<boolean>;
+
+  constructor(private window: WindowProvider) {
+    this.loggedInSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
+    this.loggedIn$ = this.loggedInSubject.asObservable();
+  }
 
   public isLoggedIn(): boolean {
     return !!this.getToken();
@@ -16,6 +25,7 @@ export class AuthService {
   }
 
   public setToken(token: string): void {
-    return this.window.localStorage.setItem(tokenKeyName, token);
+    this.window.localStorage.setItem(tokenKeyName, token);
+    this.loggedInSubject.next(true);
   }
 }

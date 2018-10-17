@@ -5,6 +5,7 @@ import {
 } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
 import { AdminModule } from './admin/admin.module';
+import { AuthGuard } from './core/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { LoginModule } from './login/login.module';
 import { PaymentsComponent } from './payments/payments.component';
@@ -19,19 +20,22 @@ const routes: Routes = [
   },
   {
     path: 'payments',
+    canActivate: [AuthGuard],
     component: PaymentsComponent
   },
   {
     path: 'reports',
+    canActivate: [AuthGuard],
     component: ReportsComponent
   },
   {
     path: 'admin',
+    canActivate: [AuthGuard],
     component: AdminComponent
   },
   {
     path: '',
-    redirectTo: '/payments',
+    redirectTo: '/login',
     pathMatch: 'full'
   }
 ];

@@ -12,6 +12,7 @@ import {
   filter,
   map
 } from 'rxjs/operators';
+import { AuthService } from './core/auth.service';
 
 @Component({
   selector: 'sp-root',
@@ -22,7 +23,7 @@ import {
 export class AppComponent implements OnInit {
   public renderMenu: boolean;
 
-  constructor(private cdRef: ChangeDetectorRef, private router: Router) {}
+  constructor(private cdRef: ChangeDetectorRef, private router: Router, private authService: AuthService) {}
 
   public ngOnInit() {
     this.router.events
@@ -31,7 +32,7 @@ export class AppComponent implements OnInit {
         map((e: NavigationEnd) => e.url)
       )
       .subscribe((url: string) => {
-        this.renderMenu = url !== '/login';
+        this.renderMenu = this.authService.isLoggedIn() && url !== '/login';
         this.cdRef.markForCheck();
       });
   }

@@ -7,7 +7,7 @@ import {Observable} from 'rxjs/Observable';
 import { tap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import {User} from '../../../../../api-contracts/user/user';
-import {apiEndpoint} from '../../shared/constants/api-endpoint';
+import {apiEndpoint} from '../../shared/constants/endpoints';
 import {UserDialogModel} from './user-dialog/user-dialog.model';
 
 @Injectable()
