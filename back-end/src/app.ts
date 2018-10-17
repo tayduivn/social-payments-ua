@@ -19,6 +19,10 @@ appConfig.use(bodyParser.json());
 appConfig.use(bodyParser.urlencoded({extended: false}));
 appConfig.use(cookieParser());
 
+if (process.env.HEROKU) {
+  appConfig.use(express.static('../front-end/dist/social-payments-ua'));
+}
+
 // adding promise resolver helpers
 appConfig.use(appRequestProcessor);
 
