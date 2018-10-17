@@ -1,5 +1,6 @@
 {
   "name": "social-payments-ua",
+  "description": "Build setup for Heroku",
   "version": "0.0.1",
   "engines": {
     "node": "8.11.x"
