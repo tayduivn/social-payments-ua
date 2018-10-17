@@ -5,6 +5,7 @@
     "node": "8.11.x"
   },
   "scripts": {
-    "heroku-postbuild": "npm install --prefix back-end"
+    "postinstall": "npm run install:backend",
+    "install:backend": "npm install --prefix back-end && npm install --prefix back-end --only=dev"
   }
 }
