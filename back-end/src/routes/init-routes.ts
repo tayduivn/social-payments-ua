@@ -22,13 +22,12 @@ export function initRoutes(app: Express) {
     });
   }));
 
+
   // no authentication routes
-  app.use('/', rootRouter);
   app.use('/login', loginRouter);
+  // app.use('/', rootRouter);
 
   // routes with authentication
-  app
-    .all('*', passport.authenticate('bearer', { session: false }))
-    .use('/reports', reportsRouter)
-    .use('/api', apiRouter);
+  app.use('/generated-reports', passport.authenticate('bearer', { session: false }), reportsRouter)
+  app.use('/api', passport.authenticate('bearer', { session: false }), apiRouter);
 }

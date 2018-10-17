@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
         map((e: NavigationEnd) => e.url)
       )
       .subscribe((url: string) => {
-        this.renderMenu = url !== '/' && url !== '/login';
+        this.renderMenu = url !== '/login';
         this.cdRef.markForCheck();
       });
   }

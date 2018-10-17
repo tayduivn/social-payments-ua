@@ -31,9 +31,13 @@ initRoutes(appConfig);
 
 // catch 404 and forward to error handler
 appConfig.use((req: Request, res: Response, next: NextFunction) => {
-  const err = new Error('Not Found') as any;
-  err.status = 404;
-  next(err);
+  if (process.env.HEROKU) {
+    res.redirect('/index.html');
+  } else {
+    const err = new Error('Not Found') as any;
+    err.status = 404;
+    next(err);
+  }
 });
 
 // error handler

@@ -6,7 +6,7 @@ import express, {
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response) => {
-  res.send(`Hello, now is: ${new Date(Date.now())}`);
+  res.redirect('/index.html');
 });
 
 export const rootRouter = router;

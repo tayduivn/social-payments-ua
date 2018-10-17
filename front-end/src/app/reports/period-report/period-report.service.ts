@@ -9,7 +9,6 @@ import { PeriodReportRange } from './period-report-range.enum';
 
 @Injectable()
 export class PeriodReportService {
-  // todo: change to flexible solution
   private readonly requestUrl = `${environment.dataQueries.reportsEndpoint}/period`;
 
   constructor(
