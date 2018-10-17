@@ -5,6 +5,6 @@
     "node": "8.11.x"
   },
   "scripts": {
-    "postinstall": "npm install --prefix back-end && npm install --prefix front-end"
+    "heroku-postbuild": "npm install --prefix back-end && npm install --prefix front-end"
   }
 }
