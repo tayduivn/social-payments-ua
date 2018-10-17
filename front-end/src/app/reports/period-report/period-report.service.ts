@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { Moment } from 'moment';
+import { environment } from '../../../environments/environment';
 import { TabbedItemsService } from '../../layout/tabbed-items/tabbed-items.service';
-import { reportsEndpoint } from '../../shared/constants/endpoints';
 import { requestDateFormat } from '../../shared/constants/date-formats';
 import { WindowProvider } from '../../shared/providers/window-provider';
 import { PeriodReportRange } from './period-report-range.enum';
@@ -10,7 +10,7 @@ import { PeriodReportRange } from './period-report-range.enum';
 @Injectable()
 export class PeriodReportService {
   // todo: change to flexible solution
-  private readonly requestUrl = `${reportsEndpoint}/period`;
+  private readonly requestUrl = `${environment.dataQueries.reportsEndpoint}/period`;
 
   constructor(
     private tabbedItemsService: TabbedItemsService,

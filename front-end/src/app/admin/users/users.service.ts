@@ -1,18 +1,14 @@
-import {HttpClient} from '@angular/common/http';
-import {
-  Injectable,
-  OnDestroy
-} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import { tap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import {User} from '../../../../../api-contracts/user/user';
-import {apiEndpoint} from '../../shared/constants/endpoints';
-import {UserDialogModel} from './user-dialog/user-dialog.model';
+import { User } from '../../../../../api-contracts/user/user';
+import { environment } from '../../../environments/environment';
+import { UserDialogModel } from './user-dialog/user-dialog.model';
 
 @Injectable()
 export class UsersService {
-  private readonly requestUrl = `${apiEndpoint}/users/`;
+  private readonly requestUrl = `${environment.dataQueries.apiEndpoint}/users/`;
 
   private userListSubject: Subject<User[]>;
 

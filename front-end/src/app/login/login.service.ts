@@ -11,7 +11,7 @@ export class LoginService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   public requestLogin(login: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(environment.dataQueries.login, {login, password})
+    return this.http.post<LoginResponse>(environment.dataQueries.loginEndpoint, {login, password})
       .pipe(
         tap((res: any) => this.authService.setToken(res.token))
       );

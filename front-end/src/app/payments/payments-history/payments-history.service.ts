@@ -7,12 +7,12 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { Payment } from '../../../../../api-contracts/payment/payment';
 import { PaymentsFilter } from '../../../../../api-contracts/payment/payments-filter';
-import { apiEndpoint } from '../../shared/constants/endpoints';
+import { environment } from '../../../environments/environment';
 import { HistoryFilterModel } from './shared/history-filter.model';
 
 @Injectable()
 export class PaymentsHistoryService {
-  private readonly requestUrl = `${apiEndpoint}/payments/`;
+  private readonly requestUrl = `${environment.dataQueries.apiEndpoint}/payments/`;
 
   constructor(private http: HttpClient) {}
 

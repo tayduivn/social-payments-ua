@@ -6,7 +6,7 @@ import {
   take
 } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { apiEndpoint } from '../constants/endpoints';
+import { environment } from '../../../environments/environment';
 
 export abstract class CachedDataService<T> {
   protected abstract readonly requestUrl: string;
@@ -45,7 +45,7 @@ export abstract class CachedDataService<T> {
   }
 
   private requestData() {
-    this.http.get(`${apiEndpoint}${this.requestUrl}`)
+    this.http.get(`${environment.dataQueries.apiEndpoint}${this.requestUrl}`)
       .subscribe(
         (res: T[]) => this.dataObserver.next(res),
         (err: any) => this.dataObserver.error(err)
