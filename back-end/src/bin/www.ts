@@ -5,6 +5,7 @@
  */
 
 import fs from 'fs';
+import http from 'http';
 import https from 'https';
 import { app } from '../app';
 
@@ -88,7 +89,7 @@ const sslOptions = {
   passphrase: 'spua'
 };
 
-const server = https.createServer(sslOptions, app);
+const server = process.env.HEROKU ? http.createServer(app) : https.createServer(sslOptions, app);
 
 server.listen(port);
 server.on('error', onError);

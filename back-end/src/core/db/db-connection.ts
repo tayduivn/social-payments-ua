@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 export function connectDb() {
   const dbPath = process.env.MONGODB_URI || 'mongodb://localhost/social-payments-ua';
 
-  console.log('test');
   mongoose.connect(dbPath, {
     useNewUrlParser: true
   });
