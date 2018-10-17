@@ -38,7 +38,7 @@ export abstract class CachedDataService<T> {
   }
 
   private validateCache() {
-    if (!this.dataObserver) {
+    if (!this.dataObserver || this.dataObserver.hasError) {
       this.dataObserver = new ReplaySubject<T[]>(1);
       this.requestData();
     }
@@ -46,6 +46,9 @@ export abstract class CachedDataService<T> {
 
   private requestData() {
     this.http.get(`${apiEndpoint}${this.requestUrl}`)
-      .subscribe((res: T[]) => this.dataObserver.next(res));
+      .subscribe(
+        (res: T[]) => this.dataObserver.next(res),
+        (err: any) => this.dataObserver.error(err)
+      );
   }
 }

@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-const uniqueError = (login: string): Error => new Error(`Логін '${login}' вже існує`);
+const uniqueError = (login: string): Error => new Error(`Login '${login}' already exists`);
 
 const uniqueFieldMongoErrorCode = 11000;
 

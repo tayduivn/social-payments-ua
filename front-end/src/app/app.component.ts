@@ -23,7 +23,7 @@ import { AuthService } from './core/auth.service';
 export class AppComponent implements OnInit {
   public renderMenu: boolean;
 
-  constructor(private cdRef: ChangeDetectorRef, private router: Router, private authService: AuthService) {}
+  constructor(private cdRef: ChangeDetectorRef, private router: Router) {}
 
   public ngOnInit() {
     this.router.events
@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
         map((e: NavigationEnd) => e.url)
       )
       .subscribe((url: string) => {
-        this.renderMenu = this.authService.isLoggedIn() && url !== '/login';
+        this.renderMenu = url !== '/' && url !== '/login';
         this.cdRef.markForCheck();
       });
   }

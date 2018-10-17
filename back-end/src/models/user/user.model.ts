@@ -21,13 +21,18 @@ const userSchema = new Schema({
     required: [true]
   },
   token: String,
-  isAdmin: Boolean
+  isAdmin: Boolean,
+  created: {
+    type: Date,
+    required: [true]
+  }
 });
 
 addUserModelMiddleware(userSchema);
 
 export type UserModel = User & Document & {
-  token: string
+  token: string,
+  created: Date
 };
 
 export const UserModel = model<UserModel>('User', userSchema);

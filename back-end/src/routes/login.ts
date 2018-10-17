@@ -18,8 +18,9 @@ router.post('/', (req: Request, res: Response, next: NextFunction) => {
     payload: new Date(),
     secret: login
   });
+  const created = new Date();
 
-  UserModel.findOneAndUpdate({login}, {token}, (err, user: User) => {
+  UserModel.findOneAndUpdate({login}, {token, created}, (err, user: User) => {
     if (user && bcrypt.compareSync(password, user.password)) {
       res.send(<LoginResponse> {
         authorized: true,

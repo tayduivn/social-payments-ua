@@ -26,6 +26,6 @@ export class AuthService {
 
   public setToken(token: string): void {
     this.window.localStorage.setItem(tokenKeyName, token);
-    this.loggedInSubject.next(true);
+    this.loggedInSubject.next(!!token);
   }
 }

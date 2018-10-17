@@ -10,6 +10,7 @@ import {
 import * as moment from 'moment';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
+import { ErrorHandlerInterceptor } from './error-handler.interceptor.service';
 import { throwIfAlreadyLoaded } from './module-import-guard';
 import { TokenInterceptor } from './token.interceptor';
 
@@ -23,6 +24,11 @@ import { TokenInterceptor } from './token.interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorHandlerInterceptor,
       multi: true
     }
   ]
