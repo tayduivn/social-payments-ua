@@ -82,8 +82,9 @@ export class HistoryFilterComponent implements AfterViewInit {
   }
 
   public onSearchClick(closePanel = true) {
-    const normalizedInputs = _.mapValues(
-      this.searchForm.value,
+    const formVal = this.searchForm.value;
+    formVal.datesRange = FilterUtils.isEmpty(formVal.datesRange) ? formVal.datesRange : _.mapValues(
+      formVal.datesRange,
       (val: any) => moment.isMoment(val) ? val.toISOString() : val
     );
 
@@ -94,7 +95,7 @@ export class HistoryFilterComponent implements AfterViewInit {
     }
 
     // as any since failed to assert correct type for lodash mapValues
-    this.filterChange.emit(normalizedInputs as any);
+    this.filterChange.emit(formVal as any);
   }
 
   public onChipClose(filter: FilterType) {
