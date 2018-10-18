@@ -5,12 +5,14 @@ import { FinancialInstitutionService } from './shared/components/financial-insti
 import { PersonAccountsService } from './shared/components/person-accounts/person-accounts.service';
 import { PersonService } from './shared/components/person/person.service';
 import { StreetService } from './shared/components/person/street.service';
+import { WebsocketConnectionService } from './shared/services/websocket-connection/websocket-connection.service';
 
 @NgModule({
 })
 export class AppStartupModulesModule {
   constructor(
     private authService: AuthService,
+    private websocketConnectionService: WebsocketConnectionService,
     private fiService: FinancialInstitutionService,
     private personService: PersonService,
     private personAccountsService: PersonAccountsService,

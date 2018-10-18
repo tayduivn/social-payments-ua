@@ -6,7 +6,6 @@ import { UserModel } from '../models/user/user.model';
 import { apiRouter } from './api/api';
 import { loginRouter } from './login';
 import { reportsRouter } from './reports/reports';
-import { rootRouter } from './root';
 
 export function initRoutes(app: Express) {
   // Bearer token authentication
@@ -25,7 +24,6 @@ export function initRoutes(app: Express) {
 
   // no authentication routes
   app.use('/login', loginRouter);
-  // app.use('/', rootRouter);
 
   // routes with authentication
   app.use('/generated-reports', passport.authenticate('bearer', { session: false }), reportsRouter)

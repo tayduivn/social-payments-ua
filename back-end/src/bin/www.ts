@@ -8,6 +8,7 @@ import fs from 'fs';
 import http from 'http';
 import https from 'https';
 import { app } from '../app';
+import { initWebSocket } from './ws';
 
 const debug = require('debug')('express-g:server');
 
@@ -90,6 +91,8 @@ const sslOptions = {
 };
 
 const server = process.env.HEROKU ? http.createServer(app) : https.createServer(sslOptions, app);
+
+initWebSocket(server);
 
 server.listen(port);
 server.on('error', onError);
