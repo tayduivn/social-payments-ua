@@ -12,8 +12,13 @@ export function initRoutes(app: Express) {
   passport.use(new BearerStrategy((token: string, done: (error: any, user?: any) => void) => {
     UserModel.findOne({token}, (err, user: UserModel) => {
       // return to stop executing function
-      if (err) { return done(err); }
-      if (!user) { return done(null, false); }
+      if (err) {
+        return done(err)
+      }
+
+      if (!user) {
+        return done(null, false)
+      }
 
       return Token.isExpired(token)
         .then((expired) => expired ? done(null, false) : done(null, user));

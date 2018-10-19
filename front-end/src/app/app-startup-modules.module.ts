@@ -18,15 +18,16 @@ export class AppStartupModulesModule {
     private personAccountsService: PersonAccountsService,
     private streetService: StreetService
   ) {
-    this.initCaches();
+    this.initProtectedConnections();
   }
 
-  private initCaches() {
+  private initProtectedConnections() {
     this.authService.loggedIn$
       .pipe(
         filter((loggedIn) => loggedIn)
       )
       .subscribe(() => {
+        this.websocketConnectionService.connect();
         this.fiService.getData().subscribe();
         this.personService.getData().subscribe();
         this.personAccountsService.getData().subscribe();

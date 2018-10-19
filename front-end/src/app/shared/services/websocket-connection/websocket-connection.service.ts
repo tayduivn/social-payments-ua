@@ -7,12 +7,13 @@ import { WindowProvider } from '../../providers/window-provider';
 export class WebsocketConnectionService {
   private socketSubject: WebSocketSubject<any>;
 
-  constructor(private window: WindowProvider, private authService: AuthService) {
+  constructor(private window: WindowProvider, private authService: AuthService) {}
+
+  public connect() {
     this.socketSubject = new WebSocketSubject({
       url: `wss://${this.window.location.hostname}`,
       protocol: this.authService.getToken()
     });
-    console.log('WebsocketConnectionService created');
 
     this.socketSubject.subscribe(
       (msg) => console.log('~~~ websocket message', msg),

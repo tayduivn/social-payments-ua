@@ -2,6 +2,25 @@ import * as WebSocket from 'ws';
 import { Server } from 'ws';
 import { Token } from '../core/token';
 
+type HeartbeatWebSocket = WebSocket & {isAlive: boolean};
+
+const onConnection = (ws: HeartbeatWebSocket) => {
+  console.log('!!!!!!!!!!!!!!!!!!!! WS connected');
+  ws.send(JSON.stringify({message: 'hello mf'}));
+
+  ws.on('message', (msg: string) => {
+    ws.send(JSON.stringify({echo: msg}));
+  });
+
+  ws.isAlive = true;
+  ws.on('pong', () => {
+    console.log('pong');
+    ws.isAlive = true;
+  });
+
+  ws.on('close', () => console.log('~~~~~~~~~~~~~~~~~~~~~WS client disconnected'));
+};
+
 export const initWebSocket = (server: any): void => {
   const webSocketServer = new Server({
     server,
@@ -9,16 +28,19 @@ export const initWebSocket = (server: any): void => {
       .then(expired => expired ? cb(false, 401, 'Unauthorized') : cb(true))
   });
 
-  webSocketServer.on('connection', (ws: WebSocket) => {
-    console.log('!!!!!!!!!!!!!!!!!!!! WS connected');
+  webSocketServer.on('connection', onConnection);
 
-    ws.on('message', (msg: string) => {
-      console.log('--- message received', msg);
-      ws.send(JSON.stringify({echo: msg}));
+  const interval = setInterval(() => {
+    webSocketServer.clients.forEach((ws: HeartbeatWebSocket) => {
+      if (ws.isAlive === false) {
+        return ws.terminate();
+      }
+
+      ws.isAlive = false;
+      console.log('ping');
+      ws.ping();
     });
+  }, 20 * 1000);
 
-    ws.send(JSON.stringify({message: 'hello mf'}));
-
-    ws.on('close', () => console.log('~~~~~~~~~~~~~~~~~~~~~Client disconnected'));
-  });
+  webSocketServer.on('close', () => clearInterval(interval));
 };

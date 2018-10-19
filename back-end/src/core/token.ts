@@ -34,7 +34,10 @@ export class Token {
 
   public static isExpired(token: string): Promise<boolean> {
     return new Promise((resolve) => jwt.verify(token, secret()(), (err) => {
-      console.log('Token expired or invalid');
+      if (err) {
+        console.log('Token expired or invalid');
+      }
+
       resolve(!!err)
     }));
   }
