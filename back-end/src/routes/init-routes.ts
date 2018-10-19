@@ -1,7 +1,7 @@
 import { Express } from 'express-serve-static-core';
-import moment from 'moment';
 import passport from 'passport';
 import { Strategy as BearerStrategy } from 'passport-http-bearer';
+import { Token } from '../core/token';
 import { UserModel } from '../models/user/user.model';
 import { apiRouter } from './api/api';
 import { loginRouter } from './login';
@@ -15,9 +15,8 @@ export function initRoutes(app: Express) {
       if (err) { return done(err); }
       if (!user) { return done(null, false); }
 
-      const diff = moment().diff(moment(user.created), 'hours');
-
-      return diff > 12 ? done(null, false) : done(null, user);
+      return Token.isExpired(token)
+        .then((expired) => expired ? done(null, false) : done(null, user));
     });
   }));
 
