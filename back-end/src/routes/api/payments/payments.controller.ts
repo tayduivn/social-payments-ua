@@ -1,3 +1,8 @@
+import {
+  NextFunction,
+  Request,
+  Response
+} from 'express';
 import * as _ from 'lodash';
 import moment from 'moment';
 import { Types } from 'mongoose';
@@ -10,17 +15,23 @@ import { checkAndUpdate as fiCheckAndUpdate } from '../../../models/financial-in
 import { PaymentModel } from '../../../models/payment/payment.model';
 import { checkAndUpdate as personAccountsCheckAndUpdate } from '../../../models/person-accounts/check-and-update';
 import { checkAndUpdate as personCheckAndUpdate } from '../../../models/person/check-and-update';
-import { MongoosePromise } from '../../mongoose-promise';
 import { checkAndUpdate as streetCheckAndUpdate } from '../../../models/street/check-and-update';
+import { ApiCommonController } from '../api-common.controller';
 
-export class PaymentsController {
-  public static getList(filter: PaymentsFilter): MongoosePromise<Payment[]> {
+export class PaymentsController extends ApiCommonController {
+  public static getByFilter(req: Request, res: Response, next: NextFunction) {
+    if (_.isEmpty(req.query)) {
+      return next(new Error('Missed request params'));
+    }
+
     return PaymentModel
-      .find(PaymentsController.getSearchConditions(filter))
-      .sort('-date');
+      .find(PaymentsController.getSearchConditions(req.query as PaymentsFilter))
+      .sort('-date')
+      .then(...super.promiseResponse<Payment[]>(res, next));
   }
 
-  public static submit(payment: Payment): Promise<Payment> {
+  public static create(req: Request, res: Response, next: NextFunction) {
+    const payment = req.body as Payment;
     let financialInstitution: FinancialInstitution;
     let person: Person;
 
@@ -31,7 +42,7 @@ export class PaymentsController {
       })
       .then((str: Street) => {
         payment.person.address.street = str;
-        return personCheckAndUpdate(payment.person)
+        return personCheckAndUpdate(payment.person);
       })
       .then((personResponse) => {
         person = personResponse;
@@ -47,7 +58,8 @@ export class PaymentsController {
         delete payment._id;
 
         return PaymentModel.create(payment);
-      });
+      })
+      .then(...super.promiseResponse<Payment>(res, next));
   }
 
   private static getSearchConditions(filter: PaymentsFilter): Object {
@@ -77,7 +89,7 @@ export class PaymentsController {
       ])));
     }
 
-    return _.omitBy(conditions, (item) => _.isEmpty(item))
+    return _.omitBy(conditions, (item) => _.isEmpty(item));
   }
 
   private static getDatesRangeFilter(dateFrom: string, dateTo: string): Object {
@@ -97,11 +109,11 @@ export class PaymentsController {
   private static getSumRangeFilter(sumFrom: number, sumTo: number): Object {
     const searchConditions = {};
 
-    if(sumFrom) {
+    if (sumFrom) {
       Object.assign(searchConditions, {$gte: sumFrom});
     }
 
-    if(sumTo) {
+    if (sumTo) {
       Object.assign(searchConditions, {$lte: sumTo});
     }
 
@@ -119,15 +131,15 @@ export class PaymentsController {
     }
   }
 
-  private static getNestedSchemaFilter(filterToModelFields: Map<string, string>): {[field: string]: Object} {
-    const searchConditions: {[field: string]: Object} = {};
+  private static getNestedSchemaFilter(filterToModelFields: Map<string, string>): { [field: string]: Object } {
+    const searchConditions: { [field: string]: Object } = {};
 
     filterToModelFields.forEach((filterFieldVal, modelFieldName) => {
       if (!filterFieldVal) {
         return;
       }
 
-      searchConditions[modelFieldName] = {$regex: filterFieldVal} as Object
+      searchConditions[modelFieldName] = {$regex: filterFieldVal} as Object;
     });
 
     return searchConditions;

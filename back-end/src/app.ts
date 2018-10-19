@@ -7,7 +7,6 @@ import express, {
   Response
 } from 'express';
 import morgan from 'morgan';
-import { appRequestProcessor } from './app-request';
 import { connectDb } from './core/db/db-connection';
 import { initRoutes } from './routes/init-routes';
 
@@ -22,9 +21,6 @@ appConfig.use(cookieParser());
 if (process.env.HEROKU) {
   appConfig.use(express.static('../front-end/dist/social-payments-ua'));
 }
-
-// adding promise resolver helpers
-appConfig.use(appRequestProcessor);
 
 connectDb();
 initRoutes(appConfig);

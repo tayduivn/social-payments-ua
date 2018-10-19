@@ -15,6 +15,9 @@ type VerifyClientCallback = (res: boolean, code?: number, message?: string, head
 export class WebsocketServer {
   public readonly server: WsServer;
 
+  private static readonly tokenHeaderName = 'sec-websocket-protocol';
+
+  private static readonly heartBeatInterval: number = 20 * 1000;
   private heartBeatTimer: NodeJS.Timer;
 
   constructor(server: HttpServer | HttpsServer) {
@@ -28,43 +31,34 @@ export class WebsocketServer {
   }
 
   private static verifyClient(info: VerifyClientInfo, cb: VerifyClientCallback): void {
-    Token.isExpired(info.req.headers['sec-websocket-protocol'] as string)
+    Token.isExpired(info.req.headers[WebsocketServer.tokenHeaderName] as string)
       .then(expired => expired ? cb(false, 401, 'Unauthorized') : cb(true))
   }
 
-  private static onConnection(ws: HeartbeatWebSocket) {
-    console.log('!!!!!!!!!!!!!!!!!!!! WS connected');
-    ws.send(JSON.stringify({message: 'hello mf refactored'}));
-
-    ws.on('message', (msg: string) => {
-      ws.send(JSON.stringify({echo: msg}));
-    });
-
+  private static clientConnection(ws: HeartbeatWebSocket) {
     ws.isAlive = true;
-    ws.on('pong', () => {
-      console.log('pong');
-      ws.isAlive = true;
-    });
+    ws.on('pong', () => ws.isAlive = true);
 
-    ws.on('close', () => console.log('~~~~~~~~~~~~~~~~~~~~~WS client disconnected'));
+    ws.on('message', (msg: string) => ws.send(JSON.stringify({echo: msg})));
   }
 
   private initServerEvent(): void {
-    this.server.on('connection', WebsocketServer.onConnection);
+    this.server.on('connection', WebsocketServer.clientConnection);
     this.server.on('close', () => clearInterval(this.heartBeatTimer));
   }
 
   private initHeartBeat(): void {
-    this.heartBeatTimer = setInterval(() => {
-      this.server.clients.forEach((ws: HeartbeatWebSocket) => {
-        if (ws.isAlive === false) {
-          return ws.terminate();
-        }
+    this.heartBeatTimer = setInterval(this.heartBeat.bind(this), WebsocketServer.heartBeatInterval);
+  }
 
-        ws.isAlive = false;
-        console.log('ping');
-        ws.ping();
-      });
-    }, 20 * 1000);
+  private heartBeat() {
+    this.server.clients.forEach((ws: HeartbeatWebSocket) => {
+      if (ws.isAlive === false) {
+        return ws.terminate();
+      }
+
+      ws.isAlive = false;
+      ws.ping();
+    });
   }
 }
