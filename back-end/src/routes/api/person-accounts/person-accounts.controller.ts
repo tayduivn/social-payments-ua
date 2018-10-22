@@ -4,13 +4,13 @@ import {
   Response
 } from 'express';
 import { PersonAccounts } from '../../../../../api-contracts/person-accounts/person-accounts';
-import { PersonAccountsModel } from '../../../models/person-accounts/person-accounts.model';
+import { PersonAccountsModelService } from '../../../models/person-accounts/person-accounts.model.service';
 import { ApiCommonController } from '../api-common.controller';
 
 export class PersonAccountsController extends ApiCommonController {
   public static getAll(req: Request, res: Response, next: NextFunction): void {
-    PersonAccountsModel
-      .find()
+    PersonAccountsModelService
+      .getAll()
       .then(...super.promiseResponse<PersonAccounts[]>(res, next));
   }
 }

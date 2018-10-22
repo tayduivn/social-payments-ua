@@ -4,7 +4,7 @@ import {
 } from 'express';
 
 export class ApiCommonController {
-  protected static promiseResponse<T>(res: Response, next: NextFunction): [(val: T) => void, (err: any) => void] {
+  protected static promiseResponse<T>(res?: Response, next?: NextFunction): [(val: T) => void, (err: any) => void] {
     return [
       ApiCommonController.promiseResponseHandler<T>(res),
       ApiCommonController.promiseErrorHandler(next)

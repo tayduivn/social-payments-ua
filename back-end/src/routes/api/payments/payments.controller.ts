@@ -6,16 +6,9 @@ import {
 import * as _ from 'lodash';
 import moment from 'moment';
 import { Types } from 'mongoose';
-import { FinancialInstitution } from '../../../../../api-contracts/financial-institution/financial.institution';
 import { Payment } from '../../../../../api-contracts/payment/payment';
 import { PaymentsFilter } from '../../../../../api-contracts/payment/payments-filter';
-import { Person } from '../../../../../api-contracts/person/person';
-import { Street } from '../../../../../api-contracts/street/street';
-import { checkAndUpdate as fiCheckAndUpdate } from '../../../models/financial-institution/check-and-update';
-import { PaymentModel } from '../../../models/payment/payment.model';
-import { checkAndUpdate as personAccountsCheckAndUpdate } from '../../../models/person-accounts/check-and-update';
-import { checkAndUpdate as personCheckAndUpdate } from '../../../models/person/check-and-update';
-import { checkAndUpdate as streetCheckAndUpdate } from '../../../models/street/check-and-update';
+import { PaymentModelService } from '../../../models/payment/payment.model.service';
 import { ApiCommonController } from '../api-common.controller';
 
 export class PaymentsController extends ApiCommonController {
@@ -24,41 +17,13 @@ export class PaymentsController extends ApiCommonController {
       return next(new Error('Missed request params'));
     }
 
-    return PaymentModel
+    return PaymentModelService
       .find(PaymentsController.getSearchConditions(req.query as PaymentsFilter))
-      .sort('-date')
       .then(...super.promiseResponse<Payment[]>(res, next));
   }
 
   public static create(req: Request, res: Response, next: NextFunction) {
-    const payment = req.body as Payment;
-    let financialInstitution: FinancialInstitution;
-    let person: Person;
-
-    return fiCheckAndUpdate(payment.financialInstitution)
-      .then((financialInstitutionResponse) => {
-        financialInstitution = financialInstitutionResponse;
-        return streetCheckAndUpdate(payment.person.address.street);
-      })
-      .then((str: Street) => {
-        payment.person.address.street = str;
-        return personCheckAndUpdate(payment.person);
-      })
-      .then((personResponse) => {
-        person = personResponse;
-        return personAccountsCheckAndUpdate({
-          personId: person._id,
-          financialInstitutionId: financialInstitution._id,
-          account: payment.accountNumber
-        });
-      })
-      .then(() => {
-        payment.financialInstitution = financialInstitution;
-        payment.person._id = person._id;
-        delete payment._id;
-
-        return PaymentModel.create(payment);
-      })
+    PaymentModelService.create(req.body as Payment)
       .then(...super.promiseResponse<Payment>(res, next));
   }
 
