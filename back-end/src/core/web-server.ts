@@ -19,6 +19,7 @@ export class WebServer {
   };
 
   constructor(private expressApp: Express) {
+    console.log('WebServer constructor');
     this.port = WebServer.normalizePort(process.env.PORT || '443');
     this.server = process.env.HEROKU ? http.createServer(this.expressApp) : https.createServer(WebServer.sslOptions, this.expressApp);
 

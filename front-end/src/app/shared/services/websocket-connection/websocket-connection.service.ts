@@ -10,15 +10,30 @@ export class WebsocketConnectionService {
   constructor(private window: WindowProvider, private authService: AuthService) {}
 
   public connect() {
+    this.validateSocketSubject();
+
+    this.socketSubject.subscribe(
+      (msg) => console.log('~~~ websocket message', msg),
+      (err) => {
+        console.log('!!! websocket ERROR', err);
+        this.socketSubject.unsubscribe();
+        this.socketSubject = null;
+        this.connect();
+      },
+      () => console.log('----------------------------------------------- websocket complete')
+    );
+  }
+
+  private validateSocketSubject() {
+    if (this.socketSubject && !this.socketSubject.hasError) {
+      return;
+    }
+
+    console.log('create socket subject');
+
     this.socketSubject = new WebSocketSubject({
       url: `wss://${this.window.location.hostname}`,
       protocol: this.authService.getToken()
     });
-
-    this.socketSubject.subscribe(
-      (msg) => console.log('~~~ websocket message', msg),
-      (err) => console.log('!!! websocket ERROR', err),
-      () => console.log('------------------------------------------------ websocket complete')
-    );
   }
 }

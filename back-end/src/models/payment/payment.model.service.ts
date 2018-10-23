@@ -3,6 +3,7 @@ import { Payment } from '../../../../api-contracts/payment/payment';
 import { PaymentsFilter } from '../../../../api-contracts/payment/payments-filter';
 import { Person } from '../../../../api-contracts/person/person';
 import { Street } from '../../../../api-contracts/street/street';
+import { clientBroadcastService } from '../../services/client-broadcast.service';
 import { FinancialInstitutionModelService } from '../financial-institution/financial-institution.model.service';
 import { MongoosePromise } from '../mongoose-promise';
 import { PersonAccountsModelService } from '../person-accounts/person-accounts.model.service';
@@ -38,6 +39,15 @@ export class PaymentModelService {
         delete payment._id;
 
         return PaymentModel.create(payment);
+      })
+      .then((payment: PaymentModel) => {
+        clientBroadcastService.broadcastClients({
+          channel: 'payment',
+          action: 'create',
+          payload: payment.toObject() as Payment
+        });
+
+        return payment;
       });
   }
 

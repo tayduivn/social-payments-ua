@@ -6,6 +6,7 @@ import {
 import { Server as HttpsServer } from 'https';
 import * as WebSocket from 'ws';
 import { Server as WsServer } from 'ws';
+import { WebsocketMessage } from '../../../api-contracts/websocket-messages/websocket-message';
 import { Token } from './token';
 
 type HeartbeatWebSocket = WebSocket & {isAlive: boolean};
@@ -30,12 +31,18 @@ export class WebsocketServer {
     this.initHeartBeat();
   }
 
+  public broadcast(msg: WebsocketMessage): void {
+    this.server.clients.forEach((ws: WebSocket) => {
+      ws.send(JSON.stringify(msg));
+    });
+  }
+
   private static verifyClient(info: VerifyClientInfo, cb: VerifyClientCallback): void {
     Token.isExpired(info.req.headers[WebsocketServer.tokenHeaderName] as string)
       .then(expired => expired ? cb(false, 401, 'Unauthorized') : cb(true))
   }
 
-  private static clientConnection(ws: HeartbeatWebSocket) {
+  private static onClientConnect(ws: HeartbeatWebSocket) {
     ws.isAlive = true;
     ws.on('pong', () => ws.isAlive = true);
 
@@ -43,7 +50,7 @@ export class WebsocketServer {
   }
 
   private initServerEvent(): void {
-    this.server.on('connection', WebsocketServer.clientConnection);
+    this.server.on('connection', WebsocketServer.onClientConnect);
     this.server.on('close', () => clearInterval(this.heartBeatTimer));
   }
 
