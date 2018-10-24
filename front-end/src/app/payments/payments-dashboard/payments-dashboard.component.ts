@@ -14,7 +14,7 @@ export class PaymentsDashboardComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
+  public ngOnInit() {
   }
 
 }

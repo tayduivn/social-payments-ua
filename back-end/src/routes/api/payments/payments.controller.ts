@@ -8,13 +8,17 @@ import moment from 'moment';
 import { Types } from 'mongoose';
 import { Payment } from '../../../../../api-contracts/payment/payment';
 import { PaymentsFilter } from '../../../../../api-contracts/payment/payments-filter';
+import { PaymentsLatest } from '../../../../../api-contracts/payment/payments-latest';
+import { PaymentsLatestFilter } from '../../../../../api-contracts/payment/payments-latest-filter';
+import { HttpError } from '../../../core/http-error';
 import { PaymentModelService } from '../../../models/payment/payment.model.service';
 import { ApiCommonController } from '../api-common.controller';
 
 export class PaymentsController extends ApiCommonController {
-  public static getByFilter(req: Request, res: Response, next: NextFunction) {
+  public static getByFilter(req: Request, res: Response, next: NextFunction): void {
     if (_.isEmpty(req.query)) {
-      return next(new Error('Missed request params'));
+      PaymentsController.sendBadRequest(next);
+      return;
     }
 
     return PaymentModelService
@@ -22,9 +26,29 @@ export class PaymentsController extends ApiCommonController {
       .then(...super.promiseResponse<Payment[]>(res, next));
   }
 
-  public static create(req: Request, res: Response, next: NextFunction) {
+  public static getLatest(req: Request, res: Response, next: NextFunction): void {
+    const {skip, take} = req.query as PaymentsLatestFilter;
+
+    if (_.isEmpty(req.query) || !skip || !take) {
+      PaymentsController.sendBadRequest(next);
+      return;
+    }
+
+    return PaymentModelService
+      .latest(Number(skip), Number(take))
+      .then(...super.promiseResponse<PaymentsLatest>(res, next));
+  }
+
+  public static create(req: Request, res: Response, next: NextFunction): void {
     PaymentModelService.create(req.body as Payment)
       .then(...super.promiseResponse<Payment>(res, next));
+  }
+
+  private static sendBadRequest(next: NextFunction) {
+    const err = new HttpError('Missed request params');
+    err.status = 400;
+
+    return next(err);
   }
 
   private static getSearchConditions(filter: PaymentsFilter): Object {

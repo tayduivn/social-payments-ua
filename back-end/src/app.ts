@@ -8,6 +8,7 @@ import express, {
 } from 'express';
 import morgan from 'morgan';
 import { connectDb } from './core/db/db-connection';
+import { HttpError } from './core/http-error';
 import { initRoutes } from './routes/init-routes';
 
 const appConfig = express();
@@ -37,7 +38,7 @@ appConfig.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // error handler
-appConfig.use((err: any, req: Request, res: Response, next: NextFunction) => {
+appConfig.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

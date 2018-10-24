@@ -1,6 +1,7 @@
 import { FinancialInstitution } from '../../../../api-contracts/financial-institution/financial.institution';
 import { Payment } from '../../../../api-contracts/payment/payment';
 import { PaymentsFilter } from '../../../../api-contracts/payment/payments-filter';
+import { PaymentsLatest } from '../../../../api-contracts/payment/payments-latest';
 import { Person } from '../../../../api-contracts/person/person';
 import { Street } from '../../../../api-contracts/street/street';
 import { clientBroadcastService } from '../../services/client-broadcast.service';
@@ -55,5 +56,19 @@ export class PaymentModelService {
     return PaymentModel
       .find(filter)
       .sort('-date');
+  }
+
+  public static latest(skip: number, take: number): MongoosePromise<PaymentsLatest> {
+    return PaymentModel
+      .find({})
+      .sort('-date')
+      .skip(skip)
+      .limit(take)
+      .lean()
+      .then((payments: PaymentModel[]) => ({
+          hasMore: true,
+          payments: payments
+        })
+      );
   }
 }

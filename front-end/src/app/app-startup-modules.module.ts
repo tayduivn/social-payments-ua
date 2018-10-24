@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { filter } from 'rxjs/operators';
 import { AuthService } from './core/auth.service';
+import { LatestPaymentsService } from './payments/payments-dashboard/latest-payments/latest-payments.service';
 import { FinancialInstitutionService } from './shared/components/financial-institution/financial-institution.service';
 import { PersonAccountsService } from './shared/components/person-accounts/person-accounts.service';
 import { PersonService } from './shared/components/person/person.service';
@@ -16,7 +17,8 @@ export class AppStartupModulesModule {
     private fiService: FinancialInstitutionService,
     private personService: PersonService,
     private personAccountsService: PersonAccountsService,
-    private streetService: StreetService
+    private streetService: StreetService,
+    private latestPaymentsService: LatestPaymentsService
   ) {
     this.initWebsocket();
     this.initDataCaches();
@@ -37,6 +39,7 @@ export class AppStartupModulesModule {
         this.personService.connect();
         this.personAccountsService.connect();
         this.streetService.connect();
+        this.latestPaymentsService.connect();
       });
   }
 }
