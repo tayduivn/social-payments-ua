@@ -1,4 +1,5 @@
 import { Street } from '../../../../api-contracts/street/street';
+import { clientBroadcastService } from '../../services/client-broadcast.service';
 import { MongoosePromise } from '../mongoose-promise';
 import { StreetModel } from './street.model';
 
@@ -8,7 +9,17 @@ export class StreetModelService {
       return Promise.resolve(street);
     } else {
       delete street._id;
-      return StreetModel.create(street);
+      return StreetModel
+        .create(street)
+        .then((street: StreetModel) => {
+          clientBroadcastService.broadcastClients({
+            channel: 'street',
+            action: 'create',
+            payload: street.toObject()
+          });
+
+          return street;
+        });
     }
   }
 

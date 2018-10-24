@@ -16,8 +16,16 @@ export abstract class CachedDataService<T> {
 
   protected constructor() {}
 
+  public connect() {
+    console.log('cache connect', this.requestUrl);
+    if (!this.dataObserver || this.dataObserver.hasError) {
+      this.dataObserver = new ReplaySubject<T[]>(1);
+    }
+
+    this.requestData();
+  }
+
   public getData(filter?: any): Observable<T[]> {
-    this.validateCache();
     const obs = this.dataObserver.asObservable();
 
     return filter ? obs
@@ -28,20 +36,11 @@ export abstract class CachedDataService<T> {
   }
 
   public getById(id: string): Observable<T> {
-    this.validateCache();
-
     return this.dataObserver.asObservable()
       .pipe(
         map((items) => _.find<T>(items, {_id: id} as any)),
         take(1)
       );
-  }
-
-  private validateCache() {
-    if (!this.dataObserver || this.dataObserver.hasError) {
-      this.dataObserver = new ReplaySubject<T[]>(1);
-      this.requestData();
-    }
   }
 
   private requestData() {

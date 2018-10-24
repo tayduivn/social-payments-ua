@@ -29,6 +29,7 @@ export class LoginComponent {
     this.loginService.requestLogin(this.login, this.password).subscribe(
       (res: LoginResponse) => {
         if (res.authorized) {
+          debugger;
           this.router.navigate(['/payments']);
         }
       },

@@ -1,5 +1,6 @@
 import { PersonAccounts } from '../../../../api-contracts/person-accounts/person-accounts';
 import { PersonFinancialInstitutions } from '../../../../api-contracts/person-accounts/person-financial-institutions';
+import { clientBroadcastService } from '../../services/client-broadcast.service';
 import { MongoosePromise } from '../mongoose-promise';
 import { PersonAccountInfo } from './person-account-info';
 import { PersonAccountsModel } from './person-accounts.model';
@@ -13,7 +14,17 @@ export class PersonAccountsModelService {
         if (personAccount) {
           return PersonAccountsModelService.updatePersonAccount(personAccount, personAccountInfo);
         } else {
-          return PersonAccountsModelService.createPersonAccount(personAccountInfo);
+          return PersonAccountsModelService
+            .createPersonAccount(personAccountInfo)
+            .then((personAccounts: PersonAccountsModel) => {
+              clientBroadcastService.broadcastClients({
+                channel: 'person-accounts',
+                action: 'create',
+                payload: personAccounts.toObject()
+              });
+
+              return personAccounts;
+            });
         }
       });
   }

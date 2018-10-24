@@ -1,4 +1,5 @@
 import { Person } from '../../../../api-contracts/person/person';
+import { clientBroadcastService } from '../../services/client-broadcast.service';
 import { MongoosePromise } from '../mongoose-promise';
 import { PersonModel } from './person.model';
 
@@ -17,7 +18,17 @@ export class  PersonModelService {
           return Promise.resolve(persons[0]);
         } else {
           delete person._id;
-          return PersonModel.create(person);
+          return PersonModel
+            .create(person)
+            .then((person: PersonModel) => {
+              clientBroadcastService.broadcastClients({
+                channel: 'person',
+                action: 'create',
+                payload: person.toObject()
+              });
+
+              return person;
+            });
         }
       });
   }

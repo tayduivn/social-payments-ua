@@ -1,23 +1,40 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { environment } from '../../environments/environment';
 import { WindowProvider } from '../shared/providers/window-provider';
 
 const tokenKeyName = 'token';
 
 @Injectable()
 export class AuthService {
+  /**
+   * Can emit false positive true in a case if token is expired on first APP API call
+   */
   public readonly loggedIn$: Observable<boolean>;
 
-  private readonly loggedInSubject: BehaviorSubject<boolean>;
+  private readonly loggedInSubject = new ReplaySubject<boolean>(1);
 
-  constructor(private window: WindowProvider) {
-    this.loggedInSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
+  constructor(private window: WindowProvider, private http: HttpClient) {
     this.loggedIn$ = this.loggedInSubject.asObservable();
+
+    // hook to make API call after constructor finishes object creation
+    // otherwise tons of unfinished constructor calls (initiated by DI?) appears causing the same amount of http calls
+    setTimeout(this.initialTokenCheck.bind(this));
   }
 
-  public isLoggedIn(): boolean {
-    return !!this.getToken();
+  private initialTokenCheck(): void {
+    if (!this.getToken()) {
+      this.loggedInSubject.next(false);
+      return
+    } else {
+      this.http.get<{expired: boolean}>(environment.dataQueries.loginEndpoint)
+        .subscribe(
+          ({expired}) => this.loggedInSubject.next(!expired),
+          () => this.loggedInSubject.next(false)
+        )
+    }
   }
 
   public getToken(): string {

@@ -4,12 +4,19 @@ import express, {
   Request,
   Response
 } from 'express';
+import * as _ from 'lodash';
 import { LoginResponse } from '../../../api-contracts/login-response';
 import { User } from '../../../api-contracts/user/user';
 import { Token } from '../core/token';
 import { UserModel } from '../models/user/user.model';
 
 const router = express.Router();
+
+router.get('/', (req: Request, res: Response, next: NextFunction) => {
+  const token = _.get(req, 'headers.authorization', '').replace('Bearer ', '');
+  Token.isExpired(token)
+    .then((expired) => res.send({expired}));
+});
 
 router.post('/', (req: Request, res: Response, next: NextFunction) => {
   const {login, password} = req.body;

@@ -18,20 +18,25 @@ export class AppStartupModulesModule {
     private personAccountsService: PersonAccountsService,
     private streetService: StreetService
   ) {
-    this.initProtectedConnections();
+    this.initWebsocket();
+    this.initDataCaches();
   }
 
-  private initProtectedConnections() {
+  private initWebsocket(): void {
     this.authService.loggedIn$
       .pipe(
         filter((loggedIn) => loggedIn)
       )
+      .subscribe(() => this.websocketConnectionService.connect());
+  }
+
+  private initDataCaches(): void {
+    this.websocketConnectionService.websocketConnect$
       .subscribe(() => {
-        this.websocketConnectionService.connect();
-        this.fiService.getData().subscribe();
-        this.personService.getData().subscribe();
-        this.personAccountsService.getData().subscribe();
-        this.streetService.getData();
+        this.fiService.connect();
+        this.personService.connect();
+        this.personAccountsService.connect();
+        this.streetService.connect();
       });
   }
 }

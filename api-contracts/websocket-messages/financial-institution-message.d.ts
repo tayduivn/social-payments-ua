@@ -2,5 +2,5 @@ import { FinancialInstitution } from '../financial-institution/financial.institu
 import { WebsocketMessageCommon } from './websocket-message';
 
 export interface FinancialInstitutionMessage extends WebsocketMessageCommon<FinancialInstitution> {
-  channel: 'financial-institution-message';
+  channel: 'financial-institution';
 }
