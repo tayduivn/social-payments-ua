@@ -16,6 +16,7 @@ export class PaymentModelService {
   public static create(payment: Payment): Promise<PaymentModel> {
     let financialInstitution: FinancialInstitution;
     let person: Person;
+    let street: Street;
 
     return FinancialInstitutionModelService.resolve(payment.financialInstitution)
       .then((financialInstitutionResponse) => {
@@ -23,7 +24,7 @@ export class PaymentModelService {
         return StreetModelService.resolve(payment.person.address.street);
       })
       .then((str: Street) => {
-        payment.person.address.street = str;
+        street = str;
         return PersonModelService.resolve(payment.person);
       })
       .then((personResponse) => {
@@ -37,6 +38,7 @@ export class PaymentModelService {
       .then(() => {
         payment.financialInstitution = financialInstitution;
         payment.person._id = person._id;
+        payment.person.address.street = street;
         delete payment._id;
 
         return PaymentModel.create(payment);
