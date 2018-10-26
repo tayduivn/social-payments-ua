@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { WebSocketSubject } from 'rxjs/webSocket';
-import { AuthService } from '../../../core/auth.service';
+import { AuthService } from '../auth.service';
 import { WindowProvider } from '../../providers/window-provider';
 
 @Injectable()
@@ -33,11 +33,16 @@ export class WebsocketConnectionService {
 
     this.socketSubscription = this.socketSubject.subscribe(
       (msg) => console.log('~~~ websocket message', msg),
-      (err: Event) => console.log('WEBSOCKET ERROR', err)
+      (err: Event) => console.log('~~~ websocket ERROR', err),
+      () => console.log('~~~ websocket complete')
     );
   }
 
   private createSocketSubject() {
+    if (this.socketSubject) {
+      this.socketSubject.complete();
+    }
+
     this.socketSubject = new WebSocketSubject({
       url: `wss://${this.window.location.hostname}`,
       protocol: this.authService.getToken(),
@@ -55,11 +60,11 @@ export class WebsocketConnectionService {
     setTimeout(() => this.websocketConnectSubject.next(), WebsocketConnectionService.reconnectTimeout)
   }
 
-  private onWebsocketClose(): void {
-    console.log('WEBSOCKET closed, reconnecting...');
-    this.socketSubject.unsubscribe();
-    this.socketSubject = null;
-
-    setTimeout(() => this.connect(), WebsocketConnectionService.reconnectTimeout);
+  private onWebsocketClose(closeEvent: CloseEvent): void {
+    console.log('WEBSOCKET closed', closeEvent);
+    // this.socketSubject.unsubscribe();
+    // this.socketSubject = null;
+    //
+    // setTimeout(() => this.connect(), WebsocketConnectionService.reconnectTimeout);
   }
 }

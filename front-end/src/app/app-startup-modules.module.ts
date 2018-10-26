@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { filter } from 'rxjs/operators';
-import { AuthService } from './core/auth.service';
+import { AuthService } from './shared/services/auth.service';
 import { LatestPaymentsService } from './payments/payments-dashboard/latest-payments/latest-payments.service';
 import { FinancialInstitutionService } from './shared/components/financial-institution/financial-institution.service';
 import { PersonAccountsService } from './shared/components/person-accounts/person-accounts.service';

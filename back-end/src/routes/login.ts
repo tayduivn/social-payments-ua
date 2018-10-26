@@ -7,6 +7,7 @@ import express, {
 import * as _ from 'lodash';
 import { LoginResponse } from '../../../api-contracts/login-response';
 import { User } from '../../../api-contracts/user/user';
+import { HttpError } from '../core/http-error';
 import { Token } from '../core/token';
 import { UserModel } from '../models/user/user.model';
 
@@ -14,6 +15,13 @@ const router = express.Router();
 
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
   const token = _.get(req, 'headers.authorization', '').replace('Bearer ', '');
+
+  if (!token) {
+    const error = new HttpError('');
+    error.status = 400;
+    next(error);
+  }
+
   Token.isExpired(token)
     .then((expired) => res.send({expired}));
 });

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { tap } from 'rxjs/operators';
 import { LoginResponse } from '../../../../api-contracts/login-response';
 import { environment } from '../../environments/environment';
-import { AuthService } from '../core/auth.service';
+import { AuthService } from '../shared/services/auth.service';
 
 @Injectable()
 export class LoginService {

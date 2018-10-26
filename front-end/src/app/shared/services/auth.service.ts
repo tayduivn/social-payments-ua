@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { environment } from '../../environments/environment';
-import { WindowProvider } from '../shared/providers/window-provider';
+import { environment } from '../../../environments/environment';
+import { WindowProvider } from '../providers/window-provider';
 
 const tokenKeyName = 'token';
 
