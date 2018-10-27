@@ -7,14 +7,19 @@ import {
 } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { environment } from '../../../environments/environment';
+import { WebsocketChannel } from './websocket-connection/websocket-channel.type';
+import { WebsocketConnectionService } from './websocket-connection/websocket-connection.service';
 
 export abstract class CachedDataService<T> {
-  protected abstract readonly requestUrl: string;
   protected abstract http: HttpClient;
 
   private dataObserver: ReplaySubject<T[]>;
 
-  protected constructor() {}
+  protected constructor(
+    protected readonly requestUrl: string,
+    protected readonly websocketChannelEvent: WebsocketChannel,
+    private websocketConnectionService: WebsocketConnectionService
+  ) {}
 
   public connect() {
     console.log('cache connect', this.requestUrl);
@@ -23,6 +28,7 @@ export abstract class CachedDataService<T> {
     }
 
     this.requestData();
+    this.connectWebsocketChannel();
   }
 
   public getData(filter?: any): Observable<T[]> {
@@ -49,5 +55,9 @@ export abstract class CachedDataService<T> {
         (res: T[]) => this.dataObserver.next(res),
         (err: any) => this.dataObserver.error(err)
       );
+  }
+
+  private connectWebsocketChannel() {
+    this.websocketConnectionService.subscribeChannel(this.websocketChannelEvent);
   }
 }

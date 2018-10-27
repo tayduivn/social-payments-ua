@@ -1,1 +1,4 @@
-export type WebsocketEvent = 'create' | 'update' | 'delete';
+export type WebsocketEvent =
+  'create' |
+  'update' |
+  'delete';

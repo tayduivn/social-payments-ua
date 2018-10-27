@@ -22,7 +22,7 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
     next(error);
   }
 
-  Token.isExpired(token)
+  Token.isValid(token)
     .then((expired) => res.send({expired}));
 });
 
