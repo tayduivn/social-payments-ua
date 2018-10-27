@@ -28,7 +28,7 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
 
 router.post('/', (req: Request, res: Response, next: NextFunction) => {
   const {login, password} = req.body;
-  const token = Token.getToken(login);
+  const token = Token.createToken(login);
 
   UserModel.findOneAndUpdate({login}, {token}, (err, user: User) => {
     if (user && bcrypt.compareSync(password, user.password)) {

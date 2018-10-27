@@ -40,7 +40,7 @@ export class LoginComponent {
         } else {
           switch (error.status) {
             case 0:
-              text = 'Помилка сертифікату';
+              text = 'Помилка з\'єднання з сервером';
               break;
             case 401:
               text = 'Невірний логін або пароль';

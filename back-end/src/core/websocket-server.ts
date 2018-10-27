@@ -8,6 +8,7 @@ import * as WebSocket from 'ws';
 import { Server as WsServer } from 'ws';
 import { WebsocketMessage } from '../../../api-contracts/websocket-messages/websocket-message';
 import { Token } from './token';
+import { TokenInfo } from './token-info';
 
 type HeartbeatWebSocket = WebSocket & {isAlive: boolean};
 type VerifyClientInfo = { origin: string; secure: boolean; req: IncomingMessage };
@@ -33,13 +34,20 @@ export class WebsocketServer {
 
   public broadcast(msg: WebsocketMessage): void {
     this.server.clients.forEach((ws: WebSocket) => {
-      ws.send(JSON.stringify(msg));
+      Token.isValid(ws.protocol)
+        .then((tokenInfo: TokenInfo) => {
+          if (tokenInfo.isValid) {
+            ws.send(JSON.stringify(msg));
+          } else {
+            ws.close(401);
+          }
+        });
     });
   }
 
   private static verifyClient(info: VerifyClientInfo, cb: VerifyClientCallback): void {
-    Token.isExpired(info.req.headers[WebsocketServer.tokenHeaderName] as string)
-      .then(expired => expired ? cb(false, 401, 'Unauthorized') : cb(true))
+    Token.isValid(info.req.headers[WebsocketServer.tokenHeaderName] as string)
+      .then((tokenInfo: TokenInfo) => tokenInfo.isValid ? cb(true) : cb(false, 401, 'Unauthorized'))
   }
 
   private static onClientConnect(ws: HeartbeatWebSocket) {

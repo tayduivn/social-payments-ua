@@ -1,5 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 import cryptoRandoomString from 'crypto-random-string';
+import { UserModel } from '../models/user/user.model';
+import { TokenInfo } from './token-info';
 
 function secret() {
   const tokenSecret = 'MIICWgIBAAKBgHZO6k7puB6v6zbIeHDbl0qDzZiRwLTkUTDRi3IYQeARSCJ3eh3P\n' +
@@ -20,19 +22,49 @@ function secret() {
 }
 
 export class Token {
-  public static getToken(login: string): string {
+  private static expiredIn = '12h';
+  private static saltLength = 15;
+
+  public static createToken(login: string): string {
     return jwt.sign(
       {
         name: login,
         timestamp: new Date(),
-        salt: cryptoRandoomString(15)
+        salt: cryptoRandoomString(Token.saltLength)
       },
       secret()(),
-      {expiresIn: '12h'}
+      {expiresIn: Token.expiredIn}
     );
   }
 
-  public static isExpired(token: string): Promise<boolean> {
+  public static isValid(token: string): Promise<TokenInfo> {
+    return new Promise((resolve, err) => {
+      UserModel.findOne({token}, (err, user: UserModel) => {
+        // return to stop executing function
+        if (err) {
+          err(err);
+          return;
+        }
+
+        if (!user) {
+          resolve({
+            isValid: false,
+            user: null
+          });
+        } else {
+          Token.isExpired(token)
+            .then((expired: boolean) => {
+              resolve({
+                isValid: !expired,
+                user
+              });
+            })
+        }
+      });
+    });
+  }
+
+  private static isExpired(token: string): Promise<boolean> {
     return new Promise((resolve) => jwt.verify(token, secret()(), (err) => {
       if (err) {
         console.log('Token expired or invalid');

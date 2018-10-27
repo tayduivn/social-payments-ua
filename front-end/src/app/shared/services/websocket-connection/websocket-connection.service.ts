@@ -20,15 +20,21 @@ export class WebsocketConnectionService {
 
   private socketSubscription: Subscription;
 
+  private reconnectOnClose: boolean;
+
   constructor(private window: WindowProvider, private authService: AuthService) {
     this.websocketConnect$ = this.websocketConnectSubject.asObservable();
   }
 
-  public connect() {
+  public connect(reconnectOnClose: boolean = false) {
     this.createSocketSubject();
 
     if (this.socketSubscription) {
+      // causes websocket close
       this.socketSubscription.unsubscribe();
+
+      // set auto reconnect to avoid infinite reconnection loop
+      this.reconnectOnClose = reconnectOnClose;
     }
 
     this.socketSubscription = this.socketSubject.subscribe(
@@ -40,6 +46,7 @@ export class WebsocketConnectionService {
 
   private createSocketSubject() {
     if (this.socketSubject) {
+      this.socketSubject.unsubscribe();
       this.socketSubject.complete();
     }
 
@@ -57,14 +64,24 @@ export class WebsocketConnectionService {
 
   private onWebsocketOpen(): void {
     console.log('WEBSOCKET connected');
+
+    // set flag back to enable reconnection in case if server closes connection
+    // flag could be set to false in a case of manual reconnection (connect method call) from outside of the module
+    this.reconnectOnClose = true;
+
+    // setting timeout to give some time spot for server starting activities in case of connection after server restarts
     setTimeout(() => this.websocketConnectSubject.next(), WebsocketConnectionService.reconnectTimeout)
   }
 
   private onWebsocketClose(closeEvent: CloseEvent): void {
     console.log('WEBSOCKET closed', closeEvent);
-    // this.socketSubject.unsubscribe();
-    // this.socketSubject = null;
-    //
-    // setTimeout(() => this.connect(), WebsocketConnectionService.reconnectTimeout);
+
+    if (this.reconnectOnClose) {
+      console.log('WEBSOCKET reconnect');
+
+      // do not reconnect instantly
+      // set auto reconnect to true to reconnect until success connection established
+      setTimeout(() => this.connect(true), WebsocketConnectionService.reconnectTimeout);
+    }
   }
 }
