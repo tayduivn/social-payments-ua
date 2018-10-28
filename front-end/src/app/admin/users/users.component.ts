@@ -43,10 +43,10 @@ export class UsersComponent extends UnsubscribableComponent implements OnInit {
   }
 
   public ngOnInit() {
-    this.componentSubscriptions = this.usersService.getUsers().subscribe((users: User[]) => {
+    this.componentSubscriptions.add(this.usersService.getUsers().subscribe((users: User[]) => {
       this.usersDataSource.data = _.sortBy(users, ['login']);
       this.cdRef.markForCheck();
-    });
+    }));
   }
 
   public usersTrackFn(index: number, user: User): string {

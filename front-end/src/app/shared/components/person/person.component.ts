@@ -15,6 +15,7 @@ import {
   filter,
   map,
   startWith,
+  take,
   tap
 } from 'rxjs/operators';
 import { Person } from '../../../../../../api-contracts/person/person';
@@ -35,6 +36,8 @@ export class PersonComponent extends MultifiedAutocompleteCommonComponent implem
   @Input() public renderAddressFields: boolean = true;
 
   public readonly passportNumberLetter = new RegExp(`[0-9a-zA-Z${lettersUA_CharsDiapason}]`);
+
+  public personList: Person[];
 
   public fullName: FormControl;
   public passportNumber: FormControl;
@@ -63,10 +66,6 @@ export class PersonComponent extends MultifiedAutocompleteCommonComponent implem
 
     this.initPersonAutocompleteFilter();
     this.initStreetAutocompleteFilter();
-
-    this.personService.getData().subscribe((a) => {
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!', a);
-    })
   }
 
   public streetSelected(streetOption: MatAutocompleteSelectedEvent) {

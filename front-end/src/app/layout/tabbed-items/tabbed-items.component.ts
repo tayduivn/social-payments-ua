@@ -56,12 +56,12 @@ export class TabbedItemsComponent extends UnsubscribableComponent implements OnI
   }
 
   public ngOnInit() {
-    this.componentSubscriptions = this.tabbedItemsService.closeActiveTab$
+    this.componentSubscriptions.add(this.tabbedItemsService.closeActiveTab$
       .subscribe(() => {
         if (this.selectedIndex >= 0) {
           this.closeTab(this.selectedIndex);
         }
-      })
+      }));
   }
 
   public ngAfterViewInit() {

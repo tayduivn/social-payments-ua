@@ -21,6 +21,10 @@ export class  PersonModelService {
           return PersonModel
             .create(person)
             .then((person: PersonModel) => {
+              return PersonModel.findById(person.id)
+                .populate('address.street');
+            })
+            .then((person: PersonModel) => {
               clientBroadcastService.broadcastClients({
                 channel: 'person',
                 action: 'create',

@@ -30,12 +30,6 @@ export class AppStartupModulesModule {
         filter((loggedIn) => loggedIn)
       )
       .subscribe(() => this.websocketConnectionService.connect());
-
-    this.websocketConnectionService.subscribeChannel('person')
-      .subscribe((a) => console.log('PERSON channel subscription', a));
-
-    this.websocketConnectionService.subscribeChannel('payment')
-      .subscribe((a) => console.log('PAYMENT channel subscription', a));
   }
 
   private initDataCaches(): void {
