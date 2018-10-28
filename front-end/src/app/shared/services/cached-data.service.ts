@@ -9,17 +9,18 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { environment } from '../../../environments/environment';
 import { WebsocketChannel } from './websocket-connection/websocket-channel.type';
 import { WebsocketConnectionService } from './websocket-connection/websocket-connection.service';
+import { WebsocketDataService } from './websocket-data.service';
 
-export abstract class CachedDataService<T> {
+export abstract class CachedDataService<T> extends WebsocketDataService<T> {
   protected abstract http: HttpClient;
-
-  private dataObserver: ReplaySubject<T[]>;
 
   protected constructor(
     protected readonly requestUrl: string,
-    protected readonly websocketChannelEvent: WebsocketChannel,
-    private websocketConnectionService: WebsocketConnectionService
-  ) {}
+    websocketChannel: WebsocketChannel,
+    websocketConnectionService: WebsocketConnectionService
+  ) {
+    super(websocketChannel, websocketConnectionService);
+  }
 
   public connect() {
     console.log('cache connect', this.requestUrl);
@@ -55,9 +56,5 @@ export abstract class CachedDataService<T> {
         (res: T[]) => this.dataObserver.next(res),
         (err: any) => this.dataObserver.error(err)
       );
-  }
-
-  private connectWebsocketChannel() {
-    this.websocketConnectionService.subscribeChannel(this.websocketChannelEvent);
   }
 }

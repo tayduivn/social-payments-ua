@@ -71,8 +71,7 @@ export class HistoryFilterComponent implements AfterViewInit {
 
   private readonly filterControls: Map<FilterType, AbstractControl> = new Map();
 
-  constructor() {
-  }
+  constructor() {}
 
   public ngAfterViewInit() {
     this.searchForm.setControl('person', this.personComponent.form);

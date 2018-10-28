@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { LoginCheckResponse } from '../../../../../api-contracts/login/login-check-response';
 import { environment } from '../../../environments/environment';
 import { WindowProvider } from '../providers/window-provider';
 
@@ -27,11 +28,11 @@ export class AuthService {
   private initialTokenCheck(): void {
     if (!this.getToken()) {
       this.loggedInSubject.next(false);
-      return
+      return;
     } else {
-      this.http.get<{expired: boolean}>(environment.dataQueries.loginEndpoint)
+      this.http.get<LoginCheckResponse>(environment.dataQueries.loginEndpoint)
         .subscribe(
-          ({expired}) => this.loggedInSubject.next(!expired),
+          (resp) => this.loggedInSubject.next(resp.isValid),
           () => this.loggedInSubject.next(false)
         )
     }

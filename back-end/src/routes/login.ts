@@ -5,10 +5,11 @@ import express, {
   Response
 } from 'express';
 import * as _ from 'lodash';
-import { LoginResponse } from '../../../api-contracts/login-response';
+import { LoginResponse } from '../../../api-contracts/login/login-response';
 import { User } from '../../../api-contracts/user/user';
 import { HttpError } from '../core/http-error';
 import { Token } from '../core/token';
+import { TokenInfo } from '../core/token-info';
 import { UserModel } from '../models/user/user.model';
 
 const router = express.Router();
@@ -23,7 +24,7 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
   }
 
   Token.isValid(token)
-    .then((expired) => res.send({expired}));
+    .then((info: TokenInfo) => res.send({isValid: info.isValid}));
 });
 
 router.post('/', (req: Request, res: Response, next: NextFunction) => {

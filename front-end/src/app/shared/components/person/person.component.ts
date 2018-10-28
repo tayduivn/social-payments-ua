@@ -63,6 +63,10 @@ export class PersonComponent extends MultifiedAutocompleteCommonComponent implem
 
     this.initPersonAutocompleteFilter();
     this.initStreetAutocompleteFilter();
+
+    this.personService.getData().subscribe((a) => {
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!', a);
+    })
   }
 
   public streetSelected(streetOption: MatAutocompleteSelectedEvent) {

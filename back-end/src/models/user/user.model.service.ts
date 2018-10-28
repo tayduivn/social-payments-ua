@@ -23,4 +23,8 @@ export class UserModelService {
     return UserModel
       .findByIdAndRemove(id)
   }
+
+  public static findByToken(token: string): MongoosePromise<UserModel> {
+    return UserModel.findOne({token})
+  }
 }

@@ -1,6 +1,8 @@
 import * as jwt from 'jsonwebtoken';
 import cryptoRandoomString from 'crypto-random-string';
+import { isBoolean } from 'util';
 import { UserModel } from '../models/user/user.model';
+import { UserModelService } from '../models/user/user.model.service';
 import { TokenInfo } from './token-info';
 
 function secret() {
@@ -38,30 +40,22 @@ export class Token {
   }
 
   public static isValid(token: string): Promise<TokenInfo> {
-    return new Promise((resolve, err) => {
-      UserModel.findOne({token}, (err, user: UserModel) => {
-        // return to stop executing function
-        if (err) {
-          err(err);
-          return;
-        }
+    const invalidEmpty = {
+      isValid: false,
+      user: null as UserModel
+    };
 
-        if (!user) {
-          resolve({
-            isValid: false,
-            user: null
-          });
-        } else {
-          Token.isExpired(token)
-            .then((expired: boolean) => {
-              resolve({
-                isValid: !expired,
-                user
-              });
+    return Token.isExpired(token)
+      .then(
+        (expired: boolean) => expired ? invalidEmpty : UserModelService.findByToken(token)
+          .then(
+            (user: UserModel) => ({
+              isValid: !!user,
+              user
             })
-        }
-      });
-    });
+          ),
+        () => null
+      );
   }
 
   private static isExpired(token: string): Promise<boolean> {
