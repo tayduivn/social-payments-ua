@@ -5,7 +5,6 @@ export class UnsubscribableComponent implements OnDestroy {
   protected componentSubscriptions: Subscription = new Subscription();
 
   public ngOnDestroy() {
-    debugger;
     this.componentSubscriptions.unsubscribe();
   }
 }

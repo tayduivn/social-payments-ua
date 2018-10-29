@@ -68,7 +68,6 @@ export class PaymentModelService {
       .limit(take)
       .lean()
       .then((payments: PaymentModel[]) => ({
-          hasMore: true,
           payments: payments
         })
       );

@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-title>Останні платежі:</mat-card-title>
 
-  <perfect-scrollbar>
+  <perfect-scrollbar (psYReachEnd)="onScrollBottom()">
     <mat-divider></mat-divider>
 
     <mat-accordion>
@@ -43,6 +43,17 @@
           <span></span>
         </section>
       </mat-expansion-panel>
+
+      <mat-expansion-panel *ngIf="renderLoading$ | async"
+        class="sp-latest-payments-loading"
+        [disabled]="true"
+        [hideToggle]="true">
+        <mat-expansion-panel-header [collapsedHeight]="'150px'">
+          <mat-spinner></mat-spinner>
+        </mat-expansion-panel-header>
+      </mat-expansion-panel>
     </mat-accordion>
+
+
   </perfect-scrollbar>
 </mat-card>
