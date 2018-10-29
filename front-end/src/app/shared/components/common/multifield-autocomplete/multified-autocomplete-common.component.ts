@@ -17,8 +17,9 @@ import {
 } from 'rxjs/operators';
 import { FinancialInstitution } from '../../../../../../../api-contracts/financial-institution/financial.institution';
 import { FilterUtils } from '../../../utils/filter-utils';
+import { UnsubscribableComponent } from '../unsubscribable-component';
 
-export abstract class MultifiedAutocompleteCommonComponent {
+export abstract class MultifiedAutocompleteCommonComponent extends UnsubscribableComponent {
   @Input() public set id(val: string) {
     this.currId = val;
 
@@ -41,7 +42,9 @@ export abstract class MultifiedAutocompleteCommonComponent {
 
   private currId: string = null;
 
-  protected constructor(private cdRef: ChangeDetectorRef, protected fb: FormBuilder) {}
+  protected constructor(protected cdRef: ChangeDetectorRef, protected fb: FormBuilder) {
+    super();
+  }
 
   protected getConditionalValidator(): ValidationErrors | null {
     return this.renderValidationErrors ? Validators.required : null;

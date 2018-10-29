@@ -1,34 +1,45 @@
 import { NgModule } from '@angular/core';
 import { filter } from 'rxjs/operators';
-import { AuthService } from './core/auth.service';
+import { AuthService } from './shared/services/auth.service';
+import { LatestPaymentsService } from './payments/payments-dashboard/latest-payments/latest-payments.service';
 import { FinancialInstitutionService } from './shared/components/financial-institution/financial-institution.service';
 import { PersonAccountsService } from './shared/components/person-accounts/person-accounts.service';
 import { PersonService } from './shared/components/person/person.service';
 import { StreetService } from './shared/components/person/street.service';
+import { WebsocketConnectionService } from './shared/services/websocket-connection/websocket-connection.service';
 
 @NgModule({
 })
 export class AppStartupModulesModule {
   constructor(
     private authService: AuthService,
+    private websocketConnectionService: WebsocketConnectionService,
     private fiService: FinancialInstitutionService,
     private personService: PersonService,
     private personAccountsService: PersonAccountsService,
-    private streetService: StreetService
+    private streetService: StreetService,
+    private latestPaymentsService: LatestPaymentsService
   ) {
-    this.initCaches();
+    this.initWebsocket();
+    this.initDataCaches();
   }
 
-  private initCaches() {
+  private initWebsocket(): void {
     this.authService.loggedIn$
       .pipe(
         filter((loggedIn) => loggedIn)
       )
+      .subscribe(() => this.websocketConnectionService.connect());
+  }
+
+  private initDataCaches(): void {
+    this.websocketConnectionService.websocketConnect$
       .subscribe(() => {
-        this.fiService.getData().subscribe();
-        this.personService.getData().subscribe();
-        this.personAccountsService.getData().subscribe();
-        this.streetService.getData();
+        this.fiService.connect();
+        this.personService.connect();
+        this.personAccountsService.connect();
+        this.streetService.connect();
+        this.latestPaymentsService.connect();
       });
   }
 }

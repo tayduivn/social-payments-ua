@@ -4,23 +4,34 @@ import express, {
   Request,
   Response
 } from 'express';
-import { sign } from 'jws';
-import { LoginResponse } from '../../../api-contracts/login-response';
+import * as _ from 'lodash';
+import { LoginResponse } from '../../../api-contracts/login/login-response';
 import { User } from '../../../api-contracts/user/user';
+import { HttpError } from '../core/http-error';
+import { Token } from '../core/token';
+import { TokenInfo } from '../core/token-info';
 import { UserModel } from '../models/user/user.model';
 
 const router = express.Router();
 
+router.get('/', (req: Request, res: Response, next: NextFunction) => {
+  const token = _.get(req, 'headers.authorization', '').replace('Bearer ', '');
+
+  if (!token) {
+    const error = new HttpError('');
+    error.status = 400;
+    next(error);
+  }
+
+  Token.isValid(token)
+    .then((info: TokenInfo) => res.send({isValid: info.isValid}));
+});
+
 router.post('/', (req: Request, res: Response, next: NextFunction) => {
   const {login, password} = req.body;
-  const token = sign({
-    header: {alg: 'HS256'},
-    payload: new Date(),
-    secret: login
-  });
-  const created = new Date();
+  const token = Token.createToken(login);
 
-  UserModel.findOneAndUpdate({login}, {token, created}, (err, user: User) => {
+  UserModel.findOneAndUpdate({login}, {token}, (err, user: User) => {
     if (user && bcrypt.compareSync(password, user.password)) {
       res.send(<LoginResponse> {
         authorized: true,

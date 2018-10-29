@@ -7,17 +7,32 @@ import {
 } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { environment } from '../../../environments/environment';
+import { WebsocketChannel } from './websocket-connection/websocket-channel.type';
+import { WebsocketConnectionService } from './websocket-connection/websocket-connection.service';
+import { WebsocketDataService } from './websocket-data.service';
 
-export abstract class CachedDataService<T> {
-  protected abstract readonly requestUrl: string;
+export abstract class CachedDataService<T> extends WebsocketDataService<T> {
   protected abstract http: HttpClient;
 
-  private dataObserver: ReplaySubject<T[]>;
+  protected constructor(
+    protected readonly requestUrl: string,
+    websocketChannel: WebsocketChannel,
+    websocketConnectionService: WebsocketConnectionService
+  ) {
+    super(websocketChannel, websocketConnectionService);
+  }
 
-  protected constructor() {}
+  public connect() {
+    console.log('cache connect', this.requestUrl);
+    if (!this.dataObserver || this.dataObserver.hasError) {
+      this.dataObserver = new ReplaySubject<T[]>(1);
+    }
+
+    this.requestData();
+    this.connectWebsocketChannel();
+  }
 
   public getData(filter?: any): Observable<T[]> {
-    this.validateCache();
     const obs = this.dataObserver.asObservable();
 
     return filter ? obs
@@ -28,20 +43,11 @@ export abstract class CachedDataService<T> {
   }
 
   public getById(id: string): Observable<T> {
-    this.validateCache();
-
     return this.dataObserver.asObservable()
       .pipe(
         map((items) => _.find<T>(items, {_id: id} as any)),
         take(1)
       );
-  }
-
-  private validateCache() {
-    if (!this.dataObserver || this.dataObserver.hasError) {
-      this.dataObserver = new ReplaySubject<T[]>(1);
-      this.requestData();
-    }
   }
 
   private requestData() {

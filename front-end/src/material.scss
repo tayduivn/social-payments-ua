@@ -47,6 +47,10 @@ $custom-typography: mat-typography-config(
     padding: 0;
   }
 
+  mat-card {
+    padding: 14px;
+  }
+
   // icons
   $small-icons-size: 18px;
   .sp-small-icon {

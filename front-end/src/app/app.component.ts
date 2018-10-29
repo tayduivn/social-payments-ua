@@ -12,7 +12,6 @@ import {
   filter,
   map
 } from 'rxjs/operators';
-import { AuthService } from './core/auth.service';
 
 @Component({
   selector: 'sp-root',

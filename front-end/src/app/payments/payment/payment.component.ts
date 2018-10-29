@@ -68,8 +68,8 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
   }
 
   public ngOnInit() {
-    this.componentSubscriptions = this.selectPersonAccountDialogService.accountSelected$
-      .subscribe(this.onPersonAccountSelected.bind(this));
+    this.componentSubscriptions.add(this.selectPersonAccountDialogService.accountSelected$
+      .subscribe(this.onPersonAccountSelected.bind(this)));
   }
 
   public ngAfterViewInit() {
