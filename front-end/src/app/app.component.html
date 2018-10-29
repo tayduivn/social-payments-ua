@@ -1,6 +1,9 @@
 <sp-main-nav *ngIf="renderMenu; else routerRef">
   <router-outlet></router-outlet>
+
 </sp-main-nav>
+
+<sp-main-progress-bar></sp-main-progress-bar>
 
 <ng-template #routerRef>
   <router-outlet></router-outlet>

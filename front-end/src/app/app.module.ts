@@ -7,6 +7,7 @@ import { AppStartupModulesModule } from './app-startup-modules.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { MainNavModule } from './layout/main-nav/main-nav.module';
+import { MainProgressBarModule } from './layout/main-progress-bar/main-progress-bar.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,6 +18,7 @@ import { MainNavModule } from './layout/main-nav/main-nav.module';
     AppStartupModulesModule,
     NgxMaskModule.forRoot(),
     MainNavModule,
+    MainProgressBarModule,
     AppRoutingModule
   ],
   bootstrap: [AppComponent]

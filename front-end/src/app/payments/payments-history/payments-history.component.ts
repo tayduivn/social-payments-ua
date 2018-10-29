@@ -4,6 +4,7 @@ import {
   Component
 } from '@angular/core';
 import * as _ from 'lodash/fp';
+import { finalize } from 'rxjs/operators';
 import { Payment } from '../../../../../api-contracts/payment/payment';
 import { PaymentsHistoryService } from './payments-history.service';
 import { HistoryFilterModel } from './shared/history-filter.model';
@@ -32,6 +33,12 @@ export class PaymentsHistoryComponent {
     this.payments = [];
 
     this.paymentsHistoryService.requestPayments(filter)
+      .pipe(
+        finalize(() => {
+          this.showLoadingIndicator = false;
+          this.cdRef.markForCheck();
+        })
+      )
       .subscribe((payments: Payment[]) => {
         if (_.isEmpty(payments)) {
           this.statusTextDescription = 'Не знайдено';
@@ -40,13 +47,11 @@ export class PaymentsHistoryComponent {
         }
 
         this.payments = payments;
-        this.showLoadingIndicator = false;
-
-        this.cdRef.markForCheck();
       });
   }
 
   public onFilterEmpty() {
+    this.payments = [];
     this.statusTextDescription = PaymentsHistoryComponent.filterEmptyMessage;
   }
 }

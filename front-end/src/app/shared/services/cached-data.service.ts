@@ -7,19 +7,20 @@ import {
 } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { environment } from '../../../environments/environment';
+import { MainProgressBarItemModel } from '../../layout/main-progress-bar/main-progress-bar-item.model';
+import { MainProgressBarService } from '../../layout/main-progress-bar/main-progress-bar.service';
 import { WebsocketChannel } from './websocket-connection/websocket-channel.type';
 import { WebsocketConnectionService } from './websocket-connection/websocket-connection.service';
 import { WebsocketDataService } from './websocket-data.service';
 
 export abstract class CachedDataService<T> extends WebsocketDataService<T> {
-  protected abstract http: HttpClient;
+  protected dataObserver: ReplaySubject<T[]>;
 
-  protected constructor(
-    protected readonly requestUrl: string,
-    websocketChannel: WebsocketChannel,
-    websocketConnectionService: WebsocketConnectionService
-  ) {
-    super(websocketChannel, websocketConnectionService);
+  protected abstract readonly http: HttpClient;
+  protected abstract readonly requestUrl: string;
+
+  protected constructor() {
+    super();
   }
 
   public connect() {

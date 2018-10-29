@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Input,
@@ -30,7 +31,8 @@ import { StreetService } from './street.service';
 @Component({
   selector: 'sp-person',
   templateUrl: './person.component.html',
-  styleUrls: ['./person.component.scss']
+  styleUrls: ['./person.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PersonComponent extends MultifiedAutocompleteCommonComponent implements OnInit {
   @Input() public renderAddressFields: boolean = true;

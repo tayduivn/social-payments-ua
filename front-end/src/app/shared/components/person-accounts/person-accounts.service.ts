@@ -3,14 +3,20 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import { PersonAccounts } from '../../../../../../api-contracts/person-accounts/person-accounts';
+import { Street } from '../../../../../../api-contracts/street/street';
 import { CachedDataService } from '../../services/cached-data.service';
 import { WebsocketConnectionService } from '../../services/websocket-connection/websocket-connection.service';
 
 @Injectable()
 export class PersonAccountsService extends CachedDataService<PersonAccounts> {
+  protected readonly requestUrl = '/person-accounts';
+  protected readonly websocketChannel = 'person-accounts';
 
-  constructor(protected http: HttpClient, websocketConnectionService: WebsocketConnectionService) {
-    super('/person-accounts', 'person-accounts', websocketConnectionService);
+  constructor(
+    protected readonly http: HttpClient,
+    protected readonly websocketConnectionService: WebsocketConnectionService
+  ) {
+    super();
   }
 
   public getByUserId(id: string): Observable<PersonAccounts> {

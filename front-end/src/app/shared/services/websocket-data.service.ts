@@ -4,14 +4,12 @@ import { WebsocketMessageCommon } from '../../../../../api-contracts/websocket-m
 import { WebsocketChannel } from './websocket-connection/websocket-channel.type';
 import { WebsocketConnectionService } from './websocket-connection/websocket-connection.service';
 
-export class WebsocketDataService<T> {
-  protected dataObserver: ReplaySubject<T[]>;
+export abstract class WebsocketDataService<T> {
+  protected abstract dataObserver: ReplaySubject<T[]>;
+  protected abstract readonly websocketChannel: WebsocketChannel;
+  protected abstract readonly websocketConnectionService: WebsocketConnectionService;
 
-  constructor(
-    protected readonly websocketChannel: WebsocketChannel,
-    protected readonly websocketConnectionService: WebsocketConnectionService
-  ) {}
-
+  protected constructor() {}
 
   protected connectWebsocketChannel() {
     zip(

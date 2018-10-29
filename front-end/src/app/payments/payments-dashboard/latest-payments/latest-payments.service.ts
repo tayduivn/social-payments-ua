@@ -25,6 +25,9 @@ export class LatestPaymentsService extends WebsocketDataService<Payment> {
   public readonly items$: Observable<Payment[]>;
   public readonly sourceExhausted$: Observable<boolean>;
 
+  protected readonly dataObserver: ReplaySubject<Payment[]>;
+  protected readonly websocketChannel = 'payment';
+
   private static readonly pageSize = 30;
   private static readonly requestUrl = '/payments/latest';
   private static readonly initialPagesCache = 3;
@@ -32,8 +35,11 @@ export class LatestPaymentsService extends WebsocketDataService<Payment> {
   private initialLoadCompleted: boolean = false;
   private sourceExhaustedSubject = new ReplaySubject<boolean>(1);
 
-  constructor(private http: HttpClient, websocketConnectionService: WebsocketConnectionService) {
-    super('payment', websocketConnectionService);
+  constructor(
+    private http: HttpClient,
+    protected readonly websocketConnectionService: WebsocketConnectionService
+  ) {
+    super();
 
     this.dataObserver = new ReplaySubject<Payment[]>(1);
     this.items$ = this.dataObserver.asObservable();

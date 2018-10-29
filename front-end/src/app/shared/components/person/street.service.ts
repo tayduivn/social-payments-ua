@@ -4,11 +4,15 @@ import { Street } from '../../../../../../api-contracts/street/street';
 import { CachedDataService } from '../../services/cached-data.service';
 import { WebsocketConnectionService } from '../../services/websocket-connection/websocket-connection.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class StreetService extends CachedDataService<Street> {
-  constructor(protected http: HttpClient, websocketConnectionService: WebsocketConnectionService) {
-    super('/streets', 'street', websocketConnectionService);
+  protected readonly requestUrl = '/streets';
+  protected readonly websocketChannel = 'street';
+
+  constructor(
+    protected readonly http: HttpClient,
+    protected readonly websocketConnectionService: WebsocketConnectionService
+  ) {
+    super();
   }
 }
