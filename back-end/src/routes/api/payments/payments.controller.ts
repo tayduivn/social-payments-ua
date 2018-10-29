@@ -21,7 +21,7 @@ export class PaymentsController extends ApiCommonController {
       return;
     }
 
-    return PaymentModelService
+    PaymentModelService
       .find(PaymentsController.getSearchConditions(req.query as PaymentsFilter))
       .then(...super.promiseResponse<Payment[]>(res, next));
   }
@@ -34,7 +34,7 @@ export class PaymentsController extends ApiCommonController {
       return;
     }
 
-    return PaymentModelService
+    PaymentModelService
       .latest(Number(skip), Number(take))
       .then(...super.promiseResponse<PaymentsLatest>(res, next));
   }

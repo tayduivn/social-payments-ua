@@ -8,8 +8,6 @@ import { Payment } from '../../../../../api-contracts/payment/payment';
 import { PaymentsHistoryService } from './payments-history.service';
 import { HistoryFilterModel } from './shared/history-filter.model';
 
-const filterEmptyMessage = 'Вкажіть параметри пошуку';
-
 @Component({
   selector: 'sp-payments-history',
   templateUrl: './payments-history.component.html',
@@ -17,13 +15,22 @@ const filterEmptyMessage = 'Вкажіть параметри пошуку';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaymentsHistoryComponent {
-  public statusTextDescription = filterEmptyMessage;
+  public statusTextDescription: string;
+  public showLoadingIndicator: boolean = false;
 
   public payments: Payment[];
 
-  constructor(private cdRef: ChangeDetectorRef, private paymentsHistoryService: PaymentsHistoryService) {}
+  private static readonly filterEmptyMessage = 'Вкажіть параметри пошуку';
+
+  constructor(private cdRef: ChangeDetectorRef, private paymentsHistoryService: PaymentsHistoryService) {
+    this.statusTextDescription = PaymentsHistoryComponent.filterEmptyMessage;
+  }
 
   public onFilterChange(filter: HistoryFilterModel) {
+    this.showLoadingIndicator = true;
+    this.statusTextDescription = null;
+    this.payments = [];
+
     this.paymentsHistoryService.requestPayments(filter)
       .subscribe((payments: Payment[]) => {
         if (_.isEmpty(payments)) {
@@ -33,12 +40,13 @@ export class PaymentsHistoryComponent {
         }
 
         this.payments = payments;
+        this.showLoadingIndicator = false;
 
         this.cdRef.markForCheck();
       });
   }
 
   public onFilterEmpty() {
-    this.statusTextDescription = filterEmptyMessage;
+    this.statusTextDescription = PaymentsHistoryComponent.filterEmptyMessage;
   }
 }
