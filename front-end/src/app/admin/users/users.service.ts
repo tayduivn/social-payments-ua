@@ -17,8 +17,10 @@ export class UsersService {
   public getUsers(): Observable<User[]> {
     if (!this.userListSubject) {
       this.userListSubject = new Subject<User[]>();
-      this.updateUserList();
     }
+
+    this.updateUserList();
+
     return this.userListSubject.asObservable();
   }
 

@@ -33,10 +33,14 @@ router.post('/', (req: Request, res: Response, next: NextFunction) => {
 
   UserModel.findOneAndUpdate({login}, {token}, (err, user: User) => {
     if (user && bcrypt.compareSync(password, user.password)) {
-      res.send(<LoginResponse> {
+      const loginResponse: LoginResponse = {
         authorized: true,
+        fullName: user.fullName,
+        isAdmin: user.isAdmin,
         token
-      });
+      };
+
+      res.send(loginResponse);
     } else {
       next(err || {status: 401} as any);
     }

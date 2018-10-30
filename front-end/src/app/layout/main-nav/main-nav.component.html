@@ -4,6 +4,14 @@
     <a class="sp-nav-link" routerLink="/reports" mat-button>Звіти</a>
     <a class="sp-nav-link" routerLink="/admin" mat-button>Адміністрування</a>
   </nav>
+
+  <div class="sp-nav-user">
+    <span class="sp-nav-curr-user" title="Поточний користувач">
+      <span>Степан Срака</span>
+    </span>
+
+    <a mat-button title="Вийти" color="warn" class="sp-nav-icon"><mat-icon color="warn">vpn_key</mat-icon></a>
+  </div>
 </mat-toolbar>
 <section class="sp-body">
   <ng-content></ng-content>
