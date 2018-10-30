@@ -9,6 +9,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { environment } from '../../../environments/environment';
 import { MainProgressBarItemModel } from '../../layout/main-progress-bar/main-progress-bar-item.model';
 import { MainProgressBarService } from '../../layout/main-progress-bar/main-progress-bar.service';
+import { MainProgressBerItemStatusEnum } from '../../layout/main-progress-bar/main-progress-ber-item-status.enum';
 import { WebsocketChannel } from './websocket-connection/websocket-channel.type';
 import { WebsocketConnectionService } from './websocket-connection/websocket-connection.service';
 import { WebsocketDataService } from './websocket-data.service';
@@ -19,12 +20,16 @@ export abstract class CachedDataService<T> extends WebsocketDataService<T> {
   protected abstract readonly http: HttpClient;
   protected abstract readonly requestUrl: string;
 
+  protected abstract readonly mainProgressBarService: MainProgressBarService;
+  protected abstract readonly mainProgressBarItemCaption: string;
+
   protected constructor() {
     super();
   }
 
   public connect() {
-    console.log('cache connect', this.requestUrl);
+    this.mainProgressBarService.add(this.mainProgressBarItemCaption);
+
     if (!this.dataObserver || this.dataObserver.hasError) {
       this.dataObserver = new ReplaySubject<T[]>(1);
     }
@@ -54,8 +59,14 @@ export abstract class CachedDataService<T> extends WebsocketDataService<T> {
   private requestData() {
     this.http.get(`${environment.dataQueries.apiEndpoint}${this.requestUrl}`)
       .subscribe(
-        (res: T[]) => this.dataObserver.next(res),
-        (err: any) => this.dataObserver.error(err)
+        (res: T[]) => {
+          this.dataObserver.next(res);
+          this.mainProgressBarService.setStatus(this.mainProgressBarItemCaption, MainProgressBerItemStatusEnum.Success);
+        },
+        (err: any) => {
+          this.dataObserver.error(err);
+          this.mainProgressBarService.setStatus(this.mainProgressBarItemCaption, MainProgressBerItemStatusEnum.Error);
+        }
       );
   }
 }

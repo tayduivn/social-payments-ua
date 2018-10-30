@@ -3,7 +3,7 @@
 
 </sp-main-nav>
 
-<sp-main-progress-bar></sp-main-progress-bar>
+<sp-main-progress-bar *ngIf="renderMenu"></sp-main-progress-bar>
 
 <ng-template #routerRef>
   <router-outlet></router-outlet>
