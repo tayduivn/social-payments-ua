@@ -60,6 +60,7 @@ export class TabbedItemsComponent extends UnsubscribableComponent implements OnI
       .subscribe(() => {
         if (this.selectedIndex >= 0) {
           this.closeTab(this.selectedIndex);
+          this.cdRef.detectChanges();
         }
       }));
   }

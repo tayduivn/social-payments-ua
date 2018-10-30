@@ -55,7 +55,7 @@ export class PaymentsController extends ApiCommonController {
     const conditions: any = {
       date: PaymentsController.getDatesRangeFilter(filter.dateFrom, filter.dateTo),
       sum: PaymentsController.getSumRangeFilter(filter.sumFrom, filter.sumTo),
-      description: PaymentsController.getDescriptionFilter(filter.description)
+      $text: PaymentsController.getDescriptionFilter(filter.description)
     };
 
     if (filter.personId) {

@@ -10,7 +10,7 @@ import { WebsocketConnectionService } from '../../services/websocket-connection/
 export class FinancialInstitutionService extends CachedDataService<FinancialInstitution> {
   protected readonly requestUrl = '/financial-institutions';
   protected readonly websocketChannel = 'financial-institution';
-  protected readonly mainProgressBarItemCaption = 'Довідник фінансових установ';
+  protected readonly mainProgressBarItemCaption = 'Фінансові установи';
 
   constructor(
     protected readonly http: HttpClient,

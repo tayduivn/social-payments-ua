@@ -5,6 +5,7 @@ import express, {
   Request,
   Response
 } from 'express';
+import * as _ from 'lodash';
 import moment from 'moment';
 import { PeriodReportQueryParams } from '../../../../../api-contracts/reports/period-report.query.params';
 import { PaymentModel } from '../../../models/payment/payment.model';
@@ -97,6 +98,27 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
         right: {style: 'thin' as BorderStyle}
       };
 
+      const addressHelper = (address: any): string => {
+        if (!address) {
+          return '';
+        }
+
+        const result: string[] = [];
+
+        result.push(address.street ? `вул. ${address.street.name}` : null);
+        result.push(address.house);
+
+        if (address.houseSection) {
+          result.push(`корп. ${address.houseSection}`)
+        }
+
+        if (address.apartment) {
+          result.push(`кв. ${address.apartment}`);
+        }
+
+        return _.compact(result).join(', ');
+      };
+
       payments.forEach((payment: PaymentModel) => {
         const row = worksheet.addRow({
           date: moment(payment.date).format(dateFormat),
@@ -108,7 +130,7 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
           person: payment.person.fullName,
           ident_code: payment.person.identityCode,
           passport_code: payment.person.passportNumber,
-          address: payment.person.address.street,
+          address: addressHelper(payment.person.address),
           description: payment.description
         });
 

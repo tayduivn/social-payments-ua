@@ -1,6 +1,13 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import * as FileSaver from 'file-saver';
 import * as moment from 'moment';
 import { Moment } from 'moment';
+import {
+  finalize,
+  map,
+  tap
+} from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { TabbedItemsService } from '../../layout/tabbed-items/tabbed-items.service';
 import { requestDateFormat } from '../../shared/constants/date-formats';
@@ -13,6 +20,7 @@ export class PeriodReportService {
 
   constructor(
     private tabbedItemsService: TabbedItemsService,
+    private http: HttpClient,
     private window: WindowProvider
   ) { }
 
@@ -33,7 +41,24 @@ export class PeriodReportService {
         return;
     }
 
-    this.tabbedItemsService.closeActiveTab();
-    this.window.open(`${this.requestUrl}?startDate=${startDate.format(requestDateFormat)}&endDate=${endDate.format(requestDateFormat)}`, '_self');
+    this.saveReport(`${this.requestUrl}?startDate=${startDate.format(requestDateFormat)}&endDate=${endDate.format(requestDateFormat)}`);
+  }
+
+  private saveReport(url: string): void {
+    this.http.get(url, {responseType: 'blob'})
+      .pipe(
+        map((response) => {
+          return {
+            data: new Blob([response], {type: 'application/vnd.ms-excel;charset=utf-8'}),
+            filename : 'test.xlsx'
+          };
+        })
+      )
+      .subscribe(
+        (res) => {
+          this.tabbedItemsService.closeActiveTab();
+          FileSaver.saveAs(res.data, res.filename);
+        }
+      )
   }
 }

@@ -11,7 +11,7 @@ import { WebsocketConnectionService } from '../../services/websocket-connection/
 export class PersonService extends CachedDataService<Person> {
   protected readonly requestUrl = '/persons';
   protected readonly websocketChannel = 'person';
-  protected readonly mainProgressBarItemCaption = 'Довідник одержувачів';
+  protected readonly mainProgressBarItemCaption = 'Одержувачі';
 
   constructor(
     protected readonly http: HttpClient,

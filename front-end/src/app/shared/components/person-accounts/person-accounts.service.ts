@@ -12,7 +12,7 @@ import { WebsocketConnectionService } from '../../services/websocket-connection/
 export class PersonAccountsService extends CachedDataService<PersonAccounts> {
   protected readonly requestUrl = '/person-accounts';
   protected readonly websocketChannel = 'person-accounts';
-  protected readonly mainProgressBarItemCaption = 'Довідник персональних рахунків';
+  protected readonly mainProgressBarItemCaption = 'Персональні рахунки';
 
 
   constructor(

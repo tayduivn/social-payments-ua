@@ -51,6 +51,8 @@
       </mat-form-field>
     </div>
 
+    <mat-progress-bar *ngIf="renderProgressBar" mode="indeterminate"></mat-progress-bar>
+
     <button mat-raised-button
       color="primary"
         [disabled]="buttonDisabled"

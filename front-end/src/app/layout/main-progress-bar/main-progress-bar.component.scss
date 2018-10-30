@@ -48,6 +48,8 @@ $transition-time: 500ms;
 
   h3 {
     margin: 0 0 0 $progress-bar-height;
+    color: rgba(0,0,0,.54);
+    font-weight: 700;
   }
 
   [status="check"] {
@@ -69,10 +71,24 @@ $transition-time: 500ms;
 
 .sp-progress-container {
   height: $progress-bar-height;
-  padding: 0 15%;
+  margin: 0 15%;
   width: 100%;
   box-sizing: border-box;
   display: flex;
+  position: relative;
+}
+
+.sp-progress-line {
+  background-color: mat-color($mat-indigo, 500);
+  transition: width $transition-time;
+  z-index: 1;
+}
+
+.sp-progress-line-bg {
+  @include layer();
+
+  background-color: mat-color($mat-indigo, 100);
+  z-index: -1;
 }
 
 :host.sp-loading-completed {
@@ -85,11 +101,6 @@ $transition-time: 500ms;
   }
   .sp-progress-container {
     transition: all $transition-time;
-    padding: 0;
+    margin: 0;
   }
 }
-
-.sp-progress-line {
-    background-color: mat-color($mat-indigo, 500);
-    transition: width $transition-time;
-  }

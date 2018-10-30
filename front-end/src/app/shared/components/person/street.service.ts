@@ -9,7 +9,7 @@ import { WebsocketConnectionService } from '../../services/websocket-connection/
 export class StreetService extends CachedDataService<Street> {
   protected readonly requestUrl = '/streets';
   protected readonly websocketChannel = 'street';
-  protected readonly mainProgressBarItemCaption = 'Довідник вулиць';
+  protected readonly mainProgressBarItemCaption = 'Вулиці';
 
   constructor(
     protected readonly http: HttpClient,

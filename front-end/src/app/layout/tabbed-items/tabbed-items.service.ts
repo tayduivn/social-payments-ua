@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class TabbedItemsService {
   public readonly closeActiveTab$: Observable<void>;
 
