@@ -22,7 +22,10 @@ import {
 export class AppComponent implements OnInit {
   public renderMenu: boolean;
 
-  constructor(private cdRef: ChangeDetectorRef, private router: Router) {}
+  constructor(
+    private cdRef: ChangeDetectorRef,
+    private router: Router
+  ) {}
 
   public ngOnInit() {
     this.router.events

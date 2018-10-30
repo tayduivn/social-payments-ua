@@ -6,8 +6,6 @@ import { LoginCheckResponse } from '../../../../../api-contracts/login/login-che
 import { environment } from '../../../environments/environment';
 import { WindowProvider } from '../providers/window-provider';
 
-const tokenKeyName = 'token';
-
 @Injectable()
 export class AuthService {
   /**
@@ -16,6 +14,8 @@ export class AuthService {
   public readonly loggedIn$: Observable<boolean>;
 
   private readonly loggedInSubject = new ReplaySubject<boolean>(1);
+
+  private static readonly tokenKeyName = 'token';
 
   constructor(private window: WindowProvider, private http: HttpClient) {
     this.loggedIn$ = this.loggedInSubject.asObservable();
@@ -39,11 +39,11 @@ export class AuthService {
   }
 
   public getToken(): string {
-    return this.window.localStorage.getItem(tokenKeyName);
+    return this.window.localStorage.getItem(AuthService.tokenKeyName);
   }
 
   public setToken(token: string): void {
-    this.window.localStorage.setItem(tokenKeyName, token);
+    this.window.localStorage.setItem(AuthService.tokenKeyName, token);
     this.loggedInSubject.next(!!token);
   }
 }

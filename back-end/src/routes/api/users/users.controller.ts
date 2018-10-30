@@ -3,7 +3,6 @@ import {
   Request,
   Response
 } from 'express';
-import { Types } from 'mongoose';
 import { User } from '../../../../../api-contracts/user/user';
 import { UserModelService } from '../../../models/user/user.model.service';
 import { ApiCommonController } from '../api-common.controller';
@@ -16,22 +15,20 @@ export class UsersController extends ApiCommonController {
   }
 
   public static create(req: Request, res: Response, next: NextFunction) {
-    const user = Object.assign({_id: new Types.ObjectId()}, req.body);
-
     return UserModelService
-      .create(user)
+      .create(req.body)
       .then(...super.promiseEnd(res, next));
   }
 
   public static update(req: Request, res: Response, next: NextFunction) {
     UserModelService
-      .update(req.params._id, req.body)
+      .update(req.params.id, req.body)
       .then(...super.promiseEnd(res, next));
   }
 
   public static delete(req: Request, res: Response, next: NextFunction) {
     UserModelService
-      .remove(req.params._id)
+      .remove(req.params.id)
       .then(...super.promiseEnd(res, next));
   }
 }

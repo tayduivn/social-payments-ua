@@ -21,7 +21,11 @@ const userSchema = new Schema({
     required: [true]
   },
   token: String,
-  isAdmin: Boolean
+  isAdmin: Boolean,
+  created: {
+    type: Date,
+    required: [true]
+  }
 });
 
 addUserModelMiddleware(userSchema);

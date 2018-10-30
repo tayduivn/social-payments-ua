@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FinancialInstitution } from '../../../../../../api-contracts/financial-institution/financial.institution';
-import { Street } from '../../../../../../api-contracts/street/street';
 import { MainProgressBarService } from '../../../layout/main-progress-bar/main-progress-bar.service';
 import { CachedDataService } from '../../services/cached-data.service';
 import { WebsocketConnectionService } from '../../services/websocket-connection/websocket-connection.service';

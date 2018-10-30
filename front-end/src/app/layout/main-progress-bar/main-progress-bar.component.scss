@@ -1,4 +1,5 @@
 @import '~@angular/material/theming';
+@import '../../shared/styles/general.variables';
 
 @mixin layer() {
   position: absolute;
@@ -48,7 +49,7 @@ $transition-time: 500ms;
 
   h3 {
     margin: 0 0 0 $progress-bar-height;
-    color: rgba(0,0,0,.54);
+    color: $grey-text;
     font-weight: 700;
   }
 

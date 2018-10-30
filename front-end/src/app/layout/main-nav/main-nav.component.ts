@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component
 } from '@angular/core';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 
 @Component({
   selector: 'sp-main-nav',
@@ -9,4 +10,6 @@ import {
   styleUrls: ['./main-nav.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MainNavComponent {}
+export class MainNavComponent {
+  constructor(public currentUserService: CurrentUserService) {}
+}

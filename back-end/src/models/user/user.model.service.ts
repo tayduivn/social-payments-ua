@@ -1,3 +1,5 @@
+import bcrypt from 'bcryptjs';
+import { Types } from "mongoose";
 import { User } from '../../../../api-contracts/user/user';
 import { MongoosePromise } from '../mongoose-promise';
 import { UserModel } from './user.model';
@@ -11,10 +13,22 @@ export class UserModelService {
 
   public static create(user: User): Promise<UserModel> {
     return UserModel
-      .create(user);
+      .create(Object.assign(user, {
+        _id: new Types.ObjectId(),
+        created: Date.now(),
+        password: bcrypt.hashSync(user.password, bcrypt.genSaltSync())
+      })
+    );
   }
 
   public static update(id: string, user: User): MongoosePromise<UserModel> {
+    if (user.password) {
+      user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync())
+    } else {
+      delete user.password;
+    }
+    delete user._id;
+
     return UserModel
       .findByIdAndUpdate(id, user);
   }
