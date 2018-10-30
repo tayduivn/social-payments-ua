@@ -5,6 +5,7 @@ import express, {
   Response
 } from 'express';
 import * as _ from 'lodash';
+import { token } from 'morgan';
 import { LoginResponse } from '../../../api-contracts/login/login-response';
 import { User } from '../../../api-contracts/user/user';
 import { HttpError } from '../core/http-error';
@@ -45,6 +46,12 @@ router.post('/', (req: Request, res: Response, next: NextFunction) => {
       next(err || {status: 401} as any);
     }
   });
+});
+
+router.delete('/', (req: Request, res: Response, next: NextFunction) => {
+  const token = _.get(req, 'headers.authorization', '').replace('Bearer ', '');
+
+  UserModel.findOneAndUpdate({token}, {token: null}, () => res.end());
 });
 
 export const loginRouter = router;

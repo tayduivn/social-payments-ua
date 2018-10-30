@@ -10,7 +10,11 @@
       <span>{{currentUserService.getUser().fullName}}</span>
     </span>
 
-    <a mat-button title="Вийти" color="warn" class="sp-nav-icon"><mat-icon color="warn">vpn_key</mat-icon></a>
+    <a mat-button
+      title="Вийти"
+      color="warn"
+      class="sp-nav-icon"
+      (click)="logout()"><mat-icon color="warn">vpn_key</mat-icon></a>
   </div>
 </mat-toolbar>
 <section class="sp-body">
