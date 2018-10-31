@@ -84,7 +84,7 @@ export class HistoryFilterComponent implements AfterViewInit {
     const formVal = this.searchForm.value;
     formVal.datesRange = FilterUtils.isEmpty(formVal.datesRange) ? formVal.datesRange : _.mapValues(
       formVal.datesRange,
-      (val: any) => moment.isMoment(val) ? val.toISOString() : val
+      (val: string) => moment.isMoment(val) ? val.toISOString(true) : val
     );
 
     this.setupFilterChips();
