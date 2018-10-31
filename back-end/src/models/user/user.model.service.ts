@@ -41,4 +41,9 @@ export class UserModelService {
   public static findByToken(token: string): MongoosePromise<UserModel> {
     return UserModel.findOne({token})
   }
+
+  public static isAdmin(token: string): Promise<boolean> {
+    return UserModel.findOne({token})
+      .then((user: UserModel) => user.isAdmin);
+  }
 }

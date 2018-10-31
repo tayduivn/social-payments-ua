@@ -5,7 +5,6 @@ import express, {
   Response
 } from 'express';
 import * as _ from 'lodash';
-import { token } from 'morgan';
 import { LoginResponse } from '../../../api-contracts/login/login-response';
 import { User } from '../../../api-contracts/user/user';
 import { HttpError } from '../core/http-error';
@@ -14,6 +13,8 @@ import { TokenInfo } from '../core/token-info';
 import { UserModel } from '../models/user/user.model';
 
 const router = express.Router();
+
+// todo: rewrite wih controller
 
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
   const token = _.get(req, 'headers.authorization', '').replace('Bearer ', '');

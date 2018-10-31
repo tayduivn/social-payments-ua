@@ -1,6 +1,5 @@
 import * as jwt from 'jsonwebtoken';
 import cryptoRandoomString from 'crypto-random-string';
-import { isBoolean } from 'util';
 import { UserModel } from '../models/user/user.model';
 import { UserModelService } from '../models/user/user.model.service';
 import { TokenInfo } from './token-info';
