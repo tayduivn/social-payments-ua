@@ -10,6 +10,7 @@ import {
   distinctUntilChanged,
   filter,
   map,
+  startWith,
   take
 } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
@@ -25,7 +26,7 @@ export class LatestPaymentsService extends WebsocketDataService<Payment> {
   public readonly items$: Observable<Payment[]>;
   public readonly sourceExhausted$: Observable<boolean>;
 
-  protected readonly dataObserver: ReplaySubject<Payment[]>;
+  protected readonly dataObserver = new ReplaySubject<Payment[]>(1);
   protected readonly websocketChannel = 'payment';
 
   private static readonly pageSize = 30;
@@ -41,7 +42,7 @@ export class LatestPaymentsService extends WebsocketDataService<Payment> {
   ) {
     super();
 
-    this.dataObserver = new ReplaySubject<Payment[]>(1);
+    // this.dataObserver =
     this.items$ = this.dataObserver.asObservable();
     this.sourceExhausted$ = this.sourceExhaustedSubject.asObservable()
       .pipe(
@@ -97,7 +98,6 @@ export class LatestPaymentsService extends WebsocketDataService<Payment> {
 
   private setInitialLoad(): void {
     this.initialLoadCompleted = false;
-    this.dataObserver.next([]);
     this.sourceExhaustedSubject.next(false);
   }
 
@@ -112,6 +112,7 @@ export class LatestPaymentsService extends WebsocketDataService<Payment> {
   private getCachedItems(): Observable<Payment[]> {
     return this.items$
       .pipe(
+        startWith([]),
         take(1)
       );
   }

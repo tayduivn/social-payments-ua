@@ -4,15 +4,15 @@ import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class TabbedItemsService {
-  public readonly closeActiveTab$: Observable<void>;
+  public readonly closeActiveTab$: Observable<number | null>;
 
-  private closeActiveTabSubject = new Subject<void>();
+  private closeActiveTabSubject = new Subject<number | null>();
 
   constructor() {
     this.closeActiveTab$ = this.closeActiveTabSubject.asObservable();
   }
 
-  public closeActiveTab(): void {
-    this.closeActiveTabSubject.next();
+  public closeActiveTab(activationTabIndex: number = null): void {
+    this.closeActiveTabSubject.next(activationTabIndex);
   }
 }
