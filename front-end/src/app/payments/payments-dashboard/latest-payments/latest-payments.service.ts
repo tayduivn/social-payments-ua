@@ -3,6 +3,7 @@ import {
   HttpParams
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { of } from 'rxjs/internal/observable/of';
 import { zip } from 'rxjs/internal/observable/zip';
 import { Observable } from 'rxjs/Observable';
 import {
@@ -11,7 +12,8 @@ import {
   filter,
   map,
   startWith,
-  take
+  take,
+  tap
 } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Payment } from '../../../../../../api-contracts/payment/payment';
@@ -34,6 +36,7 @@ export class LatestPaymentsService extends WebsocketDataService<Payment> {
   private static readonly initialPagesCache = 3;
 
   private initialLoadCompleted: boolean = false;
+  private canLoadNextFrame: boolean = true;
   private sourceExhaustedSubject = new ReplaySubject<boolean>(1);
 
   constructor(
@@ -41,8 +44,6 @@ export class LatestPaymentsService extends WebsocketDataService<Payment> {
     protected readonly websocketConnectionService: WebsocketConnectionService
   ) {
     super();
-
-    // this.dataObserver =
     this.items$ = this.dataObserver.asObservable();
     this.sourceExhausted$ = this.sourceExhaustedSubject.asObservable()
       .pipe(
@@ -53,8 +54,9 @@ export class LatestPaymentsService extends WebsocketDataService<Payment> {
   public connect(): void {
     this.setInitialLoad();
 
-    this.getQueryOptions()
+    this.getQueryOptions(true)
       .pipe(
+        take(1),
         concatMap(this.getHttpRequest.bind(this))
       )
       .subscribe(
@@ -67,9 +69,11 @@ export class LatestPaymentsService extends WebsocketDataService<Payment> {
   }
 
   public queryNextFrame(): void {
-    if (!this.initialLoadCompleted) {
+    if (!this.initialLoadCompleted || !this.canLoadNextFrame) {
       return;
     }
+
+    this.canLoadNextFrame = false;
 
     zip(
       this.sourceExhausted$
@@ -86,12 +90,13 @@ export class LatestPaymentsService extends WebsocketDataService<Payment> {
       this.getCachedItems()
     )
       .pipe(
-        map(([exhausted, response, cached]) => ({response, cached}))
+        map(([exhausted, response, cached]) => ({response, cached})),
+        tap(() => this.canLoadNextFrame = true)
       )
       .subscribe(
         ({response, cached}: {response: PaymentsLatest, cached: Payment[]}) => {
           this.dataObserver.next(cached.concat(response.payments));
-          this.sourceExhaustedSubject.next(!response.payments.length);
+          this.sourceExhaustedSubject.next(!response.payments.length || response.payments.length < LatestPaymentsService.pageSize);
         }
       );
   }
@@ -112,16 +117,15 @@ export class LatestPaymentsService extends WebsocketDataService<Payment> {
   private getCachedItems(): Observable<Payment[]> {
     return this.items$
       .pipe(
-        startWith([]),
         take(1)
       );
   }
 
-  private getQueryOptions(): Observable<{params: HttpParams}> {
+  private getQueryOptions(initialRequest: boolean = false): Observable<{params: HttpParams}> {
     const frameSize = this.initialLoadCompleted ? LatestPaymentsService.pageSize :
       LatestPaymentsService.pageSize * LatestPaymentsService.initialPagesCache;
 
-    return this.getCachedItems()
+    return (initialRequest ? of([]) : this.getCachedItems())
       .pipe(
         map((payments: Payment[]) => payments ? payments.length : 0),
         map((currentBufferSize: number) => {

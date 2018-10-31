@@ -4,15 +4,11 @@ import {
 } from '@angular/core';
 import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { merge } from 'rxjs/internal/observable/merge';
 import { Observable } from 'rxjs/Observable';
-import {
-  map,
-  tap
-} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { displayDateFormat } from '../../../shared/constants/date-formats';
-import { LatestPaymentsService } from './latest-payments.service';
 import { PersonHelper } from '../../../shared/utils/person.helper';
+import { LatestPaymentsService } from './latest-payments.service';
 
 @Component({
   selector: 'sp-latest-payments',
@@ -51,7 +47,6 @@ export class LatestPaymentsComponent implements OnInit {
   }
 
   public onScrollBottom(): void {
-    console.log('onScrollBottom');
     this.renderLoadingSubject.next(true);
     this.latestPaymentsService.queryNextFrame();
   }
