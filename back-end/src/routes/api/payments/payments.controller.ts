@@ -84,6 +84,10 @@ export class PaymentsController extends ApiCommonController {
   private static getDatesRangeFilter(dateFrom: string, dateTo: string): Object {
     const searchConditions = {};
 
+    // todo: think on this more
+    dateFrom = (dateFrom || '').replace(' ', '+');
+    dateTo = (dateTo || '').replace(' ', '+');
+
     if (dateFrom && moment(dateFrom).isValid()) {
       Object.assign(searchConditions, {$gte: moment(dateFrom).startOf('day') as any});
     }
