@@ -21,17 +21,26 @@ const routes: Routes = [
   {
     path: 'payments',
     canActivate: [AuthGuard],
-    component: PaymentsComponent
+    component: PaymentsComponent,
+    data: {
+      animation: 'payments'
+    }
   },
   {
     path: 'reports',
     canActivate: [AuthGuard],
-    component: ReportsComponent
+    component: ReportsComponent,
+    data: {
+      animation: 'reports'
+    }
   },
   {
     path: 'admin',
     canActivate: [AuthGuard],
-    component: AdminComponent
+    component: AdminComponent,
+    data: {
+      animation: 'admin'
+    }
   },
   {
     path: '',

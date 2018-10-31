@@ -1,8 +1,8 @@
 <mat-toolbar color="primary" class="sp-top-panel">
   <nav class="sp-nav">
-    <a class="sp-nav-link" routerLink="/payments" mat-button>Платежі</a>
-    <a class="sp-nav-link" routerLink="/reports" mat-button>Звіти</a>
-    <a *ngIf="currentUserService.getUser().isAdmin" class="sp-nav-link" routerLink="/admin" mat-button>Адміністрування</a>
+    <button class="sp-nav-link" routerLink="/payments" mat-button>Платежі</button>
+    <button class="sp-nav-link" routerLink="/reports" mat-button>Звіти</button>
+    <button *ngIf="currentUserService.getUser().isAdmin" class="sp-nav-link" routerLink="/admin" mat-button>Адміністрування</button>
   </nav>
 
   <div class="sp-nav-user">

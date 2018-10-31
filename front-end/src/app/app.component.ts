@@ -6,24 +6,28 @@ import {
 } from '@angular/core';
 import {
   NavigationEnd,
-  NavigationStart,
-  Router
+  Router,
+  RouterOutlet
 } from '@angular/router';
+import * as _ from 'lodash';
 import {
   filter,
-  map,
-  tap
+  map
 } from 'rxjs/operators';
+import { routerSlideAnimation } from './router-slide-animation';
 
 @Component({
   selector: 'sp-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    routerSlideAnimation
+  ]
 })
 export class AppComponent implements OnInit {
   public renderMenu: boolean;
-  public mainSpinnerHidden = true;
+  public mainSpinnerVisible = false;
 
   constructor(
     private cdRef: ChangeDetectorRef,
@@ -33,17 +37,6 @@ export class AppComponent implements OnInit {
   public ngOnInit() {
     this.router.events
       .pipe(
-        tap((e) => {
-          if (e instanceof NavigationStart) {
-            // first time do nut show it until first route ends
-            // this.mainSpinnerHidden = false && this.mainSpinnerHidden !== null;
-          } else if (e instanceof NavigationEnd) {
-            // setTimeout(() => {
-            //   this.mainSpinnerHidden = true;
-            //   this.cdRef.markForCheck();
-            // }, 500)
-          }
-       }),
         filter(e => e instanceof NavigationEnd),
         map((e: NavigationEnd) => e.url)
       )
@@ -51,5 +44,9 @@ export class AppComponent implements OnInit {
         this.renderMenu = url !== '/login';
         this.cdRef.markForCheck();
       });
+  }
+
+  public prepareRoute(outlet: RouterOutlet): boolean {
+    return _.get(outlet, 'activatedRouteData.animation', false);
   }
 }

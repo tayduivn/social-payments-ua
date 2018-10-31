@@ -14,13 +14,13 @@
   bottom: 0;
   left: 0;
   right: 0;
-  display: flex;
   align-items: center;
   justify-content: center;
   background-color: white;
   opacity: 0.8;
+  display: none;
 
-  &[hidden=true] {
-    display: none;
+  &[visible=true] {
+    display: flex;
   }
 }
