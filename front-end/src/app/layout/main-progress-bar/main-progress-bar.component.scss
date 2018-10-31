@@ -13,7 +13,7 @@ $progress-bar-height: 1em;
 $transition-time: 500ms;
 
 :host {
-  z-index: 1000;
+  z-index: $loading-indicator-index;
   color: mat-color($mat-indigo, 500);
 
   @include layer();

@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { MainNavModule } from './layout/main-nav/main-nav.module';
 import { MainProgressBarModule } from './layout/main-progress-bar/main-progress-bar.module';
+import { AngularMaterialModule } from './shared/angular-material/angular-material.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,6 +16,7 @@ import { MainProgressBarModule } from './layout/main-progress-bar/main-progress-
     BrowserModule,
     BrowserAnimationsModule,
     CoreModule,
+    AngularMaterialModule,
     AppStartupModulesModule,
     NgxMaskModule.forRoot(),
     MainNavModule,
