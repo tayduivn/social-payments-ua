@@ -21,6 +21,7 @@ import { FinancialInstitutionComponent } from '../../shared/components/financial
 import { PersonAccountSelectedModel } from '../../shared/components/person-accounts/person-account-selected.model';
 import { PersonAccountsService } from '../../shared/components/person-accounts/person-accounts.service';
 import { PersonComponent } from '../../shared/components/person/person.component';
+import { apiDateFormat } from '../../shared/constants/date-formats';
 import { PaymentService } from './payment.service';
 import { SelectPersonAccountDialogComponent } from './select-person-account-dialog/select-person-account-dialog.component';
 import { SelectPersonAccountDialogService } from './select-person-account-dialog/select-person-account-dialog.service';
@@ -134,7 +135,7 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
 
   private createForm() {
     this.form = this.fb.group({
-      date: [moment(Date.now()), Validators.required],
+      date: [moment(Date.now()).format(apiDateFormat), Validators.required],
       accountNumber: [''],
       sum: ['', [Validators.required, Validators.min(0.01)]],
       description: ['', Validators.required],

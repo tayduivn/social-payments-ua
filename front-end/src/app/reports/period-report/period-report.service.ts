@@ -3,14 +3,10 @@ import { Injectable } from '@angular/core';
 import * as FileSaver from 'file-saver';
 import * as moment from 'moment';
 import { Moment } from 'moment';
-import {
-  finalize,
-  map,
-  tap
-} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { TabbedItemsService } from '../../layout/tabbed-items/tabbed-items.service';
-import { requestDateFormat } from '../../shared/constants/date-formats';
+import { apiDateFormat } from '../../shared/constants/date-formats';
 import { WindowProvider } from '../../shared/providers/window-provider';
 import { PeriodReportRange } from './period-report-range.enum';
 
@@ -41,7 +37,7 @@ export class PeriodReportService {
         return;
     }
 
-    this.saveReport(`${this.requestUrl}?startDate=${startDate.format(requestDateFormat)}&endDate=${endDate.format(requestDateFormat)}`);
+    this.saveReport(`${this.requestUrl}?startDate=${startDate.format(apiDateFormat)}&endDate=${endDate.format(apiDateFormat)}`);
   }
 
   private saveReport(url: string): void {

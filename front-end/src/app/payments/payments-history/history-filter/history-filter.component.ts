@@ -17,7 +17,10 @@ import * as moment from 'moment';
 import { Moment } from 'moment';
 import { FinancialInstitutionComponent } from '../../../shared/components/financial-institution/financial-institution.component';
 import { PersonComponent } from '../../../shared/components/person/person.component';
-import { displayDateFormat } from '../../../shared/constants/date-formats';
+import {
+  apiDateFormat,
+  displayDateFormat
+} from '../../../shared/constants/date-formats';
 import { FilterUtils } from '../../../shared/utils/filter-utils';
 import { HistoryFilterModel } from '../shared/history-filter.model';
 import { FilterChipConfigModel } from './filter-chip-config.model';
@@ -84,7 +87,7 @@ export class HistoryFilterComponent implements AfterViewInit {
     const formVal = this.searchForm.value;
     formVal.datesRange = FilterUtils.isEmpty(formVal.datesRange) ? formVal.datesRange : _.mapValues(
       formVal.datesRange,
-      (val: string) => moment.isMoment(val) ? val.toISOString(true) : val
+      (val: string) => moment(val).isValid() ? moment(val).format(apiDateFormat) : null
     );
 
     this.setupFilterChips();

@@ -13,6 +13,8 @@ import { StreetModelService } from '../street/street.model.service';
 import { PaymentModel } from './payment.model';
 
 export class PaymentModelService {
+  private static readonly sorting = '-date -created';
+
   public static create(payment: Payment): Promise<PaymentModel> {
     let financialInstitution: FinancialInstitution;
     let person: Person;
@@ -57,13 +59,13 @@ export class PaymentModelService {
   public static find(filter: PaymentsFilter): MongoosePromise<PaymentModel[]> {
     return PaymentModel
       .find(filter)
-      .sort('-date');
+      .sort(PaymentModelService.sorting);
   }
 
   public static latest(skip: number, take: number): MongoosePromise<PaymentsLatest> {
     return PaymentModel
       .find({})
-      .sort('-date')
+      .sort(PaymentModelService.sorting)
       .skip(skip)
       .limit(take)
       .lean()
