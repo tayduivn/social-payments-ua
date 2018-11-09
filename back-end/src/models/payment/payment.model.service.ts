@@ -10,12 +10,13 @@ import { MongoosePromise } from '../mongoose-promise';
 import { PersonAccountsModelService } from '../person-accounts/person-accounts.model.service';
 import { PersonModelService } from '../person/person.model.service';
 import { StreetModelService } from '../street/street.model.service';
+import { UserModel } from '../user/user.model';
 import { PaymentModel } from './payment.model';
 
 export class PaymentModelService {
   private static readonly sorting = '-date -created';
 
-  public static create(payment: Payment): Promise<PaymentModel> {
+  public static create(payment: Payment, user: UserModel): Promise<PaymentModel> {
     let financialInstitution: FinancialInstitution;
     let person: Person;
     let street: Street;
@@ -41,6 +42,8 @@ export class PaymentModelService {
         payment.financialInstitution = financialInstitution;
         payment.person._id = person._id;
         payment.person.address.street = street;
+        payment.created = new Date(Date.now()).toString();
+        (payment as PaymentModel).author = user._id;
         delete payment._id;
 
         return PaymentModel.create(payment);

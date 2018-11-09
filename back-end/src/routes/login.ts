@@ -17,7 +17,7 @@ const router = express.Router();
 // todo: rewrite wih controller
 
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
-  const token = _.get(req, 'headers.authorization', '').replace('Bearer ', '');
+  const token = Token.extractFromRequest(req);
 
   if (!token) {
     const error = new HttpError('');

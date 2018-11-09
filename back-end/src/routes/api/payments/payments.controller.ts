@@ -11,7 +11,11 @@ import { PaymentsFilter } from '../../../../../api-contracts/payment/payments-fi
 import { PaymentsLatest } from '../../../../../api-contracts/payment/payments-latest';
 import { PaymentsLatestFilter } from '../../../../../api-contracts/payment/payments-latest-filter';
 import { HttpError } from '../../../core/http-error';
+import { Token } from '../../../core/token';
+import { PaymentModel } from '../../../models/payment/payment.model';
 import { PaymentModelService } from '../../../models/payment/payment.model.service';
+import { UserModel } from '../../../models/user/user.model';
+import { UserModelService } from '../../../models/user/user.model.service';
 import { ApiCommonController } from '../api-common.controller';
 
 export class PaymentsController extends ApiCommonController {
@@ -40,7 +44,8 @@ export class PaymentsController extends ApiCommonController {
   }
 
   public static create(req: Request, res: Response, next: NextFunction): void {
-    PaymentModelService.create(req.body as Payment)
+    UserModelService.findByToken(Token.extractFromRequest(req))
+      .then((user: UserModel) => PaymentModelService.create(req.body as Payment, user))
       .then(...super.promiseResponse<Payment>(res, next));
   }
 
