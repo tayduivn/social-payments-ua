@@ -6,16 +6,17 @@ import express, {
   Request,
   Response
 } from 'express';
-import morgan from 'morgan';
 import { Config } from './core/config/config';
 import { connectDb } from './core/db/db-connection';
 import { HttpError } from './core/http-error';
+import { Logger } from './core/logger/logger';
 import { initRoutes } from './routes/init-routes';
 
 const appConfig = express();
 
+Logger.init(appConfig);
+
 appConfig.use(cors());
-appConfig.use(morgan('dev'));
 appConfig.use(bodyParser.json());
 appConfig.use(bodyParser.urlencoded({extended: false}));
 appConfig.use(cookieParser());
