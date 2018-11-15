@@ -1,5 +1,4 @@
 import nconf from 'nconf';
-import { ConfigDefaults } from './config-defaults';
 import { ConfigKeys } from './config-keys.type';
 import { DbConfig } from './db-config';
 import { EnvConfig } from './env-config';
@@ -16,15 +15,15 @@ nconf
 export class Config {
   public static get db(): DbConfig {
     return {
-      uri: nconf.get(ConfigKeys.DbUri) || ConfigDefaults[ConfigKeys.DbUri]
+      uri: nconf.get(ConfigKeys.DbUri)
     };
   }
 
   public static get env(): EnvConfig {
     return {
-      port: nconf.get(ConfigKeys.Port) || ConfigDefaults[ConfigKeys.Port],
+      port: nconf.get(ConfigKeys.Port),
       production: !!nconf.get(ConfigKeys.Production),
-      protocol: nconf.get(ConfigKeys.Protocol) || ConfigDefaults[ConfigKeys.Protocol]
+      protocol: nconf.get(ConfigKeys.Protocol)
     }
   }
 }
