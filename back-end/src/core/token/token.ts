@@ -2,8 +2,8 @@ import { Request } from 'express';
 import * as jwt from 'jsonwebtoken';
 import cryptoRandoomString from 'crypto-random-string';
 import * as _ from 'lodash';
-import { UserModel } from '../models/user/user.model';
-import { UserModelService } from '../models/user/user.model.service';
+import { UserModel } from '../../models/user/user.model';
+import { UserModelService } from '../../models/user/user.model.service';
 import { TokenInfo } from './token-info';
 
 function secret() {

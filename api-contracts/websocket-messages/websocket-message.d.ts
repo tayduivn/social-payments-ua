@@ -1,8 +1,8 @@
-import { FinancialInstitutionMessage } from './financial-institution-message';
-import { PaymentMessage } from './payment-message';
-import { PersonAccountsMessage } from './person-accounts-message';
-import { PersonMessage } from './person-message';
-import { StreetMessage } from './street-message';
+import { FinancialInstitutionMessage } from './messages/financial-institution-message';
+import { PaymentMessage } from './messages/payment-message';
+import { PersonAccountsMessage } from './messages/person-accounts-message';
+import { PersonMessage } from './messages/person-message';
+import { StreetMessage } from './messages/street-message';
 
 export type WebsocketMessage =
   FinancialInstitutionMessage |

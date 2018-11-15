@@ -1,13 +1,12 @@
 import mongoose from 'mongoose';
+import { Config } from '../config/config';
 
 export function connectDb() {
-  const dbPath = process.env.MONGODB_URI || 'mongodb://localhost/social-payments-ua';
-
-  mongoose.connect(dbPath, {
+  mongoose.connect(Config.db.uri, {
     useNewUrlParser: true
   });
   mongoose.set('useCreateIndex', true);
-  mongoose.set('debug', true);
+  // mongoose.set('debug', true);
 
   const dbConnection = mongoose.connection;
 

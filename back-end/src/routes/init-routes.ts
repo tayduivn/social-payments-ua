@@ -1,8 +1,8 @@
 import { Express } from 'express-serve-static-core';
 import passport from 'passport';
 import { Strategy as BearerStrategy } from 'passport-http-bearer';
-import { Token } from '../core/token';
-import { TokenInfo } from '../core/token-info';
+import { Token } from '../core/token/token';
+import { TokenInfo } from '../core/token/token-info';
 import { apiRouter } from './api/api';
 import { loginRouter } from './login';
 import { reportsRouter } from './reports/reports';

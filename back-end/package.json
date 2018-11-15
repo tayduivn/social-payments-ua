@@ -9,8 +9,7 @@
     "start:ts": "tsc -w",
     "start:server": "node dist/bin/www.js",
     "test": "nodemon --ext ts --exec jasmine-ts \"src/**/*.spec.ts\"",
-    "build": "rimraf dist && tsc",
-    "db": "c:/tools/mongodb.portable/bin/mongod"
+    "build": "rimraf dist && tsc"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -27,9 +26,11 @@
     "moment": "^2.22.2",
     "mongoose": "^5.2.14",
     "morgan": "^1.9.1",
+    "nconf": "^0.10.0",
     "passport": "^0.4.0",
     "passport-http-bearer": "^1.0.1",
     "utf-8-validate": "^5.0.1",
+    "winston": "^3.1.0",
     "ws": "^6.1.0"
   },
   "devDependencies": {
@@ -46,6 +47,7 @@
     "@types/lodash": "^4.14.116",
     "@types/mongoose": "^5.2.12",
     "@types/morgan": "^1.7.35",
+    "@types/nconf": "0.0.37",
     "@types/node": "^9.6.31",
     "@types/passport": "^0.4.6",
     "@types/passport-http-bearer": "^1.0.33",

@@ -11,7 +11,7 @@ import { PaymentsFilter } from '../../../../../api-contracts/payment/payments-fi
 import { PaymentsLatest } from '../../../../../api-contracts/payment/payments-latest';
 import { PaymentsLatestFilter } from '../../../../../api-contracts/payment/payments-latest-filter';
 import { HttpError } from '../../../core/http-error';
-import { Token } from '../../../core/token';
+import { Token } from '../../../core/token/token';
 import { PaymentModel } from '../../../models/payment/payment.model';
 import { PaymentModelService } from '../../../models/payment/payment.model.service';
 import { UserModel } from '../../../models/user/user.model';
