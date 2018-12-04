@@ -3,6 +3,7 @@ import { Person } from '../person/person';
 
 export interface Payment {
   _id: string;
+  created: string;
   date: string;
   accountNumber?: string;
   sum: number;

@@ -1,0 +1,6 @@
+{
+  "MONGODB_URI": "mongodb://localhost/social-payments-ua",
+  "PORT": 443,
+  "PRODUCTION": true,
+  "PROTOCOL": "HTTPS"
+}

@@ -7,7 +7,6 @@ import { Payment } from '../../../../api-contracts/payment/payment';
 import { financialInstitutionSchema } from '../financial-institution/financial-institution.model';
 import { personSchemaFields } from '../person/person.model';
 import { streetSchema } from '../street/street.model';
-import { addPaymentMiddleware } from './payment.model.middleware';
 
 const paymentPersonSchemaFields = Object.assign({}, personSchemaFields);
 paymentPersonSchemaFields.address.street = streetSchema as any;
@@ -16,6 +15,11 @@ const paymentSchema = new Schema({
   created: {
     type: Date,
     required: [true]
+  },
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
   },
   date: {
     type: Date,
@@ -44,9 +48,7 @@ paymentSchema.index(
   }
 );
 
-addPaymentMiddleware(paymentSchema);
-
-export type PaymentModel = Payment & Document & {created: Date};
+export type PaymentModel = Payment & Document & {author: number};
 
 export const PaymentModel = model<PaymentModel>('Payment', paymentSchema);
 

@@ -6,20 +6,22 @@ import express, {
   Request,
   Response
 } from 'express';
-import morgan from 'morgan';
+import { Config } from './core/config/config';
 import { connectDb } from './core/db/db-connection';
 import { HttpError } from './core/http-error';
+import { Logger } from './core/logger/logger';
 import { initRoutes } from './routes/init-routes';
 
 const appConfig = express();
 
+Logger.init(appConfig);
+
 appConfig.use(cors());
-appConfig.use(morgan('dev'));
 appConfig.use(bodyParser.json());
 appConfig.use(bodyParser.urlencoded({extended: false}));
 appConfig.use(cookieParser());
 
-if (process.env.HEROKU) {
+if (Config.env.production) {
   appConfig.use(express.static('../front-end/dist/social-payments-ua'));
 }
 
@@ -28,7 +30,7 @@ initRoutes(appConfig);
 
 // catch 404 and forward to error handler
 appConfig.use((req: Request, res: Response, next: NextFunction) => {
-  if (process.env.HEROKU) {
+  if (Config.env.production) {
     res.redirect('/index.html');
   } else {
     const err = new Error('Not Found') as any;

@@ -2,6 +2,9 @@ import { Express } from 'express';
 import fs from 'fs';
 import http, { Server as HttpServer } from 'http';
 import https, { Server as HttpsServer } from 'https';
+import { Config } from './config/config';
+import { LogLevel } from './logger/log-levels.type';
+import { Logger } from './logger/logger';
 
 const debug = require('debug')('express-g:server');
 
@@ -19,9 +22,8 @@ export class WebServer {
   };
 
   constructor(private expressApp: Express) {
-    console.log('WebServer constructor');
-    this.port = WebServer.normalizePort(process.env.PORT || '443');
-    this.server = process.env.HEROKU ? http.createServer(this.expressApp) : https.createServer(WebServer.sslOptions, this.expressApp);
+    this.port = Config.env.port;
+    this.server = Config.env.protocol === 'HTTP' ? http.createServer(this.expressApp) : https.createServer(WebServer.sslOptions, this.expressApp);
 
     this.initPort();
     this.initServer();
@@ -73,7 +75,7 @@ export class WebServer {
       ? 'pipe ' + addr
       : 'port ' + addr.port;
     debug('Listening on ' + bind);
-    console.log('Listening on ' + bind);
+    Logger.log(LogLevel.info, 'Listening on ' + bind);
   }
 
   private initPort(): void {

@@ -1,7 +1,9 @@
+import { Request } from 'express';
 import * as jwt from 'jsonwebtoken';
 import cryptoRandoomString from 'crypto-random-string';
-import { UserModel } from '../models/user/user.model';
-import { UserModelService } from '../models/user/user.model.service';
+import * as _ from 'lodash';
+import { UserModel } from '../../models/user/user.model';
+import { UserModelService } from '../../models/user/user.model.service';
 import { TokenInfo } from './token-info';
 
 function secret() {
@@ -25,6 +27,10 @@ function secret() {
 export class Token {
   private static expiredIn = '12h';
   private static saltLength = 15;
+
+  public static extractFromRequest(req: Request): string {
+    return _.get(req, 'headers.authorization', '').replace('Bearer ', '');
+  }
 
   public static createToken(login: string): string {
     return jwt.sign(
