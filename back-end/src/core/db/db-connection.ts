@@ -1,9 +1,10 @@
+import { MongoClient } from 'mongodb';
 import mongoose from 'mongoose';
 import { Config } from '../config/config';
 import { LogLevel } from '../logger/log-levels.type';
 import { Logger } from '../logger/logger';
 
-export function connectDb() {
+function connectMongoose() {
   mongoose.connect(Config.db.uri, {
     useNewUrlParser: true
   });
@@ -25,4 +26,21 @@ export function connectDb() {
       process.exit(0)
     });
   });
+}
+
+function connectDriver() {
+  const client = new MongoClient(Config.db.uri);
+
+  client.connect((err: any) => {
+    if (!err) {
+      Logger.log(LogLevel.info, 'Driver connection set');
+    } else {
+      Logger.log(LogLevel.error, `Error during db conection ${err}`);
+    }
+  })
+}
+
+export function connectDb() {
+  connectMongoose();
+  connectDriver();
 }
