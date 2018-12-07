@@ -1,46 +1,55 @@
-import { MongoClient } from 'mongodb';
-import mongoose from 'mongoose';
+import {
+  Db,
+  MongoClient
+} from 'mongodb';
 import { Config } from '../config/config';
 import { LogLevel } from '../logger/log-levels.type';
 import { Logger } from '../logger/logger';
 
-function connectMongoose() {
-  mongoose.connect(Config.db.uri, {
-    useNewUrlParser: true
-  });
-  mongoose.set('useCreateIndex', true);
+type PromiseResolver = {resolve: (connection: Db) => void, reject: (err?: any) => void};
 
-  const dbConnection = mongoose.connection;
+export class DbConnection {
+  private static readonly dbName = 'social-payments-ua';
+  private static readonly client = new MongoClient(Config.db.uri);
 
-  dbConnection.on('error', (err: any) => {
-    Logger.log(LogLevel.info, `db connection error ${err}`);
-  });
+  private static db: Db = null;
 
-  dbConnection.on('open', () => {
-    Logger.log(LogLevel.info, 'db connection opened');
-  });
+  private static connectionList: PromiseResolver[] = [];
 
-  process.on('SIGINT', function(){
-    mongoose.connection.close(() => {
-      Logger.log(LogLevel.info, 'Termination, mongoose default connection is disconnected due to application termination');
-      process.exit(0)
+  public static connect(): void {
+    DbConnection.client.connect()
+      .then(
+        DbConnection.connectionHandler,
+        DbConnection.connectionErrorHandler
+      );
+  }
+
+  public static get connection(): Promise<Db> {
+    return DbConnection.db ? Promise.resolve(DbConnection.db) : new Promise<Db>((resolve, reject) => {
+      DbConnection.connectionList.push({resolve, reject});
     });
-  });
-}
+  }
 
-function connectDriver() {
-  const client = new MongoClient(Config.db.uri);
+  private static connectionHandler(client: MongoClient): void {
+    Logger.log(LogLevel.info, 'DB connection opened');
+    DbConnection.db = client.db(DbConnection.dbName);
+    DbConnection.resolveConnections();
+  }
 
-  client.connect((err: any) => {
-    if (!err) {
-      Logger.log(LogLevel.info, 'Driver connection set');
-    } else {
-      Logger.log(LogLevel.error, `Error during db conection ${err}`);
-    }
-  })
-}
+  private static connectionErrorHandler(error: any): void {
+    Logger.log(LogLevel.error, `Error during db connection: ${error}`);
+    DbConnection.resolveConnections(error);
+  }
 
-export function connectDb() {
-  connectMongoose();
-  connectDriver();
+  private static resolveConnections(error?: any): void {
+    DbConnection.connectionList.forEach((resolver: PromiseResolver) => {
+      if (DbConnection.db) {
+        resolver.resolve(DbConnection.db);
+      } else {
+        resolver.reject(error);
+      }
+    });
+
+    DbConnection.connectionList = [];
+  }
 }

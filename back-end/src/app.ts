@@ -7,7 +7,8 @@ import express, {
   Response
 } from 'express';
 import { Config } from './core/config/config';
-import { connectDb } from './core/db/db-connection';
+import { DbConnection } from './core/db/db-connection';
+import { connectMongoose } from './core/db/mongoose-connection';
 import { HttpError } from './core/http-error';
 import { Logger } from './core/logger/logger';
 import { initRoutes } from './routes/init-routes';
@@ -25,7 +26,9 @@ if (Config.env.production) {
   appConfig.use(express.static('../front-end/dist/social-payments-ua'));
 }
 
-connectDb();
+DbConnection.connect();
+connectMongoose();
+
 initRoutes(appConfig);
 
 // catch 404 and forward to error handler
