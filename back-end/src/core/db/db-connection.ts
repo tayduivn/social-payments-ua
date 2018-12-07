@@ -9,7 +9,6 @@ import { Logger } from '../logger/logger';
 type PromiseResolver = {resolve: (connection: Db) => void, reject: (err?: any) => void};
 
 export class DbConnection {
-  private static readonly dbName = 'social-payments-ua';
   private static readonly client = new MongoClient(Config.db.uri);
 
   private static db: Db = null;
@@ -32,7 +31,7 @@ export class DbConnection {
 
   private static connectionHandler(client: MongoClient): void {
     Logger.log(LogLevel.info, 'DB connection opened');
-    DbConnection.db = client.db(DbConnection.dbName);
+    DbConnection.db = client.db();
     DbConnection.resolveConnections();
   }
 
