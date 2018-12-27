@@ -4,7 +4,9 @@
     "node": "8.11.x"
   },
   "scripts": {
-    "mm": "migrate-mongo"
+    "mm": "migrate-mongo",
+    "up": "migrate-mongo up",
+    "status": "migrate-mongo status"
   },
   "dependencies": {
     "migrate-mongo": "^4.1.2"

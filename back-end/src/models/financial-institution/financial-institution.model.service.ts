@@ -2,7 +2,7 @@ import { FinancialInstitution } from '../../../../api-contracts/financial-instit
 import { clientBroadcastService } from '../../services/client-broadcast.service';
 import { MongoosePromise } from '../mongoose-promise';
 import { FinancialInstitutionModel } from './financial-institution.model';
-//
+
 export class FinancialInstitutionModelService {
   public static resolve(financialInstitution: FinancialInstitution): Promise<FinancialInstitution | FinancialInstitutionModel> {
     if (financialInstitution._id) {

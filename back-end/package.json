@@ -5,7 +5,7 @@
   },
   "scripts": {
     "start": "npm run build -- --noEmitOnError && concurrently -k -p \"[{name}]\" -n \"ts,node\" -c \"cyan.bold,green.bold\" \"npm run start:ts\" \"npm run start:node\"",
-    "start:node": "cross-env PRODUCTION= nodemon --inspect --watch dist --ext js --ignore dist/**/*.spec.js dist/bin/www.js",
+    "start:node": "cross-env PRODUCTION= nodemon --delay 2.5 --inspect --watch dist --ext js --ignore dist/**/*.spec.js dist/bin/www.js",
     "start:ts": "tsc -w",
     "start:server": "node dist/bin/www.js",
     "test": "nodemon --ext ts --exec jasmine-ts \"src/**/*.spec.ts\"",
