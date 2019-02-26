@@ -12,6 +12,8 @@ import { HttpError } from './core/http-error';
 import { Logger } from './core/logger/logger';
 import { initRoutes } from './routes/init-routes';
 
+console.log('adsfasdf');
+
 const appConfig = express();
 
 Logger.init(appConfig);
