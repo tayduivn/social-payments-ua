@@ -1,7 +1,16 @@
-const serverConfig = require('../back-end/config/server');
+const nconf = require('nconf');
 
+// Setup nconf to use (in-order):
+//   1. Command-line arguments
+//   2. Environment variables
+//   3. A file located at 'path/to/config.json'
+nconf
+  .argv()
+  .env()
+  .file({file: '../back-end/config/server.json'});
 
-const mongodbUri = serverConfig.MONGODB_URI;
+const mongodbUri = nconf.get('MONGODB_URI');
+
 const uriParts = mongodbUri.split('/');
 const dbName = uriParts[uriParts.length - 1];
 

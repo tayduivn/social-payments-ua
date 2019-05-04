@@ -12,18 +12,19 @@ import { HttpError } from './core/http-error';
 import { Logger } from './core/logger/logger';
 import { initRoutes } from './routes/init-routes';
 
-console.log('adsfasdf');
-
 const appConfig = express();
 
 Logger.init(appConfig);
 
-appConfig.use(cors());
+if (Config.env.allowCORS) {
+  appConfig.use(cors());
+}
+
 appConfig.use(bodyParser.json());
 appConfig.use(bodyParser.urlencoded({extended: false}));
 appConfig.use(cookieParser());
 
-if (Config.env.production) {
+if (Config.env.serveStatic) {
   appConfig.use(express.static('../front-end/dist/social-payments-ua'));
 }
 
@@ -32,7 +33,7 @@ initRoutes(appConfig);
 
 // catch 404 and forward to error handler
 appConfig.use((req: Request, res: Response, next: NextFunction) => {
-  if (Config.env.production) {
+  if (Config.env.serveStatic) {
     res.redirect('/index.html');
   } else {
     const err = new Error('Not Found') as any;
