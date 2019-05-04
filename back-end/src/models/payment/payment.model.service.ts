@@ -12,6 +12,8 @@ import { PersonModelService } from '../person/person.model.service';
 import { StreetModelService } from '../street/street.model.service';
 import { UserModel } from '../user/user.model';
 import { PaymentModel } from './payment.model';
+import { KodeKEKModel } from '../kode-kek.model';
+import { KodeKFKModel } from '../kode-kfk.model';
 
 export class PaymentModelService {
   private static readonly sorting = '-date -created';
@@ -37,6 +39,14 @@ export class PaymentModelService {
           financialInstitutionId: financialInstitution._id,
           account: payment.accountNumber
         });
+      })
+      .then(async () => {
+        try {
+          await KodeKEKModel.create({code: payment.codeKEK});
+          await KodeKFKModel.create({code: payment.codeKFK});
+        } catch (err) {}
+
+        return;
       })
       .then(() => {
         payment.financialInstitution = financialInstitution;
