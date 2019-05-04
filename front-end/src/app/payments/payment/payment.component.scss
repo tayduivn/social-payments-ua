@@ -87,6 +87,12 @@ $payment-section-indent: 1.2em;
   width: 100%;
 }
 
+.sp-payment-codes {
+  :first-child {
+    margin-right: $input-inline-indent;
+  }
+}
+
 .sp-payment-section {
   padding: $payment-section-indent 0;
 

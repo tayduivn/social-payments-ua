@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators
 } from '@angular/forms';
@@ -37,14 +36,8 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
   public readonly autocompleteClasses = 'sp-new-payment-autocomplete';
 
   public form: FormGroup;
-  public date: FormControl;
-  public accountNumber: FormControl;
-  public sum: FormControl;
-  public description: FormControl;
 
   public financialInstitutionId: string;
-
-  public saveButtonDisabled = true;
 
   @ViewChild('dateInput')
   private dateInputRef: any;
@@ -76,11 +69,6 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
   public ngAfterViewInit() {
     this.form.setControl('person', this.personComponent.form);
     this.form.setControl('financialInstitution', this.financialInstitutionComponent.form);
-
-    this.form.statusChanges
-      .subscribe(() => {
-        this.saveButtonDisabled = this.form.invalid;
-      });
   }
 
   public onSaveClick() {
@@ -137,19 +125,13 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
     this.form = this.fb.group({
       date: [moment(Date.now()).format(apiDateFormat), Validators.required],
       accountNumber: [''],
+      codeKFK: ['', Validators.required],
+      codeKEK: ['', Validators.required],
       sum: ['', [Validators.required, Validators.min(0.01)]],
       description: ['', Validators.required],
       person: this.fb.group({}),
       financialInstitution: this.fb.group({})
     });
-    this.initControls();
-  }
-
-  private initControls() {
-    this.date = <FormControl> this.form.get('date');
-    this.accountNumber = <FormControl> this.form.get('accountNumber');
-    this.sum = <FormControl> this.form.get('sum');
-    this.description = <FormControl> this.form.get('description');
   }
 
   private onPersonAccountSelected(accountSelected: PersonAccountSelectedModel) {

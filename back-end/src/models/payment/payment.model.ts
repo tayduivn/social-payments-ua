@@ -31,6 +31,14 @@ const paymentSchema = new Schema({
     min: [0.01]
   },
   accountNumber: String,
+  codeKFK: {
+    type: String,
+    required: true
+  },
+  codeKEK: {
+    type: String,
+    required: true
+  },
   description: {
     type: String,
     required: [true]
