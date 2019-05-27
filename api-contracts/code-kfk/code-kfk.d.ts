@@ -1,4 +1,4 @@
-export interface KodeKFK {
+export interface CodeKFK {
   _id: string;
   code: string;
 }

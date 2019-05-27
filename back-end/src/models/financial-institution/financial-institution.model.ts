@@ -25,5 +25,5 @@ export type FinancialInstitutionModel = FinancialInstitution & Document;
 export const FinancialInstitutionModel = model<FinancialInstitutionModel>(
   'FinancialInstitution',
   financialInstitutionSchema,
-  'financial-institutions'
+  'financialInstitutions'
 );

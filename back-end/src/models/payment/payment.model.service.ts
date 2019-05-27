@@ -12,8 +12,8 @@ import { PersonModelService } from '../person/person.model.service';
 import { StreetModelService } from '../street/street.model.service';
 import { UserModel } from '../user/user.model';
 import { PaymentModel } from './payment.model';
-import { KodeKEKModel } from '../kode-kek.model';
-import { KodeKFKModel } from '../kode-kfk.model';
+import { CodeKEKModel } from '../code-kek.model';
+import { CodeKFKModel } from '../code-kfk.model';
 
 export class PaymentModelService {
   private static readonly sorting = '-date -created';
@@ -42,9 +42,11 @@ export class PaymentModelService {
       })
       .then(async () => {
         try {
-          await KodeKEKModel.create({code: payment.codeKEK});
-          await KodeKFKModel.create({code: payment.codeKFK});
-        } catch (err) {}
+          await CodeKEKModel.create({code: payment.codeKEK});
+          await CodeKFKModel.create({code: payment.codeKFK});
+        } catch (err) {
+          // case when adding not unique value. just ignore error, let db validation handle insert without additional logic
+        }
 
         return;
       })
