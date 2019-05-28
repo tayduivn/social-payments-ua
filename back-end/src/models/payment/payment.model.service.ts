@@ -12,8 +12,8 @@ import { PersonModelService } from '../person/person.model.service';
 import { StreetModelService } from '../street/street.model.service';
 import { UserModel } from '../user/user.model';
 import { PaymentModel } from './payment.model';
-import { CodeKEKModel } from '../code-kek.model';
-import { CodeKFKModel } from '../code-kfk.model';
+import { CodeKEKModel } from '../code-kek/code-kek.model';
+import { CodeKFKModel } from '../code-kfk/code-kfk.model';
 
 export class PaymentModelService {
   private static readonly sorting = '-date -created';

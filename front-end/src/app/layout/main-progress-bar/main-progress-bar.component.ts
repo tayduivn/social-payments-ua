@@ -6,7 +6,6 @@ import {
   OnInit
 } from '@angular/core';
 import * as _ from 'lodash';
-import { delay } from 'rxjs/operators';
 import { MainProgressBarItemModel } from './main-progress-bar-item.model';
 import { MainProgressBarService } from './main-progress-bar.service';
 
@@ -33,20 +32,24 @@ export class MainProgressBarComponent implements OnInit {
     this.mainProgressBarService.progressItems$
       .subscribe((items: MainProgressBarItemModel[]) => {
         if (!items.length) {
-          this.completed = true;
           setTimeout(() => {
-            this.displayBinding = 'none';
+            this.setCompleted(true);
             this.cdRef.markForCheck();
           }, 1000);
+
           return;
         }
 
-        this.displayBinding = 'block';
-        this.completed = false;
+        this.setCompleted(false);
         this.progressItems = items;
         this.progress= this.getProgressWidth();
         this.cdRef.markForCheck();
       });
+  }
+
+  private setCompleted(completed: boolean) {
+    this.completed = completed;
+    this.displayBinding = completed ? 'none' : 'block';
   }
 
   private getProgressWidth(): number {

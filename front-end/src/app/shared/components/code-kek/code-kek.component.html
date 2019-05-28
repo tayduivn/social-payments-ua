@@ -1,0 +1,9 @@
+<mat-form-field>
+  <input matInput
+    [formControl]="codeKEK"
+    name="codeKEK"
+    autocomplete="off"
+    placeholder="Код КЕК"
+    [spInputFilter]="'[0-9]'">
+  <mat-error *ngIf="codeKEK.invalid && codeKEK.hasError('required')">Введіть код КЕК</mat-error>
+</mat-form-field>

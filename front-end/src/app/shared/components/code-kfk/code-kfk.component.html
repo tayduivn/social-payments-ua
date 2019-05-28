@@ -1,0 +1,9 @@
+<mat-form-field>
+  <input matInput
+    [formControl]="codeKFK"
+    name="codeKFK"
+    autocomplete="off"
+    placeholder="Код КФК"
+    [spInputFilter]="'[0-9]'">
+  <mat-error *ngIf="codeKFK.invalid && codeKFK.hasError('required')">Введіть код КФК</mat-error>
+</mat-form-field>

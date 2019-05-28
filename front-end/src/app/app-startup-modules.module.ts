@@ -7,6 +7,8 @@ import { PersonAccountsService } from './shared/components/person-accounts/perso
 import { PersonService } from './shared/components/person/person.service';
 import { StreetService } from './shared/components/person/street.service';
 import { WebsocketConnectionService } from './shared/services/websocket-connection/websocket-connection.service';
+import { CodeKFKService } from './shared/components/code-kfk/code-kfk.service';
+import { CodeKEKService } from './shared/components/code-kek/code-kek.service';
 
 @NgModule({
 })
@@ -18,7 +20,9 @@ export class AppStartupModulesModule {
     private personService: PersonService,
     private personAccountsService: PersonAccountsService,
     private streetService: StreetService,
-    private latestPaymentsService: LatestPaymentsService
+    private latestPaymentsService: LatestPaymentsService,
+    private codeKFKService: CodeKFKService,
+    private codeKEKService: CodeKEKService
   ) {
     this.initWebsocket();
     this.initDataCaches();
@@ -40,6 +44,8 @@ export class AppStartupModulesModule {
         this.personAccountsService.connect();
         this.streetService.connect();
         this.latestPaymentsService.connect();
+        this.codeKFKService.connect();
+        this.codeKEKService.connect();
       });
   }
 }

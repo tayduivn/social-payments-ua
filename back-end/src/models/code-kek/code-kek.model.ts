@@ -1,5 +1,5 @@
-import { Document, model, Schema } from "mongoose";
-import { CodeKEK } from '../../../api-contracts/code-kek/code-kek';
+import { Document, model, Schema } from 'mongoose';
+import { CodeKEK } from '../../../../api-contracts/code-kek/code-kek';
 
 export const codeKEKSchema = new Schema({
   code: {

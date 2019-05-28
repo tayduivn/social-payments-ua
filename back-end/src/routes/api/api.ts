@@ -5,6 +5,8 @@ import { personAccountsRouter } from './person-accounts/person-accounts';
 import { personsRouter } from './persons/persons';
 import { streetsRouter } from './streets/streets';
 import { usersRouter } from './users/users';
+import { codesKfkRouter } from './codes-kfk/codes-kfk';
+import { codesKekRouter } from './codes-kek/codes-kek';
 
 const router = express.Router();
 
@@ -14,5 +16,7 @@ router.use('/financial-institutions', financialInstitutionsRouter);
 router.use('/persons', personsRouter);
 router.use('/person-accounts', personAccountsRouter);
 router.use('/streets', streetsRouter);
+router.use('/codes-kfk', codesKfkRouter);
+router.use('/codes-kek', codesKekRouter);
 
 export const apiRouter = router;
