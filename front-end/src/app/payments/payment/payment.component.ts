@@ -1,16 +1,5 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  ViewChild
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators
-} from '@angular/forms';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import * as moment from 'moment';
 import { PersonAccounts } from '../../../../../api-contracts/person-accounts/person-accounts';
@@ -24,6 +13,8 @@ import { apiDateFormat } from '../../shared/constants/date-formats';
 import { PaymentService } from './payment.service';
 import { SelectPersonAccountDialogComponent } from './select-person-account-dialog/select-person-account-dialog.component';
 import { SelectPersonAccountDialogService } from './select-person-account-dialog/select-person-account-dialog.service';
+import { CodeKEKComponent } from '../../shared/components/code-kek/code-kek.component';
+import { CodeKFKComponent } from '../../shared/components/code-kfk/code-kfk.component';
 
 @Component({
   selector: 'sp-payment',
@@ -47,6 +38,10 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
   private financialInstitutionComponent: FinancialInstitutionComponent;
   @ViewChild(PersonComponent)
   private personComponent: PersonComponent;
+  @ViewChild(CodeKFKComponent)
+  private codeKFKComponent: CodeKFKComponent;
+  @ViewChild(CodeKEKComponent)
+  private codeKEKComponent: CodeKEKComponent;
 
   constructor(
     private cdRef: ChangeDetectorRef,
@@ -69,6 +64,8 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
   public ngAfterViewInit() {
     this.form.setControl('person', this.personComponent.form);
     this.form.setControl('financialInstitution', this.financialInstitutionComponent.form);
+    this.form.setControl('codeKFK', this.codeKFKComponent.codeKFK);
+    this.form.setControl('codeKEK', this.codeKEKComponent.codeKEK);
   }
 
   public onSaveClick() {
@@ -125,8 +122,8 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
     this.form = this.fb.group({
       date: [moment(Date.now()).format(apiDateFormat), Validators.required],
       accountNumber: [''],
-      codeKFK: '',
-      codeKEK: '',
+      codeKFK: [''],
+      codeKEK: [''],
       sum: ['', [Validators.required, Validators.min(0.01)]],
       description: ['', Validators.required],
       person: this.fb.group({}),

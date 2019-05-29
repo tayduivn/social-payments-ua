@@ -12,13 +12,13 @@ import { PersonModelService } from '../person/person.model.service';
 import { StreetModelService } from '../street/street.model.service';
 import { UserModel } from '../user/user.model';
 import { PaymentModel } from './payment.model';
-import { CodeKEKModel } from '../code-kek/code-kek.model';
-import { CodeKFKModel } from '../code-kfk/code-kfk.model';
+import { CodeKEKModelService } from '../code-kek/code-kek.model.service';
+import { CodeKFKModelService } from '../code-kfk/code-kfk.model.service';
 
 export class PaymentModelService {
   private static readonly sorting = '-date -created';
 
-  public static create(payment: Payment, user: UserModel): Promise<PaymentModel> {
+  public static create(payment: Payment, user: UserModel): Promise<PaymentModel | void> {
     let financialInstitution: FinancialInstitution;
     let person: Person;
     let street: Street;
@@ -40,15 +40,9 @@ export class PaymentModelService {
           account: payment.accountNumber
         });
       })
-      .then(async () => {
-        try {
-          await CodeKEKModel.create({code: payment.codeKEK});
-          await CodeKFKModel.create({code: payment.codeKFK});
-        } catch (err) {
-          // case when adding not unique value. just ignore error, let db validation handle insert without additional logic
-        }
-
-        return;
+      .then(() => {
+        return CodeKEKModelService.add(payment.codeKEK)
+          .then(() => CodeKFKModelService.add(payment.codeKFK));
       })
       .then(() => {
         payment.financialInstitution = financialInstitution;
@@ -68,6 +62,9 @@ export class PaymentModelService {
         });
 
         return payment;
+      })
+      .catch((err) => {
+        console.log('!!!!!12311', err);
       });
   }
 

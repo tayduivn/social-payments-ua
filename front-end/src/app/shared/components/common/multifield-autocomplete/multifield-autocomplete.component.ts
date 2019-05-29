@@ -27,6 +27,7 @@ import {
 import { pipe } from 'rxjs/util/pipe';
 import { FilterUtils } from '../../../utils/filter-utils';
 import { ProxyAutocompleteCommands } from './proxy-autocomplete-commands.enum';
+import { DefaultPerfectScrollbarConfig } from '../../../constants/default-perfect-scrollbar.config';
 
 @Component({
   selector: 'sp-multifield-autocomplete',
@@ -52,7 +53,7 @@ export class MultifieldAutocompleteComponent implements OnInit, AfterViewInit {
 
   public filteredItems: Observable<Object[]>;
 
-  constructor(private cdRef: ChangeDetectorRef) {}
+  constructor(public defaultPerfectScrollbarConfig: DefaultPerfectScrollbarConfig, private cdRef: ChangeDetectorRef) {}
 
   public ngOnInit() {
     this.filteredItems = this.filter$

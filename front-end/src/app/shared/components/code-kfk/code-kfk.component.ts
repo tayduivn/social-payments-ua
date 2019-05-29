@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { DefaultPerfectScrollbarConfig } from '../../constants/default-perfect-scrollbar.config';
+import { CodeKFKService } from './code-kfk.service';
 
 @Component({
   selector: 'sp-code-kfk',
@@ -9,7 +11,7 @@ import { FormControl, Validators } from '@angular/forms';
 export class CodeKFKComponent implements OnInit {
   public codeKFK = new FormControl('', Validators.required);
 
-  constructor() { }
+  constructor(public codeKFKService: CodeKFKService, public defaultPerfectScrollbarConfig: DefaultPerfectScrollbarConfig) { }
 
   ngOnInit() {
   }

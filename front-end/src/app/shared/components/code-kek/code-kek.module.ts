@@ -4,13 +4,15 @@ import { CodeKEKComponent } from './code-kek.component';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { SharedModule } from '../../shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
 @NgModule({
   imports: [
     AngularMaterialModule,
     CommonModule,
     SharedModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PerfectScrollbarModule
   ],
   declarations: [CodeKEKComponent],
   exports: [CodeKEKComponent]
