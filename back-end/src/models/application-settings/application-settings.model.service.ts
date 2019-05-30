@@ -1,9 +1,9 @@
 import { ApplicationSettingsModel } from './application-settings.model';
 import { MongoosePromise } from '../mongoose-promise';
-import { ApplicationSettings } from '../../../../api-contracts/application-settings/application-settings';
+import { ApplicationSetting } from '../../../../api-contracts/application-setting/application-setting';
 
 export class ApplicationSettingsModelService {
-  public static getAll(): MongoosePromise<ApplicationSettings> {
+  public static getAll(): MongoosePromise<ApplicationSetting[]> {
     return ApplicationSettingsModel.find({});
   }
 }

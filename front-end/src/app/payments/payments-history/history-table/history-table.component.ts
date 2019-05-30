@@ -27,6 +27,8 @@ export class HistoryTableComponent implements OnInit {
 
   public readonly displayedColumns = [
     'date',
+    'kfk',
+    'kek',
     'account',
     'bankName',
     'mfo',
