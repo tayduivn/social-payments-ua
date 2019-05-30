@@ -1,6 +1,6 @@
 import { SettingParamName } from './setting-param-name.type';
 
-export interface ApplicationSettings {
+export interface ApplicationSetting {
   param: SettingParamName;
   data: string;
 }

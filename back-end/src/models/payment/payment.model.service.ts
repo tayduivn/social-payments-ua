@@ -18,7 +18,7 @@ import { CodeKFKModelService } from '../code-kfk/code-kfk.model.service';
 export class PaymentModelService {
   private static readonly sorting = '-date -created';
 
-  public static create(payment: Payment, user: UserModel): Promise<PaymentModel | void> {
+  public static create(payment: Payment, user: UserModel): Promise<PaymentModel> {
     let financialInstitution: FinancialInstitution;
     let person: Person;
     let street: Street;
@@ -62,9 +62,6 @@ export class PaymentModelService {
         });
 
         return payment;
-      })
-      .catch((err) => {
-        console.log('!!!!!12311', err);
       });
   }
 
