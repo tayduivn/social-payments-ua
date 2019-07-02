@@ -13,10 +13,10 @@ export class PersonService extends CachedDataService<Person> {
   protected readonly mainProgressBarItemCaption = 'Одержувачі';
 
   constructor(
-    protected readonly http: HttpClient,
-    protected readonly websocketConnectionService: WebsocketConnectionService,
-    protected readonly mainProgressBarService: MainProgressBarService
+    http: HttpClient,
+    mainProgressBarService: MainProgressBarService,
+    websocketConnectionService: WebsocketConnectionService
   ) {
-    super();
+    super(http, mainProgressBarService, websocketConnectionService);
   }
 }

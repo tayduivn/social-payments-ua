@@ -1,36 +1,32 @@
 import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
-import {
-  map,
-  take
-} from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { environment } from '../../../environments/environment';
-import { MainProgressBarItemModel } from '../../layout/main-progress-bar/main-progress-bar-item.model';
 import { MainProgressBarService } from '../../layout/main-progress-bar/main-progress-bar.service';
 import { MainProgressBerItemStatusEnum } from '../../layout/main-progress-bar/main-progress-ber-item-status.enum';
-import { WebsocketChannel } from './websocket-connection/websocket-channel.type';
 import { WebsocketConnectionService } from './websocket-connection/websocket-connection.service';
 import { WebsocketDataService } from './websocket-data.service';
 
 export abstract class CachedDataService<T> extends WebsocketDataService<T> {
-  protected dataObserver: ReplaySubject<T[]>;
+  protected dataObserver = new ReplaySubject<T[]>(1);
 
-  protected abstract readonly http: HttpClient;
   protected abstract readonly requestUrl: string;
-
-  protected abstract readonly mainProgressBarService: MainProgressBarService;
   protected abstract readonly mainProgressBarItemCaption: string;
 
-  protected constructor() {
-    super();
+  protected constructor(
+    protected http: HttpClient,
+    protected mainProgressBarService: MainProgressBarService,
+    websocketConnectionService: WebsocketConnectionService
+  ) {
+    super(websocketConnectionService);
   }
 
   public connect() {
     this.mainProgressBarService.add(this.mainProgressBarItemCaption);
 
-    if (!this.dataObserver || this.dataObserver.hasError) {
+    if (this.dataObserver.hasError) {
       this.dataObserver = new ReplaySubject<T[]>(1);
     }
 

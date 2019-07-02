@@ -41,9 +41,9 @@ export class LatestPaymentsService extends WebsocketDataService<Payment> {
 
   constructor(
     private http: HttpClient,
-    protected readonly websocketConnectionService: WebsocketConnectionService
+    websocketConnectionService: WebsocketConnectionService
   ) {
-    super();
+    super(websocketConnectionService);
     this.items$ = this.dataObserver.asObservable();
     this.sourceExhausted$ = this.sourceExhaustedSubject.asObservable()
       .pipe(
