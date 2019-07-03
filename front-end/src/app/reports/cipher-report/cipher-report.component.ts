@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Moment } from 'moment';
 import { CodeKFKComponent } from '../../shared/components/code-kfk/code-kfk.component';
 import { CodeKEKComponent } from '../../shared/components/code-kek/code-kek.component';
+import { CipherReportService } from './cipher-report.service';
 
 @Component({
   selector: 'sp-cipher-report',
@@ -24,9 +25,11 @@ export class CipherReportComponent {
   @ViewChild(CodeKEKComponent)
   private codeKEKComponent: CodeKEKComponent;
 
-  constructor() { }
+  constructor(private cipherReportService: CipherReportService) { }
 
   public onGenerateClick() {
-
+    this.cipherReportService.requestReport({
+      date: this.date
+    } as any);
   }
 }

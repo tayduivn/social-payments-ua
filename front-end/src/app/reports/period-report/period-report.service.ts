@@ -7,7 +7,6 @@ import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { TabbedItemsService } from '../../layout/tabbed-items/tabbed-items.service';
 import { apiDateFormat } from '../../shared/constants/date-formats';
-import { WindowProvider } from '../../shared/providers/window-provider';
 import { PeriodReportRange } from './period-report-range.enum';
 
 @Injectable()
@@ -16,8 +15,7 @@ export class PeriodReportService {
 
   constructor(
     private tabbedItemsService: TabbedItemsService,
-    private http: HttpClient,
-    private window: WindowProvider
+    private http: HttpClient
   ) { }
 
   public requestReport(range: PeriodReportRange, startDate?: Moment, endDate?: Moment): void {
