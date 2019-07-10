@@ -3,6 +3,7 @@ import { Moment } from 'moment';
 import { CodeKFKComponent } from '../../shared/components/code-kfk/code-kfk.component';
 import { CodeKEKComponent } from '../../shared/components/code-kek/code-kek.component';
 import { CipherReportService } from './cipher-report.service';
+import { FinancialInstitutionComponent } from '../../shared/components/financial-institution/financial-institution.component';
 
 @Component({
   selector: 'sp-cipher-report',
@@ -24,12 +25,19 @@ export class CipherReportComponent {
   private codeKFKComponent: CodeKFKComponent;
   @ViewChild(CodeKEKComponent)
   private codeKEKComponent: CodeKEKComponent;
+  @ViewChild(FinancialInstitutionComponent)
+  private financialInstitutionComponent: FinancialInstitutionComponent;
 
   constructor(private cipherReportService: CipherReportService) { }
 
   public onGenerateClick() {
     this.cipherReportService.requestReport({
-      date: this.date
+      date: this.date,
+      codeKFK: this.codeKFKComponent.codeKFK.value,
+      codeKEK: this.codeKEKComponent.codeKEK.value,
+      reportNumber: this.cipherCode,
+      financialInstitution: this.financialInstitutionComponent.form.value
+
     } as any);
   }
 }
