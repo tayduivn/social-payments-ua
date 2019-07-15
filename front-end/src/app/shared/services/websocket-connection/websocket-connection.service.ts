@@ -12,6 +12,7 @@ import { WebsocketMessageCommon } from '../../../../../../api-contracts/websocke
 import { WindowProvider } from '../../providers/window-provider';
 import { AuthService } from '../auth.service';
 import { WebsocketChannel } from './websocket-channel.type';
+import { environment } from '../../../../environments/environment';
 
 @Injectable()
 export class WebsocketConnectionService {
@@ -79,7 +80,7 @@ export class WebsocketConnectionService {
     }
 
     this.socketSubject = new WebSocketSubject({
-      url: `wss://${this.window.location.hostname}`,
+      url: `${environment.dataQueries.websocketProtocol}://${this.window.location.hostname}`,
       protocol: this.authService.getToken(),
       openObserver: {
         next: this.onWebsocketOpen.bind(this)

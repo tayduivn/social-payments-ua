@@ -1,4 +1,3 @@
-import * as Excel from 'exceljs';
 import express, {
   NextFunction,
   Request,
@@ -18,7 +17,7 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
     const err: any = new Error('Missed or invalid startDate and/or endDate');
     err.status = 400;
 
-    next(err);
+    return next(err);
   }
 
   return PaymentModel

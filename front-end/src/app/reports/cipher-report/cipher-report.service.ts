@@ -3,14 +3,21 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { CipherReportParams } from './cipher-report-params.model';
 import { apiDateFormat } from '../../shared/constants/date-formats';
 import { environment } from '../../../environments/environment';
+import { ReportCommon } from '../shared/report-common';
+import { TabbedItemsService } from '../../layout/tabbed-items/tabbed-items.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CipherReportService {
+export class CipherReportService extends ReportCommon {
   private readonly requestUrl = `${environment.dataQueries.reportsEndpoint}/cipher`;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    tabbedItemsService: TabbedItemsService,
+    http: HttpClient
+  ) {
+    super(tabbedItemsService, http);
+  }
 
   public requestReport(reportParams: CipherReportParams): void {
     let params = new HttpParams();
@@ -20,6 +27,6 @@ export class CipherReportService {
     params = params.set('reportNumber', reportParams.reportNumber);
     params = params.set('financialInstitution', JSON.stringify(reportParams.financialInstitution));
 
-    this.http.get(this.requestUrl, {params}).subscribe();
+    this.saveReport(`${this.requestUrl}?${params.toString()}`);
   }
 }
