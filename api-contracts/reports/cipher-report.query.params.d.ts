@@ -6,4 +6,5 @@ export interface CipherReportQueryParams {
   codeKEK: string;
   reportNumber: string;
   financialInstitution?: FinancialInstitution;
+  filename?: boolean;
 }

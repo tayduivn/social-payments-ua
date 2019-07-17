@@ -6,13 +6,15 @@ import { CipherReportQueryParams } from '../../../../../api-contracts/reports/ci
 
 const router = express.Router();
 
-router.get('/', (req: Request, res: Response, next: NextFunction) => {
-  const queryParams = req.query as CipherReportQueryParams;
+const getFileName = (date: string): string => `period-report_${date}.xlsx`;
 
-  if (!queryParams.date ||
-    !queryParams.codeKEK ||
-    !queryParams.codeKFK ||
-    !queryParams.reportNumber
+router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+  const {date, codeKEK, codeKFK, reportNumber, filename} = req.query as CipherReportQueryParams;
+
+  if (!date ||
+    !codeKEK ||
+    !codeKFK ||
+    !reportNumber
   ) {
     const err: any = new Error('Missed or invalid startDate and/or endDate');
     err.status = 400;
@@ -20,13 +22,29 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
     return next(err);
   }
 
-  const date = moment(queryParams.date);
+  if (filename) {
+    res.send({filename: getFileName(date)});
+  }
 
-  return PaymentModel
-    .find()
-    .then((payments: PaymentModel[]) => CommonReport.form(payments, date, date, res),
-      (err: any) => next(err));
+  res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  res.setHeader('Content-Disposition', `attachment; filename=${getFileName(date)}`);
 
+  try {
+    const payments = await PaymentModel
+      .find({
+        date: {
+          $gte: moment(date).startOf('day'),
+          $lte: moment(date).endOf('day')
+        },
+        codeKFK: codeKFK,
+        codeKEK: codeKEK
+      });
+
+    const xls = CommonReport.form(payments, moment(date), moment(date));
+    await xls.write(res);
+  } catch (err) {
+    next(err);
+  }
 });
 
 export const cipherRouter = router;

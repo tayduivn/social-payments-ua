@@ -1,4 +1,4 @@
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import * as FileSaver from 'file-saver';
 import { TabbedItemsService } from '../../layout/tabbed-items/tabbed-items.service';
 import { HttpClient } from '@angular/common/http';
@@ -10,12 +10,18 @@ export class ReportCommon {
   ) {}
 
   protected saveReport(url: string): void {
-    this.http.get(url, {responseType: 'blob'})
+    let filename = '';
+
+    this.http.get(url + '&filename=true')
       .pipe(
+        switchMap((filenameRes: any) => {
+          filename = filenameRes.filename;
+          return this.http.get(url, {responseType: 'blob'})
+        }),
         map((response) => {
           return {
             data: new Blob([response], {type: 'application/vnd.ms-excel;charset=utf-8'}),
-            filename : 'test.xlsx'
+            filename
           };
         })
       )
@@ -24,7 +30,7 @@ export class ReportCommon {
           this.tabbedItemsService.closeActiveTab();
           FileSaver.saveAs(res.data, res.filename);
         }
-      )
+      );
   }
 
 }

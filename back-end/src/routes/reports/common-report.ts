@@ -4,15 +4,12 @@ import moment from 'moment';
 import { Moment } from 'moment';
 import { BorderStyle } from 'exceljs';
 import * as _ from 'lodash';
-import { Response } from 'express';
+import { Xlsx } from 'exceljs';
 
 export class CommonReport {
-  public static form(payments: PaymentModel[], startDate: Moment, endDate: Moment, res: Response) {
+  public static form(payments: PaymentModel[], startDate: Moment, endDate: Moment): Xlsx {
     const workbook = new Excel.Workbook();
     const worksheet = workbook.addWorksheet('My Sheet');
-
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    res.setHeader('Content-Disposition', 'attachment; filename=' + 'Report.xlsx');
 
     worksheet.mergeCells('A1', 'K1');
     const dateFormat = 'DD-MM-YYYY';
@@ -117,7 +114,6 @@ export class CommonReport {
       });
     });
 
-    workbook.xlsx.write(res);
-    return res;
+    return workbook.xlsx;
   }
 }
