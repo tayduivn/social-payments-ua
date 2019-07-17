@@ -4,7 +4,6 @@ import {
   Response
 } from 'express';
 import { Street } from '../../../../../api-contracts/street/street';
-import { StreetModel } from '../../../models/street/street.model';
 import { StreetModelService } from '../../../models/street/street.model.service';
 import { ApiCommonController } from '../api-common.controller';
 

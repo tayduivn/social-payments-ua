@@ -1,5 +1,8 @@
+import { AllowedAppProtocolsType } from './allowed-app-protocols.type';
+
 export interface EnvConfig {
-  production: boolean;
+  serveStatic: boolean;
   port: number | string;
-  protocol: 'HTTP' | 'HTTPS';
+  protocol: AllowedAppProtocolsType;
+  allowCORS: boolean;
 }

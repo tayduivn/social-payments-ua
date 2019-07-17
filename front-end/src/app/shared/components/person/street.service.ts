@@ -12,10 +12,10 @@ export class StreetService extends CachedDataService<Street> {
   protected readonly mainProgressBarItemCaption = 'Вулиці';
 
   constructor(
-    protected readonly http: HttpClient,
-    protected readonly websocketConnectionService: WebsocketConnectionService,
-    protected readonly mainProgressBarService: MainProgressBarService
+    http: HttpClient,
+    mainProgressBarService: MainProgressBarService,
+    websocketConnectionService: WebsocketConnectionService
   ) {
-    super();
+    super(http, mainProgressBarService, websocketConnectionService);
   }
 }

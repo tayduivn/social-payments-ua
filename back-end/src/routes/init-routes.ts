@@ -20,6 +20,6 @@ export function initRoutes(app: Express) {
   app.use('/login', loginRouter);
 
   // routes with authentication
-  app.use('/generated-reports', passport.authenticate('bearer', { session: false }), reportsRouter)
+  app.use('/generated-reports', passport.authenticate('bearer', { session: false }), reportsRouter);
   app.use('/api', passport.authenticate('bearer', { session: false }), apiRouter);
 }

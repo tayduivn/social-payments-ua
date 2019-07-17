@@ -22,7 +22,7 @@ export class MainProgressBarService {
       status: null
     });
 
-    this.progressItemsSubject.next(this.progressItems);
+    this.triggerProgressItems();
   }
 
   public setStatus(caption: string, status: MainProgressBerItemStatusEnum): void {
@@ -31,9 +31,13 @@ export class MainProgressBarService {
       'status',
       status
     );
-    this.progressItemsSubject.next(this.progressItems);
+    this.triggerProgressItems();
 
     this.normalizeProgressItems();
+  }
+
+  private triggerProgressItems() {
+    this.progressItemsSubject.next(this.progressItems.concat());
   }
 
   private normalizeProgressItems() {

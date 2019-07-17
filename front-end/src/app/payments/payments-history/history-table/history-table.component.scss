@@ -52,3 +52,7 @@ $cell-indent: 10px;
 .mat-column-passport {
   @include fixed-column-width(90px);
 }
+.mat-column-kfk,
+.mat-column-kek {
+  @include fixed-column-width(60px);
+}

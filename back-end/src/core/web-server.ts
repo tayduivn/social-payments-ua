@@ -29,7 +29,7 @@ export class WebServer {
     this.initServer();
   }
 
-  private static normalizePort(val: number | string): Port {
+  private static normalizePort(val: Port): Port {
     const port = parseInt(val as string, 10);
 
     if (isNaN(port)) {
@@ -79,7 +79,7 @@ export class WebServer {
   }
 
   private initPort(): void {
-    this.expressApp.set('port', this.port);
+    this.expressApp.set('port', WebServer.normalizePort(this.port));
   }
 
   private initServer(): void {

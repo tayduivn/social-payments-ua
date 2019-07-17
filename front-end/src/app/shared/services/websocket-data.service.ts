@@ -7,9 +7,8 @@ import { WebsocketConnectionService } from './websocket-connection/websocket-con
 export abstract class WebsocketDataService<T> {
   protected abstract dataObserver: ReplaySubject<T[]>;
   protected abstract readonly websocketChannel: WebsocketChannel;
-  protected abstract readonly websocketConnectionService: WebsocketConnectionService;
 
-  protected constructor() {}
+  protected constructor(protected websocketConnectionService: WebsocketConnectionService) {}
 
   protected connectWebsocketChannel() {
     zip(

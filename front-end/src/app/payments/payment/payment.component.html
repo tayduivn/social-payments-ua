@@ -20,7 +20,7 @@
         <mat-datepicker-toggle matSuffix
           [for]="paymentDatepicker"></mat-datepicker-toggle>
         <mat-datepicker #paymentDatepicker></mat-datepicker>
-        <mat-error *ngIf="date.invalid && date.hasError('required')">Введіть дату платежу</mat-error>
+        <mat-error *ngIf="form.controls.date.invalid && form.controls.date.hasError('required')">Введіть дату платежу</mat-error>
       </mat-form-field>
 
       <div class="sp-payment-section">
@@ -45,7 +45,7 @@
               autocomplete="off"
               placeholder="Номер особового рахунку"
               [spInputFilter]="'[0-9]'">
-            <mat-error *ngIf="accountNumber.invalid && accountNumber.hasError('required')">Введіть номер особового рахунку</mat-error>
+            <mat-error *ngIf="form.controls.accountNumber.invalid && form.controls.accountNumber.hasError('required')">Введіть номер особового рахунку</mat-error>
           </mat-form-field>
 
           <mat-form-field>
@@ -55,7 +55,7 @@
               formControlName="sum"
               autocomplete="off"
               placeholder="Сума платежу">
-            <mat-error *ngIf="sum.invalid && sum.hasError('required')">Введіть суму платежу</mat-error>
+            <mat-error *ngIf="form.controls.sum.invalid && form.controls.sum.hasError('required')">Введіть суму платежу</mat-error>
           </mat-form-field>
         </div>
 
@@ -65,9 +65,14 @@
             formControlName="description"
             autocomplete="off"
             placeholder="Призначення платежу"></textarea>
-            <mat-error *ngIf="description.invalid && description.hasError('required')">Введіть призначення платежу</mat-error>
+            <mat-error *ngIf="form.controls.description.invalid && form.controls.description.hasError('required')">Введіть призначення платежу</mat-error>
           </mat-form-field>
         </div>
+      </div>
+
+      <div class="sp-payment-codes">
+        <sp-code-kfk></sp-code-kfk>
+        <sp-code-kek></sp-code-kek>
       </div>
     </mat-card-content>
   </perfect-scrollbar>
@@ -79,7 +84,7 @@
       <button class="sp-payment-save"
         mat-raised-button
         color="primary"
-        [disabled]="saveButtonDisabled"
+        [disabled]="form.invalid"
         (click)="onSaveClick()">Зберегти
       </button>
       <button mat-raised-button

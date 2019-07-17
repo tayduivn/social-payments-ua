@@ -8,6 +8,16 @@
       <mat-cell *matCellDef="let row">{{row.date}}</mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="kfk">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>КФК</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.codeKFK}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="kek">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>КЕК</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.codeKEK}}</mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="account">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Особовий рахунок</mat-header-cell>
       <mat-cell *matCellDef="let row">{{row.account}}</mat-cell>

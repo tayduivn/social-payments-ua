@@ -3,4 +3,6 @@ export type WebsocketChannel =
   'payment' |
   'person-accounts' |
   'person' |
-  'street'
+  'street' |
+  'code-kfk' |
+  'code-kek'

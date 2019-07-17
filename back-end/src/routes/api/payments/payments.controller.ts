@@ -12,7 +12,6 @@ import { PaymentsLatest } from '../../../../../api-contracts/payment/payments-la
 import { PaymentsLatestFilter } from '../../../../../api-contracts/payment/payments-latest-filter';
 import { HttpError } from '../../../core/http-error';
 import { Token } from '../../../core/token/token';
-import { PaymentModel } from '../../../models/payment/payment.model';
 import { PaymentModelService } from '../../../models/payment/payment.model.service';
 import { UserModel } from '../../../models/user/user.model';
 import { UserModelService } from '../../../models/user/user.model.service';
@@ -60,11 +59,13 @@ export class PaymentsController extends ApiCommonController {
     const conditions: any = {
       date: PaymentsController.getDatesRangeFilter(filter.dateFrom, filter.dateTo),
       sum: PaymentsController.getSumRangeFilter(filter.sumFrom, filter.sumTo),
-      $text: PaymentsController.getDescriptionFilter(filter.description)
+      $text: PaymentsController.getDescriptionFilter(filter.description),
+      codeKFK: filter.codeKFK,
+      codeKEK: filter.codeKEK
     };
 
     if (filter.personId) {
-      conditions['person._id'] = Types.ObjectId.createFromHexString(filter.personId);
+      conditions['person._id'] = filter.personId;
     } else {
       Object.assign(conditions, PaymentsController.getNestedSchemaFilter(new Map([
         ['person.fullName', filter.personFullName],
@@ -74,7 +75,7 @@ export class PaymentsController extends ApiCommonController {
     }
 
     if (filter.financialInstitutionId) {
-      conditions['financialInstitution._id'] = Types.ObjectId.createFromHexString(filter.financialInstitutionId);
+      conditions['financialInstitution._id'] = filter.financialInstitutionId;
     } else {
       Object.assign(conditions, PaymentsController.getNestedSchemaFilter(new Map([
         ['financialInstitution.name', filter.financialInstitutionName],

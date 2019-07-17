@@ -6,6 +6,8 @@ export interface Payment {
   created: string;
   date: string;
   accountNumber?: string;
+  codeKFK: string;
+  codeKEK: string;
   sum: number;
   description: string;
   person: Person;

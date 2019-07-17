@@ -10,6 +10,8 @@ import { PaymentsHistoryService } from './payments-history.service';
 import { HistoryTableComponent } from './history-table/history-table.component';
 import { HistoryFilterComponent } from './history-filter/history-filter.component';
 import { FilterChipComponent } from './history-filter/filter-chip/filter-chip.component';
+import { CodeKFKModule } from '../../shared/components/code-kfk/code-kfk.module';
+import { CodeKEKModule } from '../../shared/components/code-kek/code-kek.module';
 
 @NgModule({
   imports: [
@@ -18,7 +20,9 @@ import { FilterChipComponent } from './history-filter/filter-chip/filter-chip.co
     FinancialInstitutionModule,
     PerfectScrollbarModule,
     PersonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CodeKFKModule,
+    CodeKEKModule
   ],
   entryComponents: [PaymentsHistoryComponent],
   declarations: [PaymentsHistoryComponent, HistoryTableComponent, HistoryFilterComponent, FilterChipComponent],

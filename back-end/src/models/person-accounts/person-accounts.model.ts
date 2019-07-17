@@ -31,4 +31,4 @@ const personAccountsModel = new Schema({
 
 export type PersonAccountsModel = PersonAccounts & Document;
 
-export const PersonAccountsModel = model<PersonAccountsModel>('PersonAccounts', personAccountsModel, 'person_accounts');
+export const PersonAccountsModel = model<PersonAccountsModel>('PersonAccounts', personAccountsModel, 'personAccounts');

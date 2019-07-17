@@ -25,6 +25,8 @@ import { FilterUtils } from '../../../shared/utils/filter-utils';
 import { HistoryFilterModel } from '../shared/history-filter.model';
 import { FilterChipConfigModel } from './filter-chip-config.model';
 import { FilterType } from './shared/filter-type.enum';
+import { CodeKFKComponent } from '../../../shared/components/code-kfk/code-kfk.component';
+import { CodeKEKComponent } from '../../../shared/components/code-kek/code-kek.component';
 
 @Component({
   selector: 'sp-history-filter',
@@ -39,9 +41,13 @@ export class HistoryFilterComponent implements AfterViewInit {
   public readonly autocompleteClasses = 'sp-payments-history-autocomplete';
 
   @ViewChild(FinancialInstitutionComponent)
-  public financialInstitutionComponent: FinancialInstitutionComponent;
+  private financialInstitutionComponent: FinancialInstitutionComponent;
   @ViewChild(PersonComponent)
-  public personComponent: PersonComponent;
+  private personComponent: PersonComponent;
+  @ViewChild(CodeKFKComponent)
+  private codeKFKComponent: CodeKFKComponent;
+  @ViewChild(CodeKEKComponent)
+  private codeKEKComponent: CodeKEKComponent;
 
   public filterPanelExpanded: boolean = true;
 
@@ -79,6 +85,8 @@ export class HistoryFilterComponent implements AfterViewInit {
   public ngAfterViewInit() {
     this.searchForm.setControl('person', this.personComponent.form);
     this.searchForm.setControl('financialInstitution', this.financialInstitutionComponent.form);
+    this.searchForm.setControl('codeKFK', this.codeKFKComponent.codeKFK);
+    this.searchForm.setControl('codeKEK', this.codeKEKComponent.codeKEK);
 
     this.setupFilterControls();
   }

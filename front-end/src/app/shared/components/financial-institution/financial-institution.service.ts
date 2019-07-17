@@ -12,10 +12,10 @@ export class FinancialInstitutionService extends CachedDataService<FinancialInst
   protected readonly mainProgressBarItemCaption = 'Фінансові установи';
 
   constructor(
-    protected readonly http: HttpClient,
-    protected readonly websocketConnectionService: WebsocketConnectionService,
-    protected readonly mainProgressBarService: MainProgressBarService
+    http: HttpClient,
+    mainProgressBarService: MainProgressBarService,
+    websocketConnectionService: WebsocketConnectionService
   ) {
-    super();
+    super(http, mainProgressBarService, websocketConnectionService);
   }
 }

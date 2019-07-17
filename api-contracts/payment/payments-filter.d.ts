@@ -12,5 +12,7 @@ export interface PaymentsFilter {
   personFullName?: string;
   personPassportNumber?: string;
   personIdentityCode?: string;
+  codeKFK?: string;
+  codeKEK?: string;
 }
 
