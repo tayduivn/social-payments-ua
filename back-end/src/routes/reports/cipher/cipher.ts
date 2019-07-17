@@ -4,6 +4,7 @@ import { CommonReport } from '../common-report';
 import moment from 'moment';
 import { CipherReportQueryParams } from '../../../../../api-contracts/reports/cipher-report.query.params';
 import { FinancialInstitution } from '../../../../../api-contracts/financial-institution/financial.institution';
+import * as _ from 'lodash';
 
 const router = express.Router();
 
@@ -30,7 +31,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   let fiParsed: FinancialInstitution;
   if (financialInstitution) {
     try {
-      fiParsed = JSON.parse(financialInstitution) as FinancialInstitution;
+      fiParsed = _.omitBy(JSON.parse(financialInstitution), (item) => _.isEmpty(item)) as FinancialInstitution;
     } catch (err) {
       return next(err);
     }

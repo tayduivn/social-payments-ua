@@ -22,8 +22,7 @@ export const reportsConfig: TabbedItemsConfig = {
     {
       title: '',
       icon: 'bookmark',
-      component: CipherReportComponent
-      // component: ReportsDashboardComponent
+      component: ReportsDashboardComponent
     }
   ]
 
