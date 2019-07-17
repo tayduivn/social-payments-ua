@@ -4,5 +4,5 @@ export type WebsocketChannel =
   'person-accounts' |
   'person' |
   'street' |
-  'codes-kfk' |
-  'codes-kek'
+  'code-kfk' |
+  'code-kek'

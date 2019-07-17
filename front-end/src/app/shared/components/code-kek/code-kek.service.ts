@@ -10,7 +10,7 @@ import { CodeKEK } from '../../../../../../api-contracts/code-kek/code-kek';
 })
 export class CodeKEKService extends CachedDataService<CodeKEK> {
   protected readonly requestUrl = '/codes-kek';
-  protected readonly websocketChannel = 'codes-kek';
+  protected readonly websocketChannel = 'code-kek';
   protected readonly mainProgressBarItemCaption = 'Коди КЕК';
 
   constructor(

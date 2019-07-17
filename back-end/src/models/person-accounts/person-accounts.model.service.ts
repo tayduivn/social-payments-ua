@@ -16,14 +16,14 @@ export class PersonAccountsModelService {
         } else {
           return PersonAccountsModelService
             .createPersonAccount(personAccountInfo)
-            .then((personAccounts: PersonAccountsModel) => {
+            .then((personAccount: PersonAccountsModel) => {
               clientBroadcastService.broadcastClients({
                 channel: 'person-accounts',
                 action: 'create',
-                payload: personAccounts.toObject()
+                payload: personAccount.toObject()
               });
 
-              return personAccounts;
+              return personAccount;
             });
         }
       });

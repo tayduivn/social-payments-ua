@@ -10,7 +10,7 @@ import { MainProgressBarService } from '../../../layout/main-progress-bar/main-p
 })
 export class CodeKFKService extends CachedDataService<CodeKFK> {
   protected readonly requestUrl = '/codes-kfk';
-  protected readonly websocketChannel = 'codes-kfk';
+  protected readonly websocketChannel = 'code-kfk';
   protected readonly mainProgressBarItemCaption = 'Коди КФК';
 
   constructor(

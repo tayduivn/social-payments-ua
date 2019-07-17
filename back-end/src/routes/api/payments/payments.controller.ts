@@ -65,7 +65,7 @@ export class PaymentsController extends ApiCommonController {
     };
 
     if (filter.personId) {
-      conditions['person._id'] = Types.ObjectId.createFromHexString(filter.personId);
+      conditions['person._id'] = filter.personId;
     } else {
       Object.assign(conditions, PaymentsController.getNestedSchemaFilter(new Map([
         ['person.fullName', filter.personFullName],
@@ -75,7 +75,7 @@ export class PaymentsController extends ApiCommonController {
     }
 
     if (filter.financialInstitutionId) {
-      conditions['financialInstitution._id'] = Types.ObjectId.createFromHexString(filter.financialInstitutionId);
+      conditions['financialInstitution._id'] = filter.financialInstitutionId;
     } else {
       Object.assign(conditions, PaymentsController.getNestedSchemaFilter(new Map([
         ['financialInstitution.name', filter.financialInstitutionName],
