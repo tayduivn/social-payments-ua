@@ -9,19 +9,30 @@
 
   <perfect-scrollbar class="sp-payment-body">
     <mat-card-content class="sp-payment-content">
-      <mat-form-field>
-        <input #dateInput
-          matInput
-          name="date"
-          formControlName="date"
-          autocomplete="off"
-          placeholder="Дата виплати"
-          [matDatepicker]="paymentDatepicker">
-        <mat-datepicker-toggle matSuffix
-          [for]="paymentDatepicker"></mat-datepicker-toggle>
-        <mat-datepicker #paymentDatepicker></mat-datepicker>
-        <mat-error *ngIf="form.controls.date.invalid && form.controls.date.hasError('required')">Введіть дату платежу</mat-error>
-      </mat-form-field>
+      <div>
+        <mat-form-field>
+          <input #dateInput
+            matInput
+            name="date"
+            formControlName="date"
+            autocomplete="off"
+            placeholder="Дата рішення"
+            [matDatepicker]="paymentDatepicker">
+          <mat-datepicker-toggle matSuffix
+            [for]="paymentDatepicker"></mat-datepicker-toggle>
+          <mat-datepicker #paymentDatepicker></mat-datepicker>
+          <mat-error *ngIf="form.controls.date.invalid && form.controls.date.hasError('required')">Введіть дату платежу</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="sp-report-number">
+          <input matInput
+            formControlName="paymentNumber"
+            autocomplete="off"
+            placeholder="Номер рішення">
+          <mat-error *ngIf="form.controls.reportNumber.invalid && form.controls.reportNumber.hasError('required')">Введіть номер рішення</mat-error>
+        </mat-form-field>
+
+      </div>
 
       <div class="sp-payment-section">
         <h4 class="sp-caption">Одержувач</h4>

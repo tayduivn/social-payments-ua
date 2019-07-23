@@ -1,4 +1,4 @@
-const streetsList = require('../data-sources/streets/streets-if');
+const streetsList = require('../data-sources/streets/streets');
 
 module.exports = {
   up(db) {

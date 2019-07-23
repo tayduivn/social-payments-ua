@@ -121,6 +121,7 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
   private createForm() {
     this.form = this.fb.group({
       date: [moment(Date.now()).format(apiDateFormat), Validators.required],
+      reportNumber: ['', Validators.required],
       accountNumber: [''],
       codeKFK: [''],
       codeKEK: [''],

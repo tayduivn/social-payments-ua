@@ -3,15 +3,15 @@ module.exports = {
     return db.createCollection('applicationSettings')
       .then((collection) => collection.insertMany([
         {
-          name: 'territoryCode',
+          param: 'territoryCode',
           data: '0952'
         },
         {
-          name: 'edrpou',
+          param: 'edrpou',
           data: '36733431'
         },
         {
-          name: 'dbVersion',
+          param: 'dbVersion',
           data: '0.0.0'
         }
       ]));

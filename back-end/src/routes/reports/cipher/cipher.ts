@@ -5,10 +5,20 @@ import moment from 'moment';
 import { CipherReportQueryParams } from '../../../../../api-contracts/reports/cipher-report.query.params';
 import { FinancialInstitution } from '../../../../../api-contracts/financial-institution/financial.institution';
 import * as _ from 'lodash';
+import { ApplicationSettingsModelService } from '../../../models/application-settings/application-settings.model.service';
+import { ApplicationSetting } from '../../../../../api-contracts/application-setting/application-setting';
 
 const router = express.Router();
 
-const getFileName = (date: string): string => `period-report_${date}.xlsx`;
+const getFileName = async (date: string, kfk: string, kek: string, repNum: string) => {
+  const appSettings: ApplicationSetting[] = await ApplicationSettingsModelService.getAll();
+  const terCode = appSettings.find(i => i.param === 'territoryCode');
+  const edrpou = appSettings.find(i => i.param === 'edrpou');
+
+  console.log(terCode, edrpou);
+
+  return `vf${kfk}${kek}${terCode.data}${moment(date).format('YYMMDD')}${edrpou.data}${repNum}.xlsx`;
+};
 
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   const {date, codeKEK, codeKFK, reportNumber, filename, financialInstitution} = req.query as CipherReportQueryParams;
@@ -24,8 +34,10 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     return next(err);
   }
 
+  const filenameRes = await getFileName(date, codeKFK, codeKEK, reportNumber);
+
   if (filename) {
-    res.send({filename: getFileName(date)});
+    return res.send({filename: filenameRes});
   }
 
   let fiParsed: FinancialInstitution;
@@ -38,7 +50,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   }
 
   res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-  res.setHeader('Content-Disposition', `attachment; filename=${getFileName(date)}`);
+  res.setHeader('Content-Disposition', `attachment; filename=${filenameRes}`);
 
   const filter: any = {
     date: {
