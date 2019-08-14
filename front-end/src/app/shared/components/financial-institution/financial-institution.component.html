@@ -16,7 +16,6 @@
       type="text"
       formControlName="mfo"
       placeholder="Код МФО"
-      spInputFilter="[0-9]"
       [spProxyAutocompleteCommands]="autocomplete">
     <mat-error *ngIf="renderValidationErrors && mfo.invalid && mfo.hasError('required')">Введіть код МФО</mat-error>
   </mat-form-field>
@@ -26,7 +25,6 @@
       autocomplete="off"
       formControlName="edrpou"
       placeholder="Код ЄДРПОУ"
-      spInputFilter="[0-9]"
       [spProxyAutocompleteCommands]="autocomplete">
     <mat-error *ngIf="renderValidationErrors && edrpou.invalid && edrpou.hasError('required')">Введіть код ЄДРПОУ</mat-error>
   </mat-form-field>

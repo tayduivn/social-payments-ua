@@ -21,11 +21,12 @@ const getFileName = async (date: string, kfk: string, kek: string, repNum: strin
 };
 
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
-  const {date, codeKEK, codeKFK, reportNumber, filename, financialInstitution} = req.query as CipherReportQueryParams;
+  const {date, codeKEK, codeKFK, reportNumber, cipherCode, filename, financialInstitution} = req.query as CipherReportQueryParams;
 
   if (!date ||
     !codeKEK ||
     !codeKFK ||
+    !cipherCode ||
     !reportNumber
   ) {
     const err: any = new Error('Missed or invalid startDate and/or endDate');
@@ -34,7 +35,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     return next(err);
   }
 
-  const filenameRes = await getFileName(date, codeKFK, codeKEK, reportNumber);
+  const filenameRes = await getFileName(date, codeKFK, codeKEK, cipherCode);
 
   if (filename) {
     return res.send({filename: filenameRes});
@@ -58,7 +59,8 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
       $lte: moment(`${date}T23:59:59.999Z`).toDate()
     },
     codeKFK: codeKFK,
-    codeKEK: codeKEK
+    codeKEK: codeKEK,
+    reportNumber: reportNumber
   };
 
   if (fiParsed._id) {

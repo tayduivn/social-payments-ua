@@ -13,11 +13,13 @@ import { FinancialInstitutionComponent } from '../../shared/components/financial
 export class CipherReportComponent {
   public date: Moment = null;
   public cipherCode = '';
+  public reportNumber = '';
 
   public get buttonDisabled(): boolean {
     return !this.date ||
       !this.codeKEKComponent.codeKEK.value ||
       !this.codeKFKComponent.codeKFK.value ||
+      !this.reportNumber ||
       !this.cipherCode;
   }
 
@@ -35,7 +37,8 @@ export class CipherReportComponent {
       date: this.date,
       codeKFK: this.codeKFKComponent.codeKFK.value,
       codeKEK: this.codeKEKComponent.codeKEK.value,
-      reportNumber: this.cipherCode,
+      reportNumber: this.reportNumber,
+      cipherCode: this.cipherCode,
       financialInstitution: this.financialInstitutionComponent.form.value
 
     } as any);

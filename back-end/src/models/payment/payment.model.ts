@@ -44,7 +44,11 @@ const paymentSchema = new Schema({
     required: [true]
   },
   financialInstitution: financialInstitutionSchema,
-  person: new Schema(paymentPersonSchemaFields)
+  person: new Schema(paymentPersonSchemaFields),
+  reportNumber: {
+    type: Number,
+    required: true
+  }
 });
 
 paymentSchema.index(

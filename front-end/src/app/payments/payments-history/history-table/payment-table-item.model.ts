@@ -7,6 +7,7 @@ export class PaymentTableItemModel {
   public date: string;
   public codeKFK: string;
   public codeKEK: string;
+  public reportNumber: number;
   public account: string;
   public orgName: string;
   public mfo: string;
@@ -28,6 +29,7 @@ export class PaymentTableItemModel {
     this.date = moment(item.date).format(displayDateFormat);
     this.codeKFK = item.codeKFK;
     this.codeKEK = item.codeKEK;
+    this.reportNumber = item.reportNumber;
     this.account = item.accountNumber;
 
     this.orgName = item.financialInstitution.name;

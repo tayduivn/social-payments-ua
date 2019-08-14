@@ -26,7 +26,7 @@
 
         <mat-form-field class="sp-report-number">
           <input matInput
-            formControlName="paymentNumber"
+            formControlName="reportNumber"
             autocomplete="off"
             placeholder="Номер рішення">
           <mat-error *ngIf="form.controls.reportNumber.invalid && form.controls.reportNumber.hasError('required')">Введіть номер рішення</mat-error>
@@ -54,8 +54,7 @@
             <input matInput
               formControlName="accountNumber"
               autocomplete="off"
-              placeholder="Номер особового рахунку"
-              [spInputFilter]="'[0-9]'">
+              placeholder="Номер особового рахунку">
             <mat-error *ngIf="form.controls.accountNumber.invalid && form.controls.accountNumber.hasError('required')">Введіть номер особового рахунку</mat-error>
           </mat-form-field>
 

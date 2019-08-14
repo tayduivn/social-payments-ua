@@ -25,6 +25,7 @@ export class CipherReportService extends ReportCommon {
     params = params.set('codeKEK', reportParams.codeKEK);
     params = params.set('codeKFK', reportParams.codeKFK);
     params = params.set('reportNumber', reportParams.reportNumber);
+    params = params.set('cipherCode', reportParams.cipherCode);
     params = params.set('financialInstitution', JSON.stringify(reportParams.financialInstitution));
 
     this.saveReport(`${this.requestUrl}?${params.toString()}`);

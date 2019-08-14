@@ -21,7 +21,6 @@ import { UserDialogModel } from './user-dialog.model';
   styleUrls: ['./user-dialog.component.scss']
 })
 export class UserDialogComponent implements OnInit {
-  public readonly fullNameFilter = `[a-zA-Z${allUA_CharsDiapason} .'-]`;
   public login = new FormControl('', [Validators.required]);
   public fullName = new FormControl('', [Validators.required]);
   public password = new FormControl('', [Validators.required]);

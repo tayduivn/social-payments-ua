@@ -12,4 +12,5 @@ export interface Payment {
   description: string;
   person: Person;
   financialInstitution: FinancialInstitution;
+  reportNumber: number;
 }

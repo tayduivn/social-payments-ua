@@ -2,9 +2,8 @@ import { PaymentModel } from '../../models/payment/payment.model';
 import * as Excel from 'exceljs';
 import moment from 'moment';
 import { Moment } from 'moment';
-import { BorderStyle } from 'exceljs';
+import { BorderStyle, Xlsx } from 'exceljs';
 import * as _ from 'lodash';
-import { Xlsx } from 'exceljs';
 
 export class CommonReport {
   public static form(payments: PaymentModel[], startDate: Moment, endDate: Moment): Xlsx {

@@ -6,5 +6,6 @@ export interface CipherReportParams {
   codeKFK: string;
   codeKEK: string;
   reportNumber: string;
+  cipherCode: string;
   financialInstitution: FinancialInstitution;
 }

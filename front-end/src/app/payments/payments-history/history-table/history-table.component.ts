@@ -29,6 +29,7 @@ export class HistoryTableComponent implements OnInit {
     'date',
     'kfk',
     'kek',
+    'reportNumber',
     'account',
     'bankName',
     'mfo',

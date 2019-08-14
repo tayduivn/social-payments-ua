@@ -13,13 +13,26 @@
         <input matInput
           required
           autocomplete="off"
-          placeholder="Дата"
+          placeholder="Дата рішення"
           #dateInputModel="ngModel"
           [matDatepicker]="dateCmp"
           [(ngModel)]="date">
         <mat-datepicker-toggle matSuffix [for]="dateCmp"></mat-datepicker-toggle>
         <mat-datepicker #dateCmp></mat-datepicker>
         <mat-error *ngIf="dateInputModel.invalid && dateInputModel.hasError('required')">Вкажіть початок періоду
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="sp-input-group">
+      <mat-form-field>
+        <input matInput
+          required
+          autocomplete="off"
+          placeholder="Номер рішення"
+          #reportNumberModel="ngModel"
+          [(ngModel)]="reportNumber">
+        <mat-error *ngIf="reportNumberModel.invalid && reportNumberModel.hasError('required')">Введіть номер рішення
         </mat-error>
       </mat-form-field>
     </div>
@@ -34,7 +47,6 @@
           required
           autocomplete="off"
           placeholder="Код реєстру виплат (№ п/п)"
-          [spInputFilter]="'[0-9]'"
           #cipherCodeModel="ngModel"
           [(ngModel)]="cipherCode">
         <mat-error *ngIf="cipherCodeModel.invalid && cipherCodeModel.hasError('required')">Введіть № реєстру виплат

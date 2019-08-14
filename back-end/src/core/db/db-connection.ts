@@ -5,10 +5,12 @@ import { LogLevel } from '../logger/log-levels.type';
 import { Logger } from '../logger/logger';
 
 function connectMongoose() {
+  mongoose.set('useCreateIndex', true);
+  // mongoose.set('debug', true);
+
   mongoose.connect(Config.db.uri, {
     useNewUrlParser: true
   });
-  mongoose.set('useCreateIndex', true);
 
   const dbConnection = mongoose.connection;
 

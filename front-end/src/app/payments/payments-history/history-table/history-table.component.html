@@ -13,6 +13,11 @@
       <mat-cell *matCellDef="let row">{{row.codeKFK}}</mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="reportNumber">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>№ рішення</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.reportNumber}}</mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="kek">
       <mat-header-cell *matHeaderCellDef mat-sort-header>КЕК</mat-header-cell>
       <mat-cell *matCellDef="let row">{{row.codeKEK}}</mat-cell>

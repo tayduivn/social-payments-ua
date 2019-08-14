@@ -4,7 +4,6 @@
     name="codeKEK"
     autocomplete="off"
     placeholder="Код КЕК"
-    [spInputFilter]="'[0-9]'"
     [matAutocomplete]="codeKEKAutocomplete">
   <mat-error *ngIf="codeKEK.invalid && codeKEK.hasError('required')">Введіть код КЕК</mat-error>
 
