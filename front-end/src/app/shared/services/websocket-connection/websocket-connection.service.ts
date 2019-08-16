@@ -12,7 +12,6 @@ import { WebsocketMessageCommon } from '../../../../../../api-contracts/websocke
 import { WindowProvider } from '../../providers/window-provider';
 import { AuthService } from '../auth.service';
 import { WebsocketChannel } from './websocket-channel.type';
-import { environment } from '../../../../environments/environment';
 
 @Injectable()
 export class WebsocketConnectionService {
@@ -74,13 +73,15 @@ export class WebsocketConnectionService {
   }
 
   private createSocketSubject() {
+    const protocol = this.window.location.protocol.indexOf('https') >= 0 ? 'wss' : 'ws';
+
     if (this.socketSubject) {
       this.socketSubject.unsubscribe();
       this.socketSubject.complete();
     }
 
     this.socketSubject = new WebSocketSubject({
-      url: `${environment.dataQueries.websocketProtocol}://${this.window.location.hostname}`,
+      url: `${protocol}://${this.window.location.hostname}`,
       protocol: this.authService.getToken(),
       openObserver: {
         next: this.onWebsocketOpen.bind(this)
