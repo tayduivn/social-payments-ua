@@ -37,7 +37,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
       // works with moment but needs type correction "as any"
       .gte(moment(startDate).startOf('day') as any)
       .lte(moment(endDate).endOf('day') as any);
-    const xls = CommonReport.form(payments, moment(startDate), moment(endDate));
+    const xls = CommonReport.form(payments, `Звіт платежів за період з ${moment(startDate).format(CommonReport.dateFormat)} по ${moment(endDate).format(CommonReport.dateFormat)}`);
     await xls.write(res);
   } catch (err) {
     next(err);

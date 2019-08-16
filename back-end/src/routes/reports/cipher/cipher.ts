@@ -55,8 +55,8 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 
   const filter: any = {
     date: {
-      $gte: moment(`${date}T00:00:00.000Z`).toDate(),
-      $lte: moment(`${date}T23:59:59.999Z`).toDate()
+      $gte: moment.utc(`${date}T00:00:00`).toDate(),
+      $lte: moment.utc(`${date}T23:59:59`).toDate()
     },
     codeKFK: codeKFK,
     codeKEK: codeKEK,
@@ -79,8 +79,15 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const payments = await PaymentModel.find(filter);
+    console.log(JSON.stringify(filter));
+    const description = payments && payments.length ? `${payments[0].description}, ` : '';
 
-    const xls = CommonReport.form(payments, moment(date), moment(date));
+    const xls = CommonReport.form(
+      payments,
+      `РЕЄСТР ВИПЛАТ № ${cipherCode}`,
+      `${description}зг.ріш. № ${reportNumber} від ${moment(date).format(CommonReport.dateFormat)}р.`
+    );
+
     await xls.write(res);
   } catch (err) {
     next(err);

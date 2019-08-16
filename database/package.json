@@ -6,7 +6,8 @@
   "scripts": {
     "mm": "migrate-mongo",
     "up": "migrate-mongo up",
-    "status": "migrate-mongo status"
+    "status": "migrate-mongo status",
+    "build": "npm run up"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

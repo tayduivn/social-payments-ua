@@ -132,7 +132,7 @@ export class PersonComponent extends MultifiedAutocompleteCommonComponent implem
         startWith(''),
         tap(() => this.selectedStreetId.setValue(null)),
         map((value: string | Street) => _.isString(value) ? value : value && value.name || ''),
-        map((streetInput: string) => this.streets.filter((street: Street) => street.name.toLowerCase().includes(streetInput)))
+        map((streetInput: string) => this.streets.filter((street: Street) => street.name.toLowerCase().includes(streetInput.toLowerCase())))
       );
   }
 }

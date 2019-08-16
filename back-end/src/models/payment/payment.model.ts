@@ -46,7 +46,7 @@ const paymentSchema = new Schema({
   financialInstitution: financialInstitutionSchema,
   person: new Schema(paymentPersonSchemaFields),
   reportNumber: {
-    type: Number,
+    type: String,
     required: true
   }
 });

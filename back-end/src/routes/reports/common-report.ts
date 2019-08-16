@@ -4,24 +4,23 @@ import moment from 'moment';
 import { Moment } from 'moment';
 import { BorderStyle, Xlsx } from 'exceljs';
 import * as _ from 'lodash';
+import { Worksheet } from 'exceljs';
 
 export class CommonReport {
-  public static form(payments: PaymentModel[], startDate: Moment, endDate: Moment): Xlsx {
-    const workbook = new Excel.Workbook();
-    const worksheet = workbook.addWorksheet('My Sheet');
+  public static dateFormat = 'DD-MM-YYYY';
 
-    worksheet.mergeCells('A1', 'K1');
-    const dateFormat = 'DD-MM-YYYY';
-    const captionCell = worksheet.getCell('A1');
-    captionCell.value = `Звіт платежів за період з ${moment(startDate).format(dateFormat)} по ${moment(endDate).format(dateFormat)}`;
-    captionCell.alignment = {
-      vertical: 'middle',
-      horizontal: 'center'
-    };
-    worksheet.getRow(1).height = 50;
+  public static form(
+    payments: PaymentModel[],
+    header: string,
+    subheader = ''
+  ): Xlsx {
+    const {workbook, worksheet} = CommonReport.getXlsEnvironment('Лист1');
 
-    const headerRow = worksheet.getRow(2);
-    headerRow.values = [
+    CommonReport.insertTextRow(worksheet, 1, header);
+    CommonReport.insertTextRow(worksheet, 2, subheader);
+
+    const tableHeaderRow = worksheet.getRow(3);
+    tableHeaderRow.values = [
       'Дата виплати',
       'Номер особового рахунку',
       'Найменування банку одержувача соціальних виплат',
@@ -35,8 +34,8 @@ export class CommonReport {
       'Призначення платежу'
     ];
 
-    headerRow.height = 120;
-    headerRow.eachCell((cell) => {
+    tableHeaderRow.height = 120;
+    tableHeaderRow.eachCell((cell) => {
       cell.alignment = {
         vertical: 'middle',
         horizontal: 'center',
@@ -72,30 +71,9 @@ export class CommonReport {
       right: {style: 'thin' as BorderStyle}
     };
 
-    const addressHelper = (address: any): string => {
-      if (!address) {
-        return '';
-      }
-
-      const result: string[] = [];
-
-      result.push(address.street ? `вул. ${address.street.name}` : null);
-      result.push(address.house);
-
-      if (address.houseSection) {
-        result.push(`корп. ${address.houseSection}`)
-      }
-
-      if (address.apartment) {
-        result.push(`кв. ${address.apartment}`);
-      }
-
-      return _.compact(result).join(', ');
-    };
-
     payments.forEach((payment: PaymentModel) => {
       const row = worksheet.addRow({
-        date: moment(payment.date).format(dateFormat),
+        date: moment(payment.date).format(CommonReport.dateFormat),
         account_number: payment.accountNumber,
         bank_name: payment.financialInstitution.name,
         mfo: payment.financialInstitution.mfo,
@@ -104,7 +82,7 @@ export class CommonReport {
         person: payment.person.fullName,
         ident_code: payment.person.identityCode,
         passport_code: payment.person.passportNumber,
-        address: addressHelper(payment.person.address),
+        address: CommonReport.addressHelper(payment.person.address),
         description: payment.description
       });
 
@@ -114,5 +92,46 @@ export class CommonReport {
     });
 
     return workbook.xlsx;
+  }
+
+  private static getXlsEnvironment(sheetName: string) {
+    const workbook = new Excel.Workbook();
+    const worksheet = workbook.addWorksheet(sheetName);
+
+    return {workbook, worksheet};
+  }
+
+  private static insertTextRow(worksheet: Worksheet, rowIndex: number, caption: string) {
+    worksheet.mergeCells(`A${rowIndex}`, `K${rowIndex}`);
+
+    const captionCell = worksheet.getCell(`A${rowIndex}`);
+    captionCell.value = caption;
+    captionCell.alignment = {
+      vertical: 'middle',
+      horizontal: 'center'
+    };
+
+    worksheet.getRow(rowIndex).height = 50;
+  }
+
+  private static addressHelper(address: any): string {
+    if (!address) {
+      return '';
+    }
+
+    const result: string[] = [];
+
+    result.push(address.street ? `вул. ${address.street.name}` : null);
+    result.push(address.house);
+
+    if (address.houseSection) {
+      result.push(`корп. ${address.houseSection}`)
+    }
+
+    if (address.apartment) {
+      result.push(`кв. ${address.apartment}`);
+    }
+
+    return _.compact(result).join(', ');
   }
 }
