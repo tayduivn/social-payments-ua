@@ -6,7 +6,7 @@
     "node": "8.11.x"
   },
   "scripts": {
-    "postinstall": "npm run build:back-end && npm run build:front-end && npm run build: database",
+    "postinstall": "npm run build:back-end && npm run build:front-end && npm run build:database",
 
     "build:back-end": "npm run install:back-end && npm run build --prefix back-end",
     "install:back-end": "npm install --prefix back-end && npm install --prefix back-end --only=dev",
@@ -15,6 +15,8 @@
     "install:front-end": "npm install --prefix front-end && npm install --prefix front-end --only=dev",
 
     "build:database": "npm run install:database && npm run build --prefix database",
-    "install:database": "npm install --prefix database"
+    "install:database": "npm install --prefix database",
+
+    "deploy:heroku": "git push heroku dev:master"
   }
 }
