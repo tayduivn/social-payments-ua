@@ -8,7 +8,7 @@ const dataQueries: DataQueriesModel = {
   loginEndpoint: '/login',
   apiEndpoint: '/api',
   reportsEndpoint: '/generated-reports',
-  websocketProtocol: 'ws'
+  websocketProtocol: 'wss'
 };
 
 export const environment = {
