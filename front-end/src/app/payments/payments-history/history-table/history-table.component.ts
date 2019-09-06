@@ -12,6 +12,9 @@ import {
 } from '@angular/material';
 import { Payment } from '../../../../../../api-contracts/payment/payment';
 import { PaymentTableItemModel } from './payment-table-item.model';
+import { TabbedItemsService } from '../../../layout/tabbed-items/tabbed-items.service';
+import { PaymentComponent } from '../../payment/payment.component';
+import { paymentTab } from '../../payments.config';
 
 @Component({
   selector: 'sp-history-table',
@@ -47,7 +50,7 @@ export class HistoryTableComponent implements OnInit {
   @ViewChild(MatSort) private sort: MatSort;
   @ViewChild(MatPaginator) private paginator: MatPaginator;
 
-  constructor() {}
+  constructor(private tabbedItemsService: TabbedItemsService) {}
 
   public ngOnInit() {
     this.dataSource.sort = this.sort;
@@ -56,5 +59,14 @@ export class HistoryTableComponent implements OnInit {
 
   public paymentsTrackFn(index: number, payment: Payment): string {
     return payment._id;
+  }
+
+  public onRowClicked(row: PaymentTableItemModel) {
+    this.tabbedItemsService.openTab({
+      tab: paymentTab,
+      inputs: {
+        id: row.payment._id
+      }
+    });
   }
 }

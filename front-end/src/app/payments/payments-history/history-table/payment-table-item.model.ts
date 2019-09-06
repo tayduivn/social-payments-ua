@@ -19,7 +19,7 @@ export class PaymentTableItemModel {
   public address: string;
   public description: string;
 
-  constructor(private payment: Payment) {
+  constructor(public readonly payment: Payment) {
     this.init();
   }
 

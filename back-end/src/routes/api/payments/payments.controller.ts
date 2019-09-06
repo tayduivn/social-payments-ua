@@ -5,7 +5,6 @@ import {
 } from 'express';
 import * as _ from 'lodash';
 import moment from 'moment';
-import { Types } from 'mongoose';
 import { Payment } from '../../../../../api-contracts/payment/payment';
 import { PaymentsFilter } from '../../../../../api-contracts/payment/payments-filter';
 import { PaymentsLatest } from '../../../../../api-contracts/payment/payments-latest';
@@ -16,6 +15,7 @@ import { PaymentModelService } from '../../../models/payment/payment.model.servi
 import { UserModel } from '../../../models/user/user.model';
 import { UserModelService } from '../../../models/user/user.model.service';
 import { ApiCommonController } from '../api-common.controller';
+import { PaymentModel } from '../../../models/payment/payment.model';
 
 export class PaymentsController extends ApiCommonController {
   public static getByFilter(req: Request, res: Response, next: NextFunction): void {
@@ -45,6 +45,11 @@ export class PaymentsController extends ApiCommonController {
   public static create(req: Request, res: Response, next: NextFunction): void {
     UserModelService.findByToken(Token.extractFromRequest(req))
       .then((user: UserModel) => PaymentModelService.create(req.body as Payment, user))
+      .then(...super.promiseResponse<Payment>(res, next));
+  }
+
+  public static getPayment(req: Request, res: Response, next: NextFunction) {
+    PaymentModel.findById(req.params.id)
       .then(...super.promiseResponse<Payment>(res, next));
   }
 

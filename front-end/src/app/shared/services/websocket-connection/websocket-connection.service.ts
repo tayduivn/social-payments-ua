@@ -74,6 +74,7 @@ export class WebsocketConnectionService {
 
   private createSocketSubject() {
     const protocol = this.window.location.protocol.indexOf('https') >= 0 ? 'wss' : 'ws';
+    const hostname = this.window.location.hostname;
 
     if (this.socketSubject) {
       this.socketSubject.unsubscribe();
@@ -81,7 +82,7 @@ export class WebsocketConnectionService {
     }
 
     this.socketSubject = new WebSocketSubject({
-      url: `${protocol}://${this.window.location.hostname}`,
+      url: `${protocol}://${hostname}`,
       protocol: this.authService.getToken(),
       openObserver: {
         next: this.onWebsocketOpen.bind(this)

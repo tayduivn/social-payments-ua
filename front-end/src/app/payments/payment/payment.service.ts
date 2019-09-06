@@ -10,6 +10,10 @@ import * as moment from 'moment';
 export class PaymentService {
   constructor(private http: HttpClient) {}
 
+  public getPayment(id: string): Observable<Payment> {
+    return this.http.get<Payment>(`${environment.dataQueries.apiEndpoint}/payments/${id}`);
+  }
+
   public submitPayment(payment: Payment): Observable<Payment> {
     payment.date = moment(payment.date).format(apiDateFormat);
     return this.http.post<Payment>(`${environment.dataQueries.apiEndpoint}/payments/`, payment);

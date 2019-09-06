@@ -1,4 +1,4 @@
-import { TabbedItemsConfig } from '../layout/tabbed-items/tabbed-items-config.model';
+import { TabbedItemConfig, TabbedItemsConfig } from '../layout/tabbed-items/tabbed-items-config.model';
 import { PaymentComponent } from './payment/payment.component';
 import { PaymentsDashboardComponent } from './payments-dashboard/payments-dashboard.component';
 import { PaymentsHistoryComponent } from './payments-history/payments-history.component';
@@ -23,4 +23,10 @@ export const paymentsConfig: TabbedItemsConfig = {
       component: PaymentsDashboardComponent
     }
   ]
+};
+
+export const paymentTab: TabbedItemConfig = {
+  icon: 'description',
+  title: 'Платіж',
+  component: PaymentComponent
 };

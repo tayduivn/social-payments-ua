@@ -1,4 +1,5 @@
 @import "../../../shared/styles/general.variables";
+@import '~@angular/material/theming';
 
 :host {
   display: flex;
@@ -55,4 +56,11 @@ $cell-indent: 10px;
 .mat-column-kfk,
 .mat-column-kek {
   @include fixed-column-width(60px);
+}
+
+.sp-history-table-row {
+  &:hover {
+    cursor: pointer;
+    background-color: mat-color($mat-indigo, 50);
+  }
 }

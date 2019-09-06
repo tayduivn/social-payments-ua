@@ -42,6 +42,12 @@
           </div>
           <span></span>
         </section>
+
+        <br/><br/>
+
+        <section>
+          <button mat-raised-button color="primary" (click)="onOpenClick(payment)">Відкрити</button>
+        </section>
       </mat-expansion-panel>
 
       <mat-expansion-panel *ngIf="renderLoading$ | async"

@@ -1,4 +1,12 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import * as moment from 'moment';
@@ -15,6 +23,8 @@ import { SelectPersonAccountDialogComponent } from './select-person-account-dial
 import { SelectPersonAccountDialogService } from './select-person-account-dialog/select-person-account-dialog.service';
 import { CodeKEKComponent } from '../../shared/components/code-kek/code-kek.component';
 import { CodeKFKComponent } from '../../shared/components/code-kfk/code-kfk.component';
+import { Payment } from '../../../../../api-contracts/payment/payment';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'sp-payment',
@@ -24,6 +34,8 @@ import { CodeKFKComponent } from '../../shared/components/code-kfk/code-kfk.comp
   providers: [PaymentService]
 })
 export class PaymentComponent extends UnsubscribableComponent implements OnInit, AfterViewInit {
+  @Input() id: string;
+
   public readonly autocompleteClasses = 'sp-new-payment-autocomplete';
 
   public form: FormGroup;
@@ -43,6 +55,8 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
   @ViewChild(CodeKEKComponent)
   private codeKEKComponent: CodeKEKComponent;
 
+  private payment: Payment = {} as any;
+
   constructor(
     private cdRef: ChangeDetectorRef,
     private dialog: MatDialog,
@@ -53,12 +67,17 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
     private tabbedItemsService: TabbedItemsService
   ) {
     super();
-    this.createForm();
   }
 
-  public ngOnInit() {
+  public async ngOnInit() {
     this.componentSubscriptions.add(this.selectPersonAccountDialogService.accountSelected$
       .subscribe(this.onPersonAccountSelected.bind(this)));
+
+    if (this.id) {
+      this.payment = await this.paymentService.getPayment(this.id).toPromise();
+    }
+
+    this.createForm(this.payment);
   }
 
   public ngAfterViewInit() {
@@ -118,15 +137,15 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
     this.financialInstitutionId = id;
   }
 
-  private createForm() {
+  private createForm(payment: Payment) {
     this.form = this.fb.group({
-      date: [moment(Date.now()).format(apiDateFormat), Validators.required],
-      reportNumber: ['', Validators.required],
-      accountNumber: [''],
+      date: [moment(payment.date || Date.now()).format(apiDateFormat), Validators.required],
+      reportNumber: [payment.reportNumber || '', Validators.required],
+      accountNumber: [payment.accountNumber || ''],
       codeKFK: [''],
       codeKEK: [''],
-      sum: ['', [Validators.required, Validators.min(0.01)]],
-      description: ['', Validators.required],
+      sum: [payment.sum || '', [Validators.required, Validators.min(0.01)]],
+      description: [payment.description || '', Validators.required],
       person: this.fb.group({}),
       financialInstitution: this.fb.group({})
     });

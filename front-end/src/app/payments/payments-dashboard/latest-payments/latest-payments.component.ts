@@ -1,7 +1,4 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -10,6 +7,9 @@ import { displayDateFormat } from '../../../shared/constants/date-formats';
 import { PersonHelper } from '../../../shared/utils/person.helper';
 import { LatestPaymentsService } from './latest-payments.service';
 import { UnsubscribableComponent } from '../../../shared/components/common/unsubscribable-component';
+import { Payment } from '../../../../../../api-contracts/payment/payment';
+import { paymentTab } from '../../payments.config';
+import { TabbedItemsService } from '../../../layout/tabbed-items/tabbed-items.service';
 
 @Component({
   selector: 'sp-latest-payments',
@@ -25,7 +25,10 @@ export class LatestPaymentsComponent extends UnsubscribableComponent implements 
 
   private renderLoadingSubject = new BehaviorSubject(true);
 
-  constructor(public latestPaymentsService: LatestPaymentsService) {
+  constructor(
+    public latestPaymentsService: LatestPaymentsService,
+    private tabbedItemsService: TabbedItemsService
+  ) {
     super();
     this.renderLoading$ = this.renderLoadingSubject.asObservable();
   }
@@ -60,5 +63,14 @@ export class LatestPaymentsComponent extends UnsubscribableComponent implements 
   public onScrollBottom(): void {
     this.renderLoadingSubject.next(true);
     this.latestPaymentsService.queryNextFrame();
+  }
+
+  public onOpenClick(payment: Payment) {
+    this.tabbedItemsService.openTab({
+      tab: paymentTab,
+      inputs: {
+        id: payment._id
+      }
+    });
   }
 }
