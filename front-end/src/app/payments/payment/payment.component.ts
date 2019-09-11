@@ -24,7 +24,9 @@ import { SelectPersonAccountDialogService } from './select-person-account-dialog
 import { CodeKEKComponent } from '../../shared/components/code-kek/code-kek.component';
 import { CodeKFKComponent } from '../../shared/components/code-kfk/code-kfk.component';
 import { Payment } from '../../../../../api-contracts/payment/payment';
-import * as _ from 'lodash';
+import { SpDialogType } from '../../shared/components/dialog/sp-dialog-type.enum';
+import { filter, switchMap } from 'rxjs/operators';
+import { SpDialogService } from '../../shared/components/dialog/sp-dialog.service';
 
 @Component({
   selector: 'sp-payment',
@@ -39,8 +41,8 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
   public readonly autocompleteClasses = 'sp-new-payment-autocomplete';
 
   public form: FormGroup;
-
   public financialInstitutionId: string;
+  public editMode = false;
 
   @ViewChild('dateInput')
   private dateInputRef: any;
@@ -64,7 +66,8 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
     private paymentService: PaymentService,
     private personAccountsService: PersonAccountsService,
     private selectPersonAccountDialogService: SelectPersonAccountDialogService,
-    private tabbedItemsService: TabbedItemsService
+    private tabbedItemsService: TabbedItemsService,
+    private spDialogService: SpDialogService
   ) {
     super();
   }
@@ -74,7 +77,8 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
       .subscribe(this.onPersonAccountSelected.bind(this)));
 
     if (this.id) {
-      this.payment = await this.paymentService.getPayment(this.id).toPromise();
+      this.payment = await this.paymentService.get(this.id).toPromise();
+      this.editMode = true;
     }
 
     this.createForm(this.payment);
@@ -88,7 +92,7 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
   }
 
   public onSaveClick() {
-    this.paymentService.submitPayment(this.form.value)
+    this.paymentService.submit(this.form.value)
       .subscribe(() => {
         this.tabbedItemsService.closeActiveTab(0);
         this.cdRef.markForCheck();
@@ -114,6 +118,24 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
 
   public onFinancialInstitutionIdChange(id: string) {
     this.updateAccountNumber('');
+  }
+
+  public removePayment(): void {
+    this.spDialogService.open({
+      type: SpDialogType.Confirm,
+      text: 'Ви справді бажаєте видалити платіж?'
+    }).pipe(
+      filter((confirmed: boolean) => confirmed),
+      switchMap(() => this.paymentService.remove(this.id)),
+    )
+      .subscribe(() => {
+        this.tabbedItemsService.closeActiveTab();
+
+        this.spDialogService.open({
+          type: SpDialogType.Alert,
+          text: 'Платіж видалено'
+        });
+      });
   }
 
   private processPersonAccounts(personAccounts: PersonAccounts) {

@@ -83,4 +83,17 @@ export class PaymentModelService {
         })
       );
   }
+
+  public static remove(id: string): MongoosePromise<void> {
+    return PaymentModel.deleteOne({_id: id})
+      .then(() => {
+        clientBroadcastService.broadcastClients({
+          channel: 'payment',
+          action: 'delete',
+          payload: {
+            _id: id
+          } as any
+        });
+      });
+  }
 }

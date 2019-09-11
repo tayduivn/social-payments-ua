@@ -48,9 +48,14 @@ export class PaymentsController extends ApiCommonController {
       .then(...super.promiseResponse<Payment>(res, next));
   }
 
-  public static getPayment(req: Request, res: Response, next: NextFunction) {
+  public static getPayment(req: Request, res: Response, next: NextFunction): void {
     PaymentModel.findById(req.params.id)
       .then(...super.promiseResponse<Payment>(res, next));
+  }
+
+  public static deletePayment(req: Request, res: Response, next: NextFunction): void {
+    PaymentModelService.remove(req.params.id)
+      .then(...super.promiseResponse<void>(res, next));
   }
 
   private static sendBadRequest(next: NextFunction) {

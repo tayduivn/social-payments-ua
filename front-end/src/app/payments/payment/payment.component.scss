@@ -107,6 +107,8 @@ $payment-section-indent: 1.2em;
 
 .sp-payment-actions {
   margin: 1em 0 0;
+  display: flex;
+  justify-content: space-between;
 
   .sp-payment-save {
     margin-right: $input-inline-indent;

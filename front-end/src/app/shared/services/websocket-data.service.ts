@@ -3,6 +3,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { WebsocketMessageCommon } from '../../../../../api-contracts/websocket-messages/websocket-message-common';
 import { WebsocketChannel } from './websocket-connection/websocket-channel.type';
 import { WebsocketConnectionService } from './websocket-connection/websocket-connection.service';
+import * as _ from 'lodash';
 
 export abstract class WebsocketDataService<T> {
   protected abstract dataObserver: ReplaySubject<T[]>;
@@ -17,9 +18,26 @@ export abstract class WebsocketDataService<T> {
     )
       .subscribe((params: [WebsocketMessageCommon<T>, T[]]) => {
         const [message, cached] = params;
-        if (message.action === 'create') {
-          this.dataObserver.next([message.payload].concat(cached))
+
+        switch (message.action) {
+          case 'create':
+            this.addItem(message, cached);
+            break;
+          case 'delete':
+            this.removeItem(message, cached);
+            break;
+          default:
+            throw 'websocket channel action not implemented';
         }
       });
+  }
+
+  private addItem(message: WebsocketMessageCommon<T>, cached: T[]) {
+    this.dataObserver.next([message.payload].concat(cached));
+  }
+
+  private removeItem(message: WebsocketMessageCommon<T>, cached: T[]) {
+    _.remove(cached, (item) => (item as any)._id === (message.payload as any)._id);
+    this.dataObserver.next(cached);
   }
 }
