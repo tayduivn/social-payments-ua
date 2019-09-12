@@ -37,10 +37,6 @@ import { StreetService } from './street.service';
 export class PersonComponent extends MultifiedAutocompleteCommonComponent implements OnInit {
   @Input() public renderAddressFields: boolean = true;
 
-  public readonly passportNumberLetter = new RegExp(`[0-9a-zA-Z${lettersUA_CharsDiapason}]`);
-
-  public personList: Person[];
-
   public fullName: FormControl;
   public passportNumber: FormControl;
   public identityCode: FormControl;

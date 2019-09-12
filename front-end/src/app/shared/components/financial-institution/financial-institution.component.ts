@@ -23,10 +23,6 @@ import { FinancialInstitutionService } from './financial-institution.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonComponent implements OnInit {
-  public name: FormControl;
-  public mfo: FormControl;
-  public edrpou: FormControl;
-
   constructor(
     cdRef: ChangeDetectorRef,
     fb: FormBuilder,
@@ -64,8 +60,8 @@ export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonCo
   }
 
   protected initControls(): void {
-    this.name = <FormControl> this.form.get('name');
-    this.mfo = <FormControl> this.form.get('mfo');
-    this.edrpou = <FormControl> this.form.get('edrpou');
+    // this.name = <FormControl> this.form.get('name');
+    // this.mfo = <FormControl> this.form.get('mfo');
+    // this.edrpou = <FormControl> this.form.get('edrpou');
   }
 }

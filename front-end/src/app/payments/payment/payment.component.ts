@@ -70,6 +70,7 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
     private spDialogService: SpDialogService
   ) {
     super();
+    this.createForm();
   }
 
   public async ngOnInit() {
@@ -159,7 +160,7 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
     this.financialInstitutionId = id;
   }
 
-  private createForm(payment: Payment) {
+  private createForm(payment: Payment = {} as any) {
     this.form = this.fb.group({
       date: [moment(payment.date || Date.now()).format(apiDateFormat), Validators.required],
       reportNumber: [payment.reportNumber || '', Validators.required],
