@@ -90,7 +90,7 @@ export class PaymentModelService {
         return StreetModelService.resolve(payment.person.address.street);
       })
       .then((str: Street) => {
-        street = str;
+        payment.person.address.street = street = str;
         return PersonModelService.resolve(payment.person);
       })
       .then((personResponse) => {

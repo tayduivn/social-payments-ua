@@ -86,6 +86,11 @@
         <sp-code-kfk></sp-code-kfk>
         <sp-code-kek></sp-code-kek>
       </div>
+
+      <mat-checkbox class="sp-payment-paid"
+        [labelPosition]="'before'"
+        [checked]="form.controls.paid.value"
+        (change)="form.controls.paid.setValue($event.checked)">Оплачено:</mat-checkbox>
     </mat-card-content>
   </perfect-scrollbar>
 

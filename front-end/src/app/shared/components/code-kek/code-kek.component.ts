@@ -14,7 +14,6 @@ export class CodeKEKComponent implements OnInit {
   constructor(public codeKEKService: CodeKEKService, public defaultPerfectScrollbarConfig: DefaultPerfectScrollbarConfig) { }
 
   ngOnInit() {
-    console.log('defaultPerfectScrollbarConfig', this.defaultPerfectScrollbarConfig);
   }
 
 }

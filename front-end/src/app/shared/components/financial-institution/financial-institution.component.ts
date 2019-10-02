@@ -27,7 +27,7 @@ export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonCo
 
     this.financialInstitutionService.getById(this.id).subscribe((fiItem: FinancialInstitution) => {
       if (fiItem) {
-        this.form.patchValue(Object.assign({id: this.id}, fiItem), {emitEvent: false});
+        this.form.patchValue(fiItem, {emitEvent: false});
         this.allFieldsEmtpy = false;
       } else {
         this.reset();
@@ -37,7 +37,7 @@ export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonCo
 
   protected createForm(): void {
     this.form = this.fb.group({
-      _id: null,
+      _id: [''],
       name: ['', this.getConditionalValidator()],
       mfo: ['', this.getConditionalValidator()],
       edrpou: ['', this.getConditionalValidator()]

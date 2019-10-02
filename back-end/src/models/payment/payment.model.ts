@@ -48,7 +48,8 @@ const paymentSchema = new Schema({
   reportNumber: {
     type: String,
     required: true
-  }
+  },
+  paid: Boolean
 });
 
 paymentSchema.index(

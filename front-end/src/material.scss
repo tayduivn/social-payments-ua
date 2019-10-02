@@ -139,4 +139,8 @@ $custom-typography: mat-typography-config(
   mat-header-cell:last-of-type {
     padding-right: $table-indent;
   }
+
+  mat-checkbox .mat-checkbox-label {
+    line-height: 24px;
+  }
 }

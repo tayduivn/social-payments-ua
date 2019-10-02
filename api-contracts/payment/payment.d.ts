@@ -13,4 +13,5 @@ export interface Payment {
   person: Person;
   financialInstitution: FinancialInstitution;
   reportNumber: number;
+  paid?: boolean;
 }

@@ -29,7 +29,7 @@ import { filter, switchMap } from 'rxjs/operators';
 import { SpDialogService } from '../../shared/components/dialog/sp-dialog.service';
 import { WindowProvider } from '../../shared/providers/window-provider';
 
-type FormValues = [string, string | number][];
+type FormValues = [string, string | number | boolean][];
 
 @Component({
   selector: 'sp-payment',
@@ -186,7 +186,8 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
       sum: ['', [Validators.required, Validators.min(0.01)]],
       description: ['', Validators.required],
       person: this.fb.group({}),
-      financialInstitution: this.fb.group({})
+      financialInstitution: this.fb.group({}),
+      paid: []
     });
   }
 
@@ -198,7 +199,8 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
       ['sum', payment.sum || ''],
       ['description', payment.description || ''],
       ['codeKFK', payment.codeKFK || ''],
-      ['codeKEK', payment.codeKEK || '']
+      ['codeKEK', payment.codeKEK || ''],
+      ['paid', payment.paid]
     ];
 
     const personValues: FormValues = [
@@ -221,11 +223,17 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
     ];
 
     paymentValues.forEach(([control, value]) => this.setFormControl(control, value));
+
+    // this.personId = payment.person._id;
+    console.log('update personValues');
     personValues.forEach(([control, value]) => this.setFormControl(control, value, this.form.controls.person as FormGroup));
+
+    // this.financialInstitutionId = payment.financialInstitution._id;
+    console.log('update fiValues');
     fiValues.forEach(([control, value]) => this.setFormControl(control, value, this.form.controls.financialInstitution as FormGroup));
   }
 
-  private setFormControl(controlName: string, value: string | number, context?: FormGroup): void {
+  private setFormControl(controlName: string, value: string | number | boolean, context?: FormGroup): void {
     const control = (context || this.form).get(controlName);
 
     control.setValue(value);

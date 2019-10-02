@@ -118,3 +118,16 @@ $payment-section-indent: 1.2em;
 .sp-report-number {
   margin-left: 70px;
 }
+
+.sp-payment-paid {
+  margin-top: 3em;
+  display: block;
+
+  ::ng-deep {
+    .mat-checkbox-label {
+      font-size: 18px;
+      font-weight: bold;
+      margin-right: $input-inline-indent / 2;
+    }
+  }
+}

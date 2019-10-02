@@ -12,6 +12,7 @@ import {
   Validators
 } from '@angular/forms';
 import {
+  filter,
   skip,
   tap
 } from 'rxjs/operators';
@@ -70,13 +71,13 @@ export abstract class MultifiedAutocompleteCommonComponent extends Unsubscribabl
   protected ngOnInit(): void {
     this.createForm();
     this.initControls();
-    this.initReset();
+    this.initResetStateFlagWatcher();
   }
 
-  protected initReset(): void {
+  protected initResetStateFlagWatcher(): void {
     this.form.valueChanges
       .pipe(
-        skip(1),
+        filter(() => this.form.dirty),
         tap(() => {
           this.consolidateId(null);
           this.form.patchValue({_id: this.id}, {emitEvent: false});
