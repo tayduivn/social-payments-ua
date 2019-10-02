@@ -18,6 +18,10 @@ perfect-scrollbar {
 
 $cell-indent: 10px;
 
+.mat-column-paid {
+  @include fixed-column-width(50px);
+}
+
 .mat-column-date {
   @include fixed-column-width(75px);
 

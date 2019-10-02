@@ -3,6 +3,13 @@
     matSort
     [trackBy]="paymentsTrackFn">
 
+    <ng-container matColumnDef="paid">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Оплата</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-icon *ngIf="row.paid" color="accent">check_box</mat-icon>
+      </mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="date">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Дата</mat-header-cell>
       <mat-cell *matCellDef="let row">{{row.date}}</mat-cell>

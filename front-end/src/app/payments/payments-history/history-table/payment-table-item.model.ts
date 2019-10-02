@@ -18,6 +18,7 @@ export class PaymentTableItemModel {
   public passport: string;
   public address: string;
   public description: string;
+  public paid: boolean;
 
   constructor(public readonly payment: Payment) {
     this.init();
@@ -44,5 +45,6 @@ export class PaymentTableItemModel {
     this.address = PersonHelper.getPersonAddress(this.payment.person.address);
 
     this.description = item.description;
+    this.paid = item.paid;
   }
 }
