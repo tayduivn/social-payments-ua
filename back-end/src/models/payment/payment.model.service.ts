@@ -18,51 +18,33 @@ import { CodeKFKModelService } from '../code-kfk/code-kfk.model.service';
 export class PaymentModelService {
   private static readonly sorting = '-date -created';
 
-  public static create(payment: Payment, user: UserModel): Promise<PaymentModel> {
-    let financialInstitution: FinancialInstitution;
-    let person: Person;
-    let street: Street;
+  public static async create(payment: Payment, user: UserModel): Promise<PaymentModel> {
+    const paymentResolved = await PaymentModelService.getResolved(payment, user);
+    const paymentModel = await PaymentModel.create(paymentResolved);
 
-    return FinancialInstitutionModelService.resolve(payment.financialInstitution)
-      .then((financialInstitutionResponse) => {
-        financialInstitution = financialInstitutionResponse;
-        return StreetModelService.resolve(payment.person.address.street);
-      })
-      .then((str: Street) => {
-        street = str;
-        return PersonModelService.resolve(payment.person);
-      })
-      .then((personResponse) => {
-        person = personResponse;
-        return PersonAccountsModelService.resolve({
-          personId: person._id,
-          financialInstitutionId: financialInstitution._id,
-          account: payment.accountNumber
-        });
-      })
-      .then(() => {
-        return CodeKEKModelService.add(payment.codeKEK)
-          .then(() => CodeKFKModelService.add(payment.codeKFK));
-      })
-      .then(() => {
-        payment.financialInstitution = financialInstitution;
-        payment.person._id = person._id;
-        payment.person.address.street = street;
-        payment.created = new Date(Date.now()).toString();
-        (payment as PaymentModel).author = user._id;
-        delete payment._id;
+    clientBroadcastService.broadcastClients({
+      channel: 'payment',
+      action: 'create',
+      payload: paymentModel.toObject() as Payment
+    });
 
-        return PaymentModel.create(payment);
-      })
-      .then((payment: PaymentModel) => {
-        clientBroadcastService.broadcastClients({
-          channel: 'payment',
-          action: 'create',
-          payload: payment.toObject() as Payment
-        });
+    return paymentModel;
+  }
 
-        return payment;
-      });
+  public static async update(payment: Payment, user: UserModel): Promise<PaymentModel> {
+    const paymentResolved = await PaymentModelService.getResolved(payment, user);
+    const paymentModel = await PaymentModel.findById(payment._id);
+    paymentModel.set(paymentResolved);
+
+    await paymentModel.save();
+
+    clientBroadcastService.broadcastClients({
+      channel: 'payment',
+      action: 'update',
+      payload: paymentModel.toObject() as Payment
+    });
+
+    return paymentModel;
   }
 
   public static find(filter: PaymentsFilter): MongoosePromise<PaymentModel[]> {
@@ -94,6 +76,43 @@ export class PaymentModelService {
             _id: id
           } as any
         });
+      });
+  }
+
+  private static getResolved(payment: Payment, user: UserModel): Promise<Payment> {
+    let financialInstitution: FinancialInstitution;
+    let person: Person;
+    let street: Street;
+
+    return FinancialInstitutionModelService.resolve(payment.financialInstitution)
+      .then((financialInstitutionResponse) => {
+        financialInstitution = financialInstitutionResponse;
+        return StreetModelService.resolve(payment.person.address.street);
+      })
+      .then((str: Street) => {
+        street = str;
+        return PersonModelService.resolve(payment.person);
+      })
+      .then((personResponse) => {
+        person = personResponse;
+        return PersonAccountsModelService.resolve({
+          personId: person._id,
+          financialInstitutionId: financialInstitution._id,
+          account: payment.accountNumber
+        });
+      })
+      .then(() => {
+        return CodeKEKModelService.add(payment.codeKEK)
+          .then(() => CodeKFKModelService.add(payment.codeKFK));
+      })
+      .then(() => {
+        payment.financialInstitution = financialInstitution;
+        payment.person._id = person._id;
+        payment.person.address.street = street;
+        payment.created = new Date(Date.now()).toString();
+        (payment as PaymentModel).author = user._id;
+
+        return payment;
       });
   }
 }

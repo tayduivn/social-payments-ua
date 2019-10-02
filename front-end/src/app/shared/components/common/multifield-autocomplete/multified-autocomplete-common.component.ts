@@ -33,6 +33,7 @@ export abstract class MultifiedAutocompleteCommonComponent extends Unsubscribabl
   @Input() public renderClearButton: boolean = true;
   @Input() public renderValidationErrors: boolean = true;
   @Input() public autocompleteClasses: string;
+  @Input() public renderAutocomplete = true;
 
   @Output() public idChange = new EventEmitter<string>();
 

@@ -38,7 +38,8 @@
     <mat-error *ngIf="renderValidationErrors && form.controls.name.invalid && form.controls.name.hasError('required')">Введіть назву</mat-error>
   </mat-form-field>
 
-  <sp-multifield-autocomplete #autocomplete
+  <sp-multifield-autocomplete *ngIf="renderAutocomplete"
+    #autocomplete
     [autocompleteClasses]="autocompleteClasses"
     [items]="financialInstitutionService.getData() | async"
     [filter$]="form.valueChanges"

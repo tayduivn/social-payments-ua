@@ -1,27 +1,11 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnInit
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormControl
-} from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
-import {
-  filter,
-  map,
-  startWith,
-  take,
-  tap
-} from 'rxjs/operators';
+import { filter, map, startWith, tap } from 'rxjs/operators';
 import { Person } from '../../../../../../api-contracts/person/person';
 import { Street } from '../../../../../../api-contracts/street/street';
-import { lettersUA_CharsDiapason } from '../../constants/char-diapason-ua';
 import { FilterUtils } from '../../utils/filter-utils';
 import { PersonHelper } from '../../utils/person.helper';
 import { MultifiedAutocompleteCommonComponent } from '../common/multifield-autocomplete/multified-autocomplete-common.component';
@@ -71,9 +55,7 @@ export class PersonComponent extends MultifiedAutocompleteCommonComponent implem
     this.selectedStreetId.setValue(streetOption.option.value._id, {emitEvent: false});
   }
 
-  protected updateFormOnIdChange() {
-    console.log('Person id change cb called');
-  }
+  protected updateFormOnIdChange() {}
 
   protected createForm(): void {
     const mandatoryFields = {

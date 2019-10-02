@@ -84,7 +84,8 @@
       </mat-form-field>
     </div>
 
-    <sp-multifield-autocomplete #autocomplete
+    <sp-multifield-autocomplete *ngIf="renderAutocomplete"
+      #autocomplete
       [autocompleteClasses]="autocompleteClasses"
       [items]="personService.getData() | async"
       [filter$]="personAutocompleteFilter$"

@@ -26,6 +26,9 @@ export abstract class WebsocketDataService<T> {
           case 'delete':
             this.removeItem(message, cached);
             break;
+          case 'update':
+            this.updateItem(message, cached);
+            break;
           default:
             throw 'websocket channel action not implemented';
         }
@@ -38,6 +41,17 @@ export abstract class WebsocketDataService<T> {
 
   private removeItem(message: WebsocketMessageCommon<T>, cached: T[]) {
     _.remove(cached, (item) => (item as any)._id === (message.payload as any)._id);
+    this.dataObserver.next(cached);
+  }
+
+  private updateItem(message: WebsocketMessageCommon<T>, cached: T[]) {
+    const item = cached.find((item) => (item as any)._id === (message.payload as any)._id);
+
+    if (!item) {
+      return;
+    }
+
+    Object.assign(item, message.payload);
     this.dataObserver.next(cached);
   }
 }

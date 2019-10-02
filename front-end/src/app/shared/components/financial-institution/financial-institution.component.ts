@@ -1,16 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnInit
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators
-} from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import 'rxjs/add/operator/finally';
 import { FinancialInstitution } from '../../../../../../api-contracts/financial-institution/financial.institution';
 import { MultifiedAutocompleteCommonComponent } from '../common/multifield-autocomplete/multified-autocomplete-common.component';
@@ -22,17 +11,13 @@ import { FinancialInstitutionService } from './financial-institution.service';
   styleUrls: ['./financial-institution.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonComponent implements OnInit {
+export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonComponent {
   constructor(
     cdRef: ChangeDetectorRef,
     fb: FormBuilder,
     public financialInstitutionService: FinancialInstitutionService
   ) {
     super(cdRef, fb);
-  }
-
-  public ngOnInit() {
-    super.ngOnInit();
   }
 
   protected updateFormOnIdChange() {
@@ -59,9 +44,5 @@ export class FinancialInstitutionComponent extends MultifiedAutocompleteCommonCo
     });
   }
 
-  protected initControls(): void {
-    // this.name = <FormControl> this.form.get('name');
-    // this.mfo = <FormControl> this.form.get('mfo');
-    // this.edrpou = <FormControl> this.form.get('edrpou');
-  }
+  protected initControls(): void {}
 }

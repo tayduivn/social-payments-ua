@@ -27,6 +27,9 @@ import { Payment } from '../../../../../api-contracts/payment/payment';
 import { SpDialogType } from '../../shared/components/dialog/sp-dialog-type.enum';
 import { filter, switchMap } from 'rxjs/operators';
 import { SpDialogService } from '../../shared/components/dialog/sp-dialog.service';
+import { WindowProvider } from '../../shared/providers/window-provider';
+
+type FormValues = [string, string | number][];
 
 @Component({
   selector: 'sp-payment',
@@ -43,6 +46,7 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
   public form: FormGroup;
   public financialInstitutionId: string;
   public editMode = false;
+  public renderAutocomplete = true;
 
   @ViewChild('dateInput')
   private dateInputRef: any;
@@ -67,22 +71,33 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
     private personAccountsService: PersonAccountsService,
     private selectPersonAccountDialogService: SelectPersonAccountDialogService,
     private tabbedItemsService: TabbedItemsService,
-    private spDialogService: SpDialogService
+    private spDialogService: SpDialogService,
+    private window: WindowProvider
   ) {
     super();
     this.createForm();
   }
 
-  public async ngOnInit() {
+  public ngOnInit() {
     this.componentSubscriptions.add(this.selectPersonAccountDialogService.accountSelected$
       .subscribe(this.onPersonAccountSelected.bind(this)));
 
     if (this.id) {
-      this.payment = await this.paymentService.get(this.id).toPromise();
-      this.editMode = true;
-    }
+      this.renderAutocomplete = false;
+      this.componentSubscriptions.add(this.paymentService.get(this.id)
+        .subscribe(payment => {
+          this.payment = payment;
+          this.editMode = true;
 
-    this.createForm(this.payment);
+          this.updateForm(this.payment);
+          this.cdRef.markForCheck();
+          this.cdRef.detectChanges();
+
+          this.window.requestAnimationFrame(() => {
+            this.renderAutocomplete = true;
+          });
+        }));
+    }
   }
 
   public ngAfterViewInit() {
@@ -93,11 +108,12 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
   }
 
   public onSaveClick() {
-    this.paymentService.submit(this.form.value)
-      .subscribe(() => {
-        this.tabbedItemsService.closeActiveTab(0);
-        this.cdRef.markForCheck();
-      });
+    const subs = this.editMode ? this.paymentService.update(this.id, this.form.value) : this.paymentService.create(this.form.value);
+
+    subs.subscribe(() => {
+      this.tabbedItemsService.closeActiveTab(0);
+      this.cdRef.markForCheck();
+    });
   }
 
   public onCancelClick() {
@@ -160,18 +176,59 @@ export class PaymentComponent extends UnsubscribableComponent implements OnInit,
     this.financialInstitutionId = id;
   }
 
-  private createForm(payment: Payment = {} as any) {
+  private createForm() {
     this.form = this.fb.group({
-      date: [moment(payment.date || Date.now()).format(apiDateFormat), Validators.required],
-      reportNumber: [payment.reportNumber || '', Validators.required],
-      accountNumber: [payment.accountNumber || ''],
+      date: [moment(Date.now()).format(apiDateFormat), Validators.required],
+      reportNumber: ['', Validators.required],
+      accountNumber: [''],
       codeKFK: [''],
       codeKEK: [''],
-      sum: [payment.sum || '', [Validators.required, Validators.min(0.01)]],
-      description: [payment.description || '', Validators.required],
+      sum: ['', [Validators.required, Validators.min(0.01)]],
+      description: ['', Validators.required],
       person: this.fb.group({}),
       financialInstitution: this.fb.group({})
     });
+  }
+
+  private updateForm(payment: Payment = {} as any) {
+    const paymentValues: FormValues = [
+      ['date', moment(payment.date || Date.now()).format(apiDateFormat)],
+      ['reportNumber', payment.reportNumber || ''],
+      ['accountNumber', payment.accountNumber || ''],
+      ['sum', payment.sum || ''],
+      ['description', payment.description || ''],
+      ['codeKFK', payment.codeKFK || ''],
+      ['codeKEK', payment.codeKEK || '']
+    ];
+
+    const personValues: FormValues = [
+      ['_id', payment.person._id],
+      ['fullName', payment.person.fullName],
+      ['passportNumber', payment.person.passportNumber],
+      ['identityCode', payment.person.identityCode],
+      ['address.house', payment.person.address.house],
+      ['address.houseSection', payment.person.address.houseSection],
+      ['address.apartment', payment.person.address.apartment],
+      ['address.street._id', payment.person.address.street._id],
+      ['address.street.name', payment.person.address.street.name],
+    ];
+
+    const fiValues: FormValues = [
+      ['_id', payment.financialInstitution._id],
+      ['name', payment.financialInstitution.name],
+      ['mfo', payment.financialInstitution.mfo],
+      ['edrpou', payment.financialInstitution.edrpou]
+    ];
+
+    paymentValues.forEach(([control, value]) => this.setFormControl(control, value));
+    personValues.forEach(([control, value]) => this.setFormControl(control, value, this.form.controls.person as FormGroup));
+    fiValues.forEach(([control, value]) => this.setFormControl(control, value, this.form.controls.financialInstitution as FormGroup));
+  }
+
+  private setFormControl(controlName: string, value: string | number, context?: FormGroup): void {
+    const control = (context || this.form).get(controlName);
+
+    control.setValue(value);
   }
 
   private onPersonAccountSelected(accountSelected: PersonAccountSelectedModel) {

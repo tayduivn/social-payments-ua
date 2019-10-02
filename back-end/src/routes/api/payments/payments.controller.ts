@@ -48,6 +48,12 @@ export class PaymentsController extends ApiCommonController {
       .then(...super.promiseResponse<Payment>(res, next));
   }
 
+  public static update(req: Request, res: Response, next: NextFunction): void {
+    UserModelService.findByToken(Token.extractFromRequest(req))
+      .then((user: UserModel) => PaymentModelService.update(req.body as Payment, user))
+      .then(...super.promiseResponse<Payment>(res, next));
+  }
+
   public static getPayment(req: Request, res: Response, next: NextFunction): void {
     PaymentModel.findById(req.params.id)
       .then(...super.promiseResponse<Payment>(res, next));
