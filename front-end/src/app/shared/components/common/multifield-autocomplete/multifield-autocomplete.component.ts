@@ -40,6 +40,8 @@ export class MultifieldAutocompleteComponent implements OnInit, AfterViewInit {
   @Input() public filter$: Observable<Object>;
   @Input() public autocompleteClasses: string;
 
+  @Input() public renderAutocomplete = true;
+
   @Output() public itemSelected = new EventEmitter();
 
   @ViewChild(MatAutocomplete) protected autocomplete: MatAutocomplete;
