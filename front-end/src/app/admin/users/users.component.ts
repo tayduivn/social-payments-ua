@@ -14,7 +14,7 @@ import {
   finalize
 } from 'rxjs/operators';
 import { User } from '../../../../../api-contracts/user/user';
-import { UnsubscribableComponent } from '../../shared/components/common/unsubscribable-component';
+import { UnsubscribableComponent } from '../../shared/components/common/unsubscribable.component';
 import { SpDialogType } from '../../shared/components/dialog/sp-dialog-type.enum';
 import { SpDialogService } from '../../shared/components/dialog/sp-dialog.service';
 import { UserDialogComponent } from './user-dialog/user-dialog.component';

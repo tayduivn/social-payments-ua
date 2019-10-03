@@ -18,7 +18,7 @@ import {
 } from 'rxjs/operators';
 import { FinancialInstitution } from '../../../../../../../api-contracts/financial-institution/financial.institution';
 import { FilterUtils } from '../../../utils/filter-utils';
-import { UnsubscribableComponent } from '../unsubscribable-component';
+import { UnsubscribableComponent } from '../unsubscribable.component';
 
 export abstract class MultifiedAutocompleteCommonComponent extends UnsubscribableComponent {
   @Input() public set id(val: string) {

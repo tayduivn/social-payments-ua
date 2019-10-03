@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { displayDateFormat } from '../../../shared/constants/date-formats';
 import { PersonHelper } from '../../../shared/utils/person.helper';
 import { LatestPaymentsService } from './latest-payments.service';
-import { UnsubscribableComponent } from '../../../shared/components/common/unsubscribable-component';
+import { UnsubscribableComponent } from '../../../shared/components/common/unsubscribable.component';
 import { Payment } from '../../../../../../api-contracts/payment/payment';
 import { paymentTab } from '../../payments.config';
 import { TabbedItemsService } from '../../../layout/tabbed-items/tabbed-items.service';

@@ -13,7 +13,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import * as _ from 'lodash';
-import { UnsubscribableComponent } from '../../shared/components/common/unsubscribable-component';
+import { UnsubscribableComponent } from '../../shared/components/common/unsubscribable.component';
 import { TabbedItemConfig, TabbedItemsConfig } from './tabbed-items-config.model';
 import { TabbedItemsService } from './tabbed-items.service';
 import { TabItemMessageModel } from './tab-item-message.model';

@@ -10,6 +10,12 @@
   margin-right: $input-inline-indent * 2;
 }
 
+.sp-request-items,
+.sp-filter-caption,
+mat-radio-button {
+  margin-right: $input-inline-indent * 2;
+}
+
 .sp-inputs-container {
   display: flex;
   margin-bottom: $input-block-indent;
@@ -18,18 +24,17 @@
 .sp-total-result-filter {
   display: flex;
   padding: $input-block-indent 0;
-
-  mat-chip {
-    margin-right: $input-inline-indent;
-    cursor: pointer;
-  }
 }
 
 .sp-total-result-caption {
-  margin-right: $input-inline-indent * 2;
-  font-size: 18px;
+  margin-left: $input-inline-indent * 2;
   display: flex;
   align-items: center;
+}
+
+.sp-total-result-caption,
+.sp-filter-caption {
+  font-size: 14px;
 }
 
 .sp-table-container {

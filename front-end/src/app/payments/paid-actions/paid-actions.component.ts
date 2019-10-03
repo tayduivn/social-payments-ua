@@ -1,10 +1,13 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import * as moment from 'moment';
 import { Moment } from 'moment';
 import { HistoryTableLoaderComponent } from '../shared/history-table/history-table-loader.component';
 import { PaymentsHistoryService } from '../shared/services/payments-history.service';
 import { apiDateFormat } from '../../shared/constants/date-formats';
-import * as moment from 'moment';
 import { HistoryFilterModel } from '../shared/history-filter.model';
+import { map } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { Payment } from '../../../../../api-contracts/payment/payment';
 
 @Component({
   selector: 'sp-paid-actions',
@@ -15,16 +18,22 @@ import { HistoryFilterModel } from '../shared/history-filter.model';
 export class PaidActionsComponent extends HistoryTableLoaderComponent {
   public date: Moment = null;
   public reportNumber = '';
+  public paidFlag = undefined;
+
+  public paymentsFiltered: Observable<Payment[]>;
+  public paymentsTotalSum: Observable<number>;
 
   public get buttonDisabled(): boolean {
     return !(this.date || this.reportNumber);
   }
 
+  private filterTrigger = new BehaviorSubject<void>(null);
+
   constructor(cdRef: ChangeDetectorRef, paymentsHistoryService: PaymentsHistoryService) {
     super(cdRef, paymentsHistoryService);
-  }
 
-  ngOnInit() {
+    this.setFilteringPipe();
+    this.setTotalRecordsPipe();
   }
 
   public onFindClick() {
@@ -43,6 +52,27 @@ export class PaidActionsComponent extends HistoryTableLoaderComponent {
       filter.reportNumber = this.reportNumber;
     }
 
+    this.paidFlag = null;
+
     this.onFilterChange(filter);
+  }
+
+  public onPaidFlagClick() {
+    this.filterTrigger.next(null);
+  }
+
+  private setTotalRecordsPipe() {
+    this.paymentsTotalSum = this.paymentsFiltered.pipe(
+      map(items => items.reduce((acc, item) => acc + item.sum, 0))
+    );
+  }
+
+  private setFilteringPipe() {
+    this.paymentsFiltered = combineLatest(
+      this.payments,
+      this.filterTrigger.asObservable()
+    ).pipe(
+      map(([payments]) => payments.filter(item => this.paidFlag === null ? true : this.paidFlag === !!item.paid))
+    );
   }
 }
