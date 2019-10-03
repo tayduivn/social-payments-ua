@@ -14,5 +14,6 @@ export interface PaymentsFilter {
   personIdentityCode?: string;
   codeKFK?: string;
   codeKEK?: string;
+  reportNumber?: string;
 }
 

@@ -77,7 +77,8 @@ export class PaymentsController extends ApiCommonController {
       sum: PaymentsController.getSumRangeFilter(filter.sumFrom, filter.sumTo),
       $text: PaymentsController.getDescriptionFilter(filter.description),
       codeKFK: filter.codeKFK,
-      codeKEK: filter.codeKEK
+      codeKEK: filter.codeKEK,
+      reportNumber: filter.reportNumber
     };
 
     if (filter.personId) {

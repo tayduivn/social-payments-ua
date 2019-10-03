@@ -5,12 +5,14 @@ import {
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
-import { Payment } from '../../../../../api-contracts/payment/payment';
-import { PaymentsFilter } from '../../../../../api-contracts/payment/payments-filter';
-import { environment } from '../../../environments/environment';
-import { HistoryFilterModel } from './shared/history-filter.model';
+import { Payment } from '../../../../../../api-contracts/payment/payment';
+import { PaymentsFilter } from '../../../../../../api-contracts/payment/payments-filter';
+import { environment } from '../../../../environments/environment';
+import { HistoryFilterModel } from '../history-filter.model';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class PaymentsHistoryService {
   private readonly requestUrl = `${environment.dataQueries.apiEndpoint}/payments/`;
 
@@ -26,6 +28,10 @@ export class PaymentsHistoryService {
 
   private static assignObjectPrefixedFields(prefix: string, rootObj: HistoryFilterModel): void {
     const obj = rootObj[prefix];
+
+    if (!obj) {
+      return;
+    }
 
     Object.keys(obj).forEach((key: string) => {
       if (key === '_id') {

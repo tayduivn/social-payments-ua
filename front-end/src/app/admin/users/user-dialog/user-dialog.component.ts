@@ -12,7 +12,6 @@ import {
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { User } from '../../../../../../api-contracts/user/user';
 import { InputInstantStateMatcher } from '../../../shared/angular-material/input-instant-state-matcher';
-import { allUA_CharsDiapason } from '../../../shared/constants/char-diapason-ua';
 import { UserDialogModel } from './user-dialog.model';
 
 @Component({

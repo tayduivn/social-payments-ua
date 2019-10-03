@@ -6,8 +6,9 @@ import {
 import * as _ from 'lodash/fp';
 import { finalize } from 'rxjs/operators';
 import { Payment } from '../../../../../api-contracts/payment/payment';
-import { PaymentsHistoryService } from './payments-history.service';
-import { HistoryFilterModel } from './shared/history-filter.model';
+import { PaymentsHistoryService } from '../shared/services/payments-history.service';
+import { HistoryFilterModel } from '../shared/history-filter.model';
+import { HistoryTableLoaderComponent } from '../shared/history-table/history-table-loader.component';
 
 @Component({
   selector: 'sp-payments-history',
@@ -15,39 +16,12 @@ import { HistoryFilterModel } from './shared/history-filter.model';
   styleUrls: ['./payments-history.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PaymentsHistoryComponent {
-  public statusTextDescription: string;
-  public showLoadingIndicator: boolean = false;
-
-  public payments: Payment[];
-
+export class PaymentsHistoryComponent extends HistoryTableLoaderComponent {
   private static readonly filterEmptyMessage = 'Вкажіть параметри пошуку';
 
-  constructor(private cdRef: ChangeDetectorRef, private paymentsHistoryService: PaymentsHistoryService) {
+  constructor(cdRef: ChangeDetectorRef, paymentsHistoryService: PaymentsHistoryService) {
+    super(cdRef, paymentsHistoryService);
     this.statusTextDescription = PaymentsHistoryComponent.filterEmptyMessage;
-  }
-
-  public onFilterChange(filter: HistoryFilterModel) {
-    this.showLoadingIndicator = true;
-    this.statusTextDescription = null;
-    this.payments = [];
-
-    this.paymentsHistoryService.requestPayments(filter)
-      .pipe(
-        finalize(() => {
-          this.showLoadingIndicator = false;
-          this.cdRef.markForCheck();
-        })
-      )
-      .subscribe((payments: Payment[]) => {
-        if (_.isEmpty(payments)) {
-          this.statusTextDescription = 'Не знайдено';
-        } else {
-          this.statusTextDescription = null;
-        }
-
-        this.payments = payments;
-      });
   }
 
   public onFilterEmpty() {

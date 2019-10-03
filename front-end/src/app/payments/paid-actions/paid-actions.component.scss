@@ -1,0 +1,39 @@
+@import "../../shared/styles/general.variables";
+
+.sp-paid-action-content {
+  margin-top: $input-block-indent;
+}
+
+.sp-report-number,
+.sp-datepicker {
+  width: 210px;
+  margin-right: $input-inline-indent * 2;
+}
+
+.sp-inputs-container {
+  display: flex;
+  margin-bottom: $input-block-indent;
+}
+
+.sp-total-result-filter {
+  display: flex;
+  padding: $input-block-indent 0;
+
+  mat-chip {
+    margin-right: $input-inline-indent;
+    cursor: pointer;
+  }
+}
+
+.sp-total-result-caption {
+  margin-right: $input-inline-indent * 2;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.sp-table-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -22,7 +22,7 @@ import {
   displayDateFormat
 } from '../../../shared/constants/date-formats';
 import { FilterUtils } from '../../../shared/utils/filter-utils';
-import { HistoryFilterModel } from '../shared/history-filter.model';
+import { HistoryFilterModel } from '../../shared/history-filter.model';
 import { FilterChipConfigModel } from './filter-chip-config.model';
 import { FilterType } from './shared/filter-type.enum';
 import { CodeKFKComponent } from '../../../shared/components/code-kfk/code-kfk.component';

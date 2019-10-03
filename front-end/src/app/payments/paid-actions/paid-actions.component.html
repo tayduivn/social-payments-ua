@@ -1,0 +1,77 @@
+<mat-card>
+  <div>
+    <mat-card-title>
+      Оплата платежів
+    </mat-card-title>
+
+    <mat-divider></mat-divider>
+  </div>
+
+  <mat-card-content class="sp-paid-action-content">
+    <div class="sp-inputs-container">
+      <mat-form-field class="sp-datepicker">
+        <input matInput
+          required
+          autocomplete="off"
+          placeholder="Дата рішення"
+          #dateInputModel="ngModel"
+          [matDatepicker]="dateCmp"
+          [(ngModel)]="date">
+        <mat-datepicker-toggle matSuffix [for]="dateCmp"></mat-datepicker-toggle>
+        <mat-datepicker #dateCmp></mat-datepicker>
+        <mat-error *ngIf="dateInputModel.invalid && dateInputModel.hasError('required')">Вкажіть дату рішення
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="sp-report-number">
+        <input matInput
+          required
+          autocomplete="off"
+          placeholder="Номер рішення"
+          #reportNumberModel="ngModel"
+          [(ngModel)]="reportNumber">
+        <mat-error *ngIf="reportNumberModel.invalid && reportNumberModel.hasError('required')">Введіть номер рішення
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button
+        class="sp-submit-report"
+        color="primary"
+        [disabled]="buttonDisabled"
+        (click)="onFindClick()">
+        <mat-icon aria-label="Search icon">search</mat-icon>
+        Знайти
+      </button>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="sp-total-result-filter">
+      <div class="sp-total-result-caption">
+        <span>Знайдено платежів</span>
+      </div>
+
+      <mat-chip-list>
+        <mat-chip color="accent" selected>Оплачено </mat-chip>
+        <mat-chip color="primary" selected>Не оплачено </mat-chip>
+        <mat-chip>Разом </mat-chip>
+      </mat-chip-list>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="sp-table-container">
+      <sp-history-table *ngIf="payments?.length"
+        class="sp-payments-history-table"
+        [payments]="payments"></sp-history-table>
+
+      <section *ngIf="statusTextDescription" class="sp-payments-history-message">
+        <h1>{{statusTextDescription}}</h1>
+      </section>
+
+      <section *ngIf="showLoadingIndicator" class="sp-table-loading-indicator">
+        <mat-spinner></mat-spinner>
+      </section>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -19,7 +19,7 @@
           [(ngModel)]="date">
         <mat-datepicker-toggle matSuffix [for]="dateCmp"></mat-datepicker-toggle>
         <mat-datepicker #dateCmp></mat-datepicker>
-        <mat-error *ngIf="dateInputModel.invalid && dateInputModel.hasError('required')">Вкажіть початок періоду
+        <mat-error *ngIf="dateInputModel.invalid && dateInputModel.hasError('required')">Вкажіть дату рішення
         </mat-error>
       </mat-form-field>
     </div>

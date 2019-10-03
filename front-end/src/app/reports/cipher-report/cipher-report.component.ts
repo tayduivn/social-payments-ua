@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { Moment } from 'moment';
 import { CodeKFKComponent } from '../../shared/components/code-kfk/code-kfk.component';
 import { CodeKEKComponent } from '../../shared/components/code-kek/code-kek.component';
@@ -8,7 +8,8 @@ import { FinancialInstitutionComponent } from '../../shared/components/financial
 @Component({
   selector: 'sp-cipher-report',
   templateUrl: './cipher-report.component.html',
-  styleUrls: ['./cipher-report.component.scss']
+  styleUrls: ['./cipher-report.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CipherReportComponent {
   public date: Moment = null;

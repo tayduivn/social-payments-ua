@@ -19,8 +19,9 @@ import {
   MatSortModule,
   MatTableModule,
   MatTabsModule,
-  MatToolbarModule
-} from '@angular/material';
+  MatToolbarModule,
+  MatChipsModule } from '@angular/material';
+
 import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
   MatMomentDateModule
@@ -51,7 +52,8 @@ const importedExports = [
   MatSortModule,
   MatTableModule,
   MatTabsModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatChipsModule
 ];
 
 @NgModule({
