@@ -43,7 +43,9 @@
         Фільтрувати:
       </div>
 
-      <mat-radio-group (change)="onPaidFlagClick()" [(ngModel)]="paidFlag">
+      <mat-radio-group [disabled]="!(payments | async).length"
+        [ngModel]="(payments | async).length > 0 ? (filterTrigger.asObservable() | async) : undefined"
+        (change)="onPaidFlagClick($event.value)">
         <mat-radio-button [value]="true">Оплачені</mat-radio-button>
         <mat-radio-button [value]="false">Не оплачені</mat-radio-button>
         <mat-radio-button [value]="null">Всі</mat-radio-button>
@@ -57,7 +59,7 @@
     <mat-divider></mat-divider>
 
     <div class="sp-table-container">
-      <sp-history-table *ngIf="(payments | async).length"
+      <sp-history-table *ngIf="(paymentsFiltered | async).length"
         class="sp-payments-history-table"
         [payments]="paymentsFiltered | async"></sp-history-table>
 
