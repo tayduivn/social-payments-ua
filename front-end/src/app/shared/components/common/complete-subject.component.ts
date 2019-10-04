@@ -1,10 +1,11 @@
-import { OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs/src/internal/Subject';
+import { UnsubscribableComponent } from './unsubscribable.component';
 
-export class CompleteSubjectComponent implements OnDestroy {
+export class CompleteSubjectComponent extends UnsubscribableComponent {
   protected componentSubjects: {complete: () => void}[] = [];
 
   public ngOnDestroy() {
+    super.ngOnDestroy();
+
     (this.componentSubjects || []).forEach(s => s.complete());
   }
 }

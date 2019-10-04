@@ -16,6 +16,7 @@ import { UserModel } from '../../../models/user/user.model';
 import { UserModelService } from '../../../models/user/user.model.service';
 import { ApiCommonController } from '../api-common.controller';
 import { PaymentModel } from '../../../models/payment/payment.model';
+import { PaymentBatchUpdate } from '../../../../../api-contracts/payment/payment-batch-update';
 
 export class PaymentsController extends ApiCommonController {
   public static getByFilter(req: Request, res: Response, next: NextFunction): void {
@@ -62,6 +63,16 @@ export class PaymentsController extends ApiCommonController {
   public static deletePayment(req: Request, res: Response, next: NextFunction): void {
     PaymentModelService.remove(req.params.id)
       .then(...super.promiseResponse<void>(res, next));
+  }
+
+  public static groupUpdate(req: Request, res: Response, next: NextFunction): void {
+    if (!req.body.ids || !req.body.ids.length || !!!req.body.props) {
+      PaymentsController.sendBadRequest(next);
+      return;
+    }
+
+    PaymentModelService.batchUpdate(req.body.ids as string[], req.body.props as PaymentBatchUpdate)
+      .then(...super.promiseEnd(res, next));
   }
 
   private static sendBadRequest(next: NextFunction) {

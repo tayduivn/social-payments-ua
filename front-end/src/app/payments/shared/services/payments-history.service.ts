@@ -1,7 +1,4 @@
-import {
-  HttpClient,
-  HttpParams
-} from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
@@ -9,6 +6,7 @@ import { Payment } from '../../../../../../api-contracts/payment/payment';
 import { PaymentsFilter } from '../../../../../../api-contracts/payment/payments-filter';
 import { environment } from '../../../../environments/environment';
 import { HistoryFilterModel } from '../history-filter.model';
+import { PaymentBatchUpdate } from '../../../../../../api-contracts/payment/payment-batch-update';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +22,10 @@ export class PaymentsHistoryService {
     };
 
     return this.http.get<Payment[]>(this.requestUrl, options);
+  }
+
+  public setPaidStatus(paid: boolean, ids: string[]): Observable<void> {
+    return this.http.patch<void>(this.requestUrl, {ids, props: {paid} as PaymentBatchUpdate});
   }
 
   private static assignObjectPrefixedFields(prefix: string, rootObj: HistoryFilterModel): void {

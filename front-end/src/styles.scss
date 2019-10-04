@@ -20,5 +20,9 @@ body {
 }
 
 .sp-justify {
-  align-items: center;
+  justify-content: center;
+}
+
+.sp-justify-sb {
+  justify-content: space-between;
 }

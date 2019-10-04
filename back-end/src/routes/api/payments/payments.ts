@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.get('/', PaymentsController.getByFilter);
 router.post('/', PaymentsController.create);
+router.patch('/', PaymentsController.groupUpdate);
 router.get('/latest', PaymentsController.getLatest);
 router.get('/:id', PaymentsController.getPayment);
 router.patch('/:id', PaymentsController.update);

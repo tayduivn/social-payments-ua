@@ -5,8 +5,8 @@ import { HistoryTableLoaderComponent } from '../shared/history-table/history-tab
 import { PaymentsHistoryService } from '../shared/services/payments-history.service';
 import { apiDateFormat } from '../../shared/constants/date-formats';
 import { HistoryFilterModel } from '../shared/history-filter.model';
-import { map, switchMap, tap } from 'rxjs/operators';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs';
 import { Payment } from '../../../../../api-contracts/payment/payment';
 
 @Component({
@@ -26,13 +26,17 @@ export class PaidActionsComponent extends HistoryTableLoaderComponent {
     return !(this.date || this.reportNumber);
   }
 
-  public filterTrigger = new BehaviorSubject<boolean>(undefined);
+  public paidFilter = new BehaviorSubject<boolean>(undefined);
+
+  private paidStatusChange = new Subject<boolean>();
 
   constructor(cdRef: ChangeDetectorRef, paymentsHistoryService: PaymentsHistoryService) {
     super(cdRef, paymentsHistoryService);
 
     this.setFilteringPipe();
+
     this.setTotalSumPipe();
+    this.setPaidStatusPipe();
   }
 
   public onFindClick() {
@@ -50,12 +54,34 @@ export class PaidActionsComponent extends HistoryTableLoaderComponent {
     if (this.reportNumber) {
       filter.reportNumber = this.reportNumber;
     }
-    this.filterTrigger.next(null);
+    this.paidFilter.next(null);
+
     this.onFilterChange(filter);
   }
 
   public onPaidFlagClick(filterVal: boolean) {
-    this.filterTrigger.next(filterVal);
+    this.paidFilter.next(filterVal);
+  }
+
+
+  public setPaidStatus(paidFlag: boolean) {
+    this.paidStatusChange.next(paidFlag);
+  }
+
+  private setPaidStatusPipe() {
+    this.componentSubscriptions.add(
+      this.payments.pipe(
+        map((payments: Payment[]) => payments.map(payment => payment._id)),
+        switchMap((paymentsIds: string[]) => this.paidStatusChange.asObservable().pipe(
+          switchMap((paidStatus: boolean) => this.paymentsHistoryService.setPaidStatus(paidStatus, paymentsIds).pipe(
+            catchError(() => of())
+          ))
+        ))
+      ).subscribe(() => {
+        this.onFindClick();
+        this.cdRef.markForCheck();
+      })
+    );
   }
 
   private setTotalSumPipe() {
@@ -66,7 +92,7 @@ export class PaidActionsComponent extends HistoryTableLoaderComponent {
 
   private setFilteringPipe() {
     this.paymentsFiltered = this.payments.pipe(
-      switchMap((payments) => this.filterTrigger.asObservable().pipe(
+      switchMap((payments) => this.paidFilter.asObservable().pipe(
         map((paidFlag) => payments.filter(item => paidFlag === null ? true : paidFlag === !!item.paid))
       ))
     )

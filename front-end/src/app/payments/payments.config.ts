@@ -27,8 +27,7 @@ export const paymentsConfig: TabbedItemsConfig = {
     {
       title: 'Головна',
       icon: 'bookmark',
-      // component: PaymentsDashboardComponent
-      component: PaidActionsComponent
+      component: PaymentsDashboardComponent
     }
   ]
 };

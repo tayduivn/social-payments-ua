@@ -14,6 +14,7 @@ import { UserModel } from '../user/user.model';
 import { PaymentModel } from './payment.model';
 import { CodeKEKModelService } from '../code-kek/code-kek.model.service';
 import { CodeKFKModelService } from '../code-kfk/code-kfk.model.service';
+import { PaymentBatchUpdate } from '../../../../api-contracts/payment/payment-batch-update';
 
 export class PaymentModelService {
   private static readonly sorting = '-date -created';
@@ -77,6 +78,21 @@ export class PaymentModelService {
           } as any
         });
       });
+  }
+
+  public static batchUpdate(ids: string[], props: PaymentBatchUpdate) {
+    return PaymentModel.updateMany(
+      {
+        _id: {
+          $in: ids
+        }
+      },
+      {
+        $set: {
+          paid: props.paid
+        }
+      }
+    )
   }
 
   private static getResolved(payment: Payment, user: UserModel): Promise<Payment> {
